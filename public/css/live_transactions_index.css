@@ -1,0 +1,28 @@
+.badge-btn {
+	font-size: 14px;
+}
+.status-display {
+	padding-top: 5px;
+	text-align: center;
+}
+
+.dropdown-menu > li > a:hover {
+	padding: 3px 20px;
+	background-color: #C0C0C0;
+}
+.form-wrapper {
+	width: 100%;
+	display: inline-block;
+}
+form .form-group input, form .form-group select{
+	width: 100%!important;
+}
+
+.form-group {
+	padding-left: 0px;
+	padding-right: 5px;
+}
+
+.hover {
+	background-color: #C0C0C0!important;
+}

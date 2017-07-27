@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Hubwire Arc" default="build">
+ <!-- By default, we assume all tools to be on the $PATH -->
+ <property name="toolsdir" value="/usr/local/tools/vendor/"/>
+ <property name="toolsdir2" value="${basedir}/vendor/bin/"/>
+
+ <!-- Uncomment the following when the tools are in ${basedir}/vendor/bin -->
+ <!-- <property name="toolsdir" value="${basedir}/vendor/bin/"/> -->
+
+ <target name="build"
+         depends="prepare,lint,phpcs-ci,phpunit"
+         description=""/>
+
+ <target name="build-parallel"
+         depends="prepare,lint,tools-parallel,phpunit"
+         description=""/>
+
+ <target name="tools-parallel" description="Run tools in parallel">
+  <parallel threadCount="2">
+   <!--sequential>
+    <antcall target="pdepend"/>
+    <antcall target="phpmd-ci"/>
+   </sequential-->
+   <!--antcall target="phpcpd-ci"/-->
+   <antcall target="phpcs-ci"/>
+   <!--antcall target="phploc-ci"/-->
+  </parallel>
+ </target>
+
+ <target name="clean"
+         unless="clean.done"
+         description="Cleanup build artifacts">
+  <!--delete dir="${basedir}/build/api"/-->
+  <!--delete dir="${basedir}/build/coverage"/-->
+  <!--delete dir="${basedir}/build/logs"/-->
+  <!--delete dir="${basedir}/build/pdepend"/-->
+  <!--delete dir="${basedir}/build/phpdox"/-->
+  <property name="clean.done" value="true"/>
+ </target>
+
+ <target name="prepare"
+         unless="prepare.done"
+         depends="clean"
+         description="Prepare for build">
+  <!--mkdir dir="${basedir}/build/api"/-->
+  <!--mkdir dir="${basedir}/build/coverage"/-->
+  <mkdir dir="${basedir}/build/logs"/>
+  <!--mkdir dir="${basedir}/build/pdepend"/-->
+  <!--mkdir dir="${basedir}/build/phpdox"/-->
+  <property name="prepare.done" value="true"/>
+ </target>
+
+ <target name="lint" description="Perform syntax check of sourcecode files">
+  <apply executable="php" failonerror="true">
+   <arg value="-l" />
+
+   <fileset dir="${basedir}">
+    <include name="**/*.php" />
+    <exclude name="**/vendor/**" />
+    <modified />
+   </fileset>
+
+   <fileset dir="${basedir}/tests">
+    <include name="**/*.php" />
+    <modified />
+   </fileset>
+  </apply>
+ </target>
+
+ <target name="phpcs"
+         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+  <exec executable="${toolsdir}phpcs" output="/dev/null">
+   <arg value="--standard=PSR2" />
+   <arg value="--extensions=php" />
+   <arg path="${basedir}" />
+   <arg path="${basedir}/tests" />
+  </exec>
+ </target>
+
+ <target name="phpcs-ci"
+         depends="prepare"
+         description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
+  <exec executable="${toolsdir}phpcs" output="/dev/null">
+   <arg value="--report=checkstyle" />
+   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+   <arg value="--standard=PSR2" />
+   <arg value="--extensions=php" />
+   <arg value="--warning-severity=8" />
+   <arg value="--ignore=vendor" />
+   <arg path="${basedir}" />
+  </exec>
+ </target>
+
+ <target name="phpunit"
+         depends="prepare"
+         description="Run unit tests with PHPUnit">
+  <exec executable="${toolsdir2}phpunit" failonerror="true">
+   <arg value="--configuration"/>
+   <arg path="${basedir}/build/phpunit.xml"/>
+  </exec>
+ </target>
+
+ <target name="phpdox"
+         depends="phpcs-ci"
+         description="Generate project documentation using phpDox">
+  <exec executable="${toolsdir}phpdox" dir="${basedir}/build">
+  <arg value="--file" />
+  <arg path="${basedir}/build/phpdox.xml" />
+ </exec>
+ </target>
+
+</project>

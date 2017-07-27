@@ -1,0 +1,12 @@
+<th>{{trans('admin/reports.table_label_id')}}</th>
+<th>{{trans('admin/reports.table_label_order_item_id')}}</th>
+<th>{{trans('admin/reports.table_label_order_id')}}</th>
+<th>{{trans('admin/reports.table_label_tp_item_ref_id')}}</th>
+<th>{{trans('admin/reports.table_label_tp_order_id')}}</th>
+<th>{{trans('admin/reports.table_label_channel')}}</th>
+<th>{{trans('admin/reports.table_label_value')}}</th>
+<th>{{trans('admin/reports.table_label_merchant')}}</th>
+<th>{{trans('admin/reports.table_label_created_at')}}</th>
+<th>{{trans('admin/reports.table_label_updated_at')}}</th>
+<th>{{trans('admin/reports.table_label_last_attended_by')}}</th>
+<th>{{trans('admin/reports.table_label_actions')}}</th>
