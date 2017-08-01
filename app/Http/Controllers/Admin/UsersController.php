@@ -66,7 +66,7 @@ class UsersController extends AdminController
         $data = array();
 
         foreach ($users as $user) {
-            $user = User::with('merchant')->find($user->id);
+            $user = User::find($user->id);
 
             if($user->id == 230) \Log::info(print_r($user, true));
             // only return users who are of lesser level or return all users if the user is a super admin
@@ -140,8 +140,8 @@ class UsersController extends AdminController
         $this->validate($request, array(
             'first_name'        => 'required|max:255',
             'last_name'            => 'required|max:255',
-            'email'                => 'required|email|max:255|unique:hapi.users',
-            'user_category'        => 'required|exists:hapi.roles,slug,status,Active',
+            'email'                => 'required|email|max:255|unique:tyreapi.users',
+            'user_category'        => 'required|exists:tyreapi.roles,slug,status,Active',
             'merchant'            => 'required_if:user_category,clientadmin,clientuser,mobilemerchant',
             'default_timezone'    => 'required_if:user_category,superadministrator,administrator,finance,accountexec,partner',
             'default_currency'    => 'required_if:user_category,superadministrator,administrator,finance,accountexec,partner'
@@ -183,7 +183,7 @@ class UsersController extends AdminController
             $data['id'] = $id;
             $data['statuses'] = $this->userRepo->getStatusList(null);
             $data['merchants'] = array();
-            if ($this->admin->is('clientadmin')) {
+            /*if ($this->admin->is('clientadmin')) {
                 $data['merchants'][$this->admin->merchant->slug] = $this->admin->merchant->name;
             }
             else {
@@ -193,12 +193,14 @@ class UsersController extends AdminController
                 foreach ($merchants as $merchant) {
                     $data['merchants'][$merchant->slug] = $merchant->name;
                 }
-            }
+            }*/
 
             $data['timezones'] = $this->generate_timezone_list();
             $data['currencies'] = config('globals.currency_list');
-            $data['channels'] = json_decode($this->getGuzzleClient(array(), 'channels/channel')->getBody()->getContents());
-            $data['user_channels']  = $user->channels;
+            //$data['channels'] = json_decode($this->getGuzzleClient(array(), 'channels/channel')->getBody()->getContents());
+            $data['channels'] = array();
+            //$data['user_channels']  = $user->channels;
+            $data['user_channels'] = array();
 
             return view('admin.users.edit', $data);
         }
@@ -219,7 +221,7 @@ class UsersController extends AdminController
             $this->validate($request, [
                 'first_name'    => 'required|max:255',
                 'last_name'     => 'required|max:255',
-                'category'      => 'required|exists:hapi.roles,slug,status,Active',
+                'category'      => 'required|exists:tyreapi.roles,slug,status,Active',
                 'merchant'      => 'required_if:category,clientadmin,clientuser,mobilemerchant',
                 'timezone'      => 'required_if:category,superadministrator,administrator,finance,accountexec,partner,channelmanager',
                 'currency'      => 'required_if:category,superadministrator,administrator,finance,accountexec,partner,channelmanager',

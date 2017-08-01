@@ -316,8 +316,8 @@ class DataController extends AdminController
             }
             $path = $file->getRealPath();
 
-            $data = Excel::load($path, function($reader) {})->get();
-            \Log::info('Data length '.count($data));
+            $data = Excel::selectSheets('Sheet1')->load($path, function($reader) {})->get();
+            //\Log::info('Data length '.count($data));
 
             $postData = array();
             $postData['filename'] = $file->getClientOriginalName();
@@ -326,40 +326,40 @@ class DataController extends AdminController
             if(!empty($data) && $data->count()){
                 foreach ($data->toArray() as $key => $v) {
                     if(!empty($v)){
-                        \Log::info('Line '.$count++);
+                        // \Log::info('Line '.$count++.'... '.print_r($v, true));
 
                         $postData['items'][] = array(
-                            'line_number' => $v['ref'],
-                            // 'jobsheet_date' => !empty($v['date']) ? $v['date']->format('Y-m-d') : '',
-                            'jobsheet_date' => (array)$v['date'],
-                            'jobsheet_no' => $v['jobsheet_no'],
-                            'inv_no' => $v['invoice_no'],
-                            'inv_amt' => $v['invoice_amount'],
-                            'jobsheet_type' => strtoupper($v['yardbreakdown']),
-                            'customer_name' => $v['customer'],
-                            'truck_no' => $v['truck'],
-                            'pm_no' => $v['pm'],
-                            'trailer_no' => $v['trailer'],
-                            'odometer' => $v['odometer'],
-                            'position' => $v['position'],
-                            'in_attr' => strtoupper($v['tyre_in_attribute']),
-                            'in_price' => $v['tyre_in_price'],
-                            'in_size' => $v['tyre_in_size'],
-                            'in_brand' => $v['tyre_in_brand'],
-                            'in_pattern' => $v['tyre_in_pattern'],
-                            'in_retread_brand' => $v['tyre_in_retread_brand'],
-                            'in_retread_pattern' => $v['tyre_in_retread_pattern'],
-                            'in_serial_no' => $v['tyre_in_serial_no'],
-                            'in_job_card_no' => $v['tyre_in_job_card_no'],
-                            'out_reason' => $v['tyre_out_reason'],
-                            'out_size' => $v['tyre_out_size'],
-                            'out_brand' => $v['tyre_out_brand'],
-                            'out_pattern' => $v['tyre_out_pattern'],
-                            'out_retread_brand' => $v['tyre_out_retread_brand'],
-                            'out_retread_pattern' => $v['tyre_out_retread_pattern'],
-                            'out_serial_no' => $v['tyre_out_serial_no'],
-                            'out_job_card_no' => $v['tyre_out_job_card_no'],
-                            'out_rtd' => $v['tyre_out_rtd']
+                            'line_number'           => $v['ref'],
+                            // 'jobsheet_date'      => !empty($v['date']) ? $v['date']->format('Y-m-d') : '',
+                            'jobsheet_date'         => (array)$v['date'],
+                            'jobsheet_no'           => $v['jobsheet_no'],
+                            'inv_no'                => $v['invoice_no'],
+                            'inv_amt'               => $v['invoice_amount'],
+                            'jobsheet_type'         => strtoupper($v['yardbreakdown']),
+                            'customer_name'         => $v['customer'],
+                            'truck_no'              => $v['truck'],
+                            'pm_no'                 => $v['pm'],
+                            'trailer_no'            => $v['trailer'],
+                            'odometer'              => $v['odometer'],
+                            'position'              => $v['position'],
+                            'in_attr'               => strtoupper($v['tyre_in_attribute']),
+                            'in_price'              => $v['tyre_in_price'],
+                            'in_size'               => $v['tyre_in_size'],
+                            'in_brand'              => $v['tyre_in_brand'],
+                            'in_pattern'            => $v['tyre_in_pattern'],
+                            'in_retread_brand'      => $v['tyre_in_retread_brand'],
+                            'in_retread_pattern'    => $v['tyre_in_retread_pattern'],
+                            'in_serial_no'          => $v['tyre_in_serial_no'],
+                            'in_job_card_no'        => $v['tyre_in_job_card_no'],
+                            'out_reason'            => $v['tyre_out_reason'],
+                            'out_size'              => $v['tyre_out_size'],
+                            'out_brand'             => $v['tyre_out_brand'],
+                            'out_pattern'           => $v['tyre_out_pattern'],
+                            'out_retread_brand'     => $v['tyre_out_retread_brand'],
+                            'out_retread_pattern'   => $v['tyre_out_retread_pattern'],
+                            'out_serial_no'         => $v['tyre_out_serial_no'],
+                            'out_job_card_no'       => $v['tyre_out_job_card_no'],
+                            'out_rtd'               => $v['tyre_out_rtd']
                         );
                     }
                 } 
@@ -367,12 +367,20 @@ class DataController extends AdminController
 
             $itemChunks = array_chunk($postData['items'], 1000, true);
             \DB::beginTransaction();
-            foreach($itemChunks as $itemChunk) {
+            $chunkSize = count($itemChunks);
+            foreach($itemChunks as $index=>$itemChunk) {
 
                 $postData['items'] = $itemChunk;
+                $indicator = '';
+                if($index == 0) {
+                    $indicator = 'start';
+                } elseif ($index+1 == $chunkSize) {
+                    $indicator = 'end';
+                }
+                $postData['indicator'] = $indicator;
                 $response = $this->dataRepo->create($postData);
                 //$response = json_decode($this->postGuzzleClient($postData, 'data')->getBody()->getContents(), true);
-                break;
+                //break;
             }
             \DB::commit();
 

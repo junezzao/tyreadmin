@@ -69,7 +69,7 @@
 								            <div class="form-group has-feedback">
 					            				<label class="col-xs-3" for="address">@lang('admin/user.user_form_label_address')</label>
 					            				<div class="col-xs-9">
-					            					{!! Form::textarea( 'address', $user->address, ['class' => 'form-control', 'placeholder' => trans('admin/user.user_form_placeholder_address')] ) !!}
+					            					{!! Form::textarea( 'address', '', ['class' => 'form-control', 'placeholder' => trans('admin/user.user_form_placeholder_address')] ) !!}
 								                	<div class="error">{{ $errors->first('address') }}</div>
 								                </div>
 								            </div>

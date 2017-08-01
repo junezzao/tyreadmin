@@ -42,6 +42,8 @@ class DataRepository extends Repository implements DataRepositoryInterface
           // return ['success'=>false, 'exceed_limit'=>true];
         }
 
+        $indicator = $data['indicator'];
+
         // validate data
         \Log::info('Validating...');
         $errorRows = $this->validate($data);
@@ -58,24 +60,25 @@ class DataRepository extends Repository implements DataRepositoryInterface
         // to eliminate identical validation error
         $remarks = array_values(array_unique($remarks));
 
-        // delete user's data sheet, if exists
         $lastDataSheet = DataSheet::where('user_id', $this->user_id)->first();
-        /*if(!empty($lastDataSheet)) {
-          DataSheet::find($lastDataSheet->id)->data()->forceDelete();
-          DataSheet::find($lastDataSheet->id)->forceDelete();
-        }*/
-        \Log::info('Deleted existing sheet...');
 
-        if(empty($lastDataSheet)) {
+        // delete user's data sheet, if exists and index = 0
+        if($indicator == 'start') {
+          if(!empty($lastDataSheet)) {
+            DataSheet::find($lastDataSheet->id)->data()->forceDelete();
+            DataSheet::find($lastDataSheet->id)->forceDelete();
+            \Log::info('Deleted existing sheet...');
+          }
+
           // create data sheet
           $dataSheetData = array(
-            'user_id' => $this->user_id,
-            'filename' => $data['filename'],
-            'total_count' => count($data['items']),
-            'invalid_count' => count($invalidLines),
-            'invalid_pct' => number_format(count($invalidLines) / count($data['items']) * 100, 2),
-            'summary' => json_encode(array()),
-            'remarks' => json_encode($remarks)
+            'user_id'       => $this->user_id,
+            'filename'      => $data['filename'],
+            'total_count'   => 0,
+            'invalid_count' => 0,
+            'invalid_pct'   => 0,
+            'summary'       => json_encode(array()),
+            'remarks'       => json_encode($remarks)
           );
 
           $dataSheet = $this->dataSheetRepo->create($dataSheetData);
@@ -102,10 +105,23 @@ class DataRepository extends Repository implements DataRepositoryInterface
           \Log::info('Created data #'.$dataCreated->id);
         }
 
-        $summary = $this->dataSheetRepo->getSummary($dataSheet->id);
-        DataSheet::where('id', $dataSheet->id)->update(['summary' => json_encode($summary)]);
+        DataSheet::where('id', $dataSheet->id)->update([
+          'total_count'   => $dataSheet->total_count + count($data['items']),
+          'invalid_count' => $dataSheet->invalid_count + count($invalidLines),
+          'remarks' => json_encode(array_merge($dataSheet->remarks, $remarks))
+        ]);
 
-        Activity::log('Data sheet ('. $dataSheet->id .') uploaded successfully', $this->user_id);
+        if($indicator == 'end') {
+          $invalid_pct = number_format(($dataSheet->invalid_count  / $dataSheet->total_count) * 100, 2);
+
+          $summary = $this->dataSheetRepo->getSummary($dataSheet->id);
+          DataSheet::where('id', $dataSheet->id)->update([
+            'summary'     => json_encode($summary),
+            'invalid_pct' => $invalid_pct
+          ]);
+
+          Activity::log('Data sheet ('. $dataSheet->id .') uploaded successfully', $this->user_id);
+        }
 
         return ['success'=>true];
     }

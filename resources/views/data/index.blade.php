@@ -56,6 +56,9 @@
 		                            </div>
 		                        </div>
 		                    </div>
+		                    <div id="upload-error" class="col-lg-6 col-lg-offset-3 col-xs-10 col-xs-offset-1">
+		                        
+		                    </div>
 	                    </div>
 
 	              		<div class="row" style="margin-top:16px">
@@ -184,6 +187,7 @@
             url: '{{ route('data.upload') }}',
             dataType: 'json',
             add: function (e, data) {
+            	console.log('Start ' + new Date());
                 //$('#log').empty();
                 //$('#log').hide();
                 $('.progress-div').removeClass('hide');
@@ -193,12 +197,14 @@
                 data.submit();
             },
             done: function (e, data) {
+                console.log('End   ' + new Date());
                 var result = data.result;
-                $('.progress-div').addClass('hide');
+                
                 $('#progress').removeClass('active');
-                console.log(result);
+                //console.log(result);
                 
                 if(result.success){
+                	$('.progress-div').addClass('hide');
                 	location.reload()
                 	//table.ajax.reload();
                     if(result.existed){
@@ -214,23 +220,25 @@
                     }
                 }
                 else{
+
                     if(result.exceed_limit) {
                     	$('div.exceed-limit-div').removeClass('hide');
                 		console.log('limit exceeded!');
                 	}
-                	//$('#log').empty();
-                    //$('<p/>').html('<h4>Upload process return error(s):-</h4>').appendTo('#log');
-                    //console.log(result.error.messages);
-                    /*if (result.error.messages!==undefined) {
+                	$('#upload-error').empty();
+                   	$('<p/>').html('<h4>Upload process return error(s):-</h4>').appendTo('#upload-error');
+                    console.log(result.error.messages);
+                    if (result.error.messages!==undefined) {
                         $.each(result.error.messages, function (index, message){
                             // console.log(index);
-                            $('#log').append('<p>'+message+'</p>');
+                            $('#upload-error').append('<p>'+message+'</p>');
                         });
                     }
                     else {
-                        $('<p/>').text("An error has occurred on the server. Please try again.").appendTo('#log');
+                        $('<p/>').html("An error has occurred on the server. Please try again.").appendTo('#upload-error');
                     }                   
-                    $('#log').removeClass('alert-success').addClass('alert-danger').show();*/
+                    //$('#log').removeClass('alert-success').addClass('alert-danger').show();
+
                     setTimeout(function(){
                         $('#progress').css('width', '0%');
                     }, 1000);

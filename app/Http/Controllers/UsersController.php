@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\UserRepository;
-use App\Repositories\Contracts\MerchantRepository;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GuzzleClient;
@@ -24,19 +23,17 @@ class UsersController extends Controller
 
     protected $userRepo;
     protected $admin;
-    protected $merchantRepo;
 
     /**
      * Instantiate a new UserController instance.
      *
      * @return void
      */
-    public function __construct(UserRepository $userRepo, MerchantRepository $merchantRepo)
+    public function __construct(UserRepository $userRepo)
     {
         $this->middleware('auth');
         $this->middleware('role:clientadmin', ['only' => ['getAccountDetails']]);
         $this->userRepo = $userRepo;
-        $this->merchantRepo = $merchantRepo;
         $this->admin = \Auth::user();
     }
 
@@ -211,7 +208,7 @@ class UsersController extends Controller
         return redirect('/data');
     }
 
-    public function updateAccountDetails(Request $request, MerchantRepository $merchantRepo)
+    public function updateAccountDetails(Request $request)
     {
         $rules = array(
             'name' => 'sometimes|required|string',

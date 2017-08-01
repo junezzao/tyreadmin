@@ -25,25 +25,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\UserRepository',
             'App\Repositories\Eloquent\UserRepository'
         );
-        $this->app->bind(
-            'App\Repositories\Contracts\MerchantRepository',
-            'App\Repositories\Eloquent\MerchantRepository'
-        );
-        $this->app->bind(
-            'App\Repositories\Contracts\SupplierRepository',
-            'App\Repositories\Eloquent\SupplierRepository'
-        );
-
-        $this->app->bind(
-            'App\Repositories\Contracts\OrderRepository',
-            'App\Repositories\Eloquent\OrderRepository'
-        );
-
-        $this->app->bind(
-            'App\Repositories\Contracts\ChannelRepository',
-            'App\Repositories\Eloquent\ChannelRepository'
-        );
-
+        
         $this->app->bind(
             'App\Repositories\Contracts\DataRepositoryContract',
             'App\Repositories\Eloquent\DataRepository'
