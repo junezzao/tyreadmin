@@ -68,7 +68,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
           if(!empty($lastDataSheet)) {
             DataSheet::find($lastDataSheet->id)->data()->forceDelete();
             DataSheet::find($lastDataSheet->id)->forceDelete();
-            \Log::info('Deleted existing sheet...');
+            // \Log::info('Deleted existing sheet...');
           }
 
           // create data sheet
@@ -113,9 +113,9 @@ class DataRepository extends Repository implements DataRepositoryInterface
         ]);
 
         $dataSheet = DataSheet::find($dataSheet->id);
-        
+
         if($index+1 == $chunkSize) {
-          \Log::info(print_r($dataSheet, true));
+          // \Log::info(print_r($dataSheet, true));
           $invalid_pct = number_format(($dataSheet->invalid_count  / $dataSheet->total_count) * 100, 2);
 
           $summary = $this->dataSheetRepo->getSummary($dataSheet->id);

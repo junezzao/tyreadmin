@@ -90,7 +90,7 @@
 		            	</div>
 
 		            	<div class="view">
-		            		<div class="title">View by Truck Brand</div>
+		            		<div class="title">View by Tyre Brand</div>
 		            		<div class="level level-0"><div class="item header"><a>New Tyre (NT) <div class="symbol">&#9654;</div></a></div>
 		            		@foreach ($tyreBrand['NT'] as $brand => $brandData) 
 		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
@@ -136,6 +136,148 @@
 		            			</div>
 		            		@endforeach
 		            		</div>
+
+
+		            		<div class="level level-0"><div class="item header"><a>Stock Retread (STK) <div class="symbol">&#9654;</div></a></div>
+		            		@foreach ($tyreBrand['STK'] as $brand => $brandData) 
+		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
+
+		            			@foreach ($brandData as $pattern => $patternData)
+		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
+
+		            				@foreach ($patternData as $size => $sizeData)
+			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
+
+			            				@foreach ($sizeData as $serialNo => $serialNoData)
+				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
+
+				            					@foreach ($serialNoData as $customer => $customerData)
+					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
+							            				
+							            				@foreach ($customerData as $vehicleType => $vehicleData)
+							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
+									            				
+									            				@foreach ($vehicleData as $vehicleNo => $positionData)
+									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
+											            				
+											            				@foreach ($positionData as $position => $jobs)
+											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
+													            				
+													            				@foreach ($jobs as $index => $job)
+													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
+														            			@endforeach
+													            			</div>
+												            			@endforeach
+											            			</div>
+										            			@endforeach
+									            			</div>
+								            			@endforeach
+							            			</div>
+							            		@endforeach
+					            			</div>
+				            			@endforeach
+				            			</div>
+			            			@endforeach
+			            			</div>
+		            			@endforeach
+		            			</div>
+		            		@endforeach
+		            		</div>
+
+
+		            		<div class="level level-0"><div class="item header"><a>Customer Own Casing (COC) <div class="symbol">&#9654;</div></a></div>
+		            		@foreach ($tyreBrand['COC'] as $brand => $brandData) 
+		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
+
+		            			@foreach ($brandData as $pattern => $patternData)
+		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
+
+		            				@foreach ($patternData as $size => $sizeData)
+			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
+
+			            				@foreach ($sizeData as $serialNo => $serialNoData)
+				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
+
+				            					@foreach ($serialNoData as $customer => $customerData)
+					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
+							            				
+							            				@foreach ($customerData as $vehicleType => $vehicleData)
+							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
+									            				
+									            				@foreach ($vehicleData as $vehicleNo => $positionData)
+									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
+											            				
+											            				@foreach ($positionData as $position => $jobs)
+											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
+													            				
+													            				@foreach ($jobs as $index => $job)
+													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
+														            			@endforeach
+													            			</div>
+												            			@endforeach
+											            			</div>
+										            			@endforeach
+									            			</div>
+								            			@endforeach
+							            			</div>
+							            		@endforeach
+					            			</div>
+				            			@endforeach
+				            			</div>
+			            			@endforeach
+			            			</div>
+		            			@endforeach
+		            			</div>
+		            		@endforeach
+		            		</div>
+
+
+		            		<div class="level level-0"><div class="item header"><a>Used Tyre (USED) <div class="symbol">&#9654;</div></a></div>
+		            		@foreach ($tyreBrand['USED'] as $brand => $brandData) 
+		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
+
+		            			@foreach ($brandData as $pattern => $patternData)
+		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
+
+		            				@foreach ($patternData as $size => $sizeData)
+			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
+
+			            				@foreach ($sizeData as $serialNo => $serialNoData)
+				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
+
+				            					@foreach ($serialNoData as $customer => $customerData)
+					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
+							            				
+							            				@foreach ($customerData as $vehicleType => $vehicleData)
+							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
+									            				
+									            				@foreach ($vehicleData as $vehicleNo => $positionData)
+									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
+											            				
+											            				@foreach ($positionData as $position => $jobs)
+											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
+													            				
+													            				@foreach ($jobs as $index => $job)
+													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
+														            			@endforeach
+													            			</div>
+												            			@endforeach
+											            			</div>
+										            			@endforeach
+									            			</div>
+								            			@endforeach
+							            			</div>
+							            		@endforeach
+					            			</div>
+				            			@endforeach
+				            			</div>
+			            			@endforeach
+			            			</div>
+		            			@endforeach
+		            			</div>
+		            		@endforeach
+		            		</div>
+
 		            	</div>
 
 	            	</div>
