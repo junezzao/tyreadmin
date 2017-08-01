@@ -42,12 +42,13 @@ class DataRepository extends Repository implements DataRepositoryInterface
           // return ['success'=>false, 'exceed_limit'=>true];
         }
 
-        $indicator = $data['indicator'];
+        $index = $data['index'];
+        $chunkSize = $data['chunkSize'];
 
         // validate data
-        \Log::info('Validating...');
+        // \Log::info('Validating...');
         $errorRows = $this->validate($data);
-        \Log::info('Finished validating...');
+        // \Log::info('Finished validating...');
         $remarks = array();
         $invalidLines = array();
         foreach($errorRows['error'] as $key => $error) {
@@ -63,7 +64,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $lastDataSheet = DataSheet::where('user_id', $this->user_id)->first();
 
         // delete user's data sheet, if exists and index = 0
-        if($indicator == 'start') {
+        if($index == 0) {
           if(!empty($lastDataSheet)) {
             DataSheet::find($lastDataSheet->id)->data()->forceDelete();
             DataSheet::find($lastDataSheet->id)->forceDelete();
@@ -82,7 +83,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
           );
 
           $dataSheet = $this->dataSheetRepo->create($dataSheetData);
-          \Log::info('Created new sheet...');
+          // \Log::info('Created new sheet...');
         } else {
           $dataSheet = $lastDataSheet;
         }
@@ -102,7 +103,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
 
           // \Log::info(print_r($val, true));
           $dataCreated = parent::create($val);
-          \Log::info('Created data #'.$dataCreated->id);
+          // \Log::info('Created data #'.$dataCreated->id);
         }
 
         DataSheet::where('id', $dataSheet->id)->update([
@@ -111,7 +112,10 @@ class DataRepository extends Repository implements DataRepositoryInterface
           'remarks' => json_encode(array_merge($dataSheet->remarks, $remarks))
         ]);
 
-        if($indicator == 'end') {
+        $dataSheet = DataSheet::find($dataSheet->id);
+        
+        if($index+1 == $chunkSize) {
+          \Log::info(print_r($dataSheet, true));
           $invalid_pct = number_format(($dataSheet->invalid_count  / $dataSheet->total_count) * 100, 2);
 
           $summary = $this->dataSheetRepo->getSummary($dataSheet->id);

@@ -371,13 +371,9 @@ class DataController extends AdminController
             foreach($itemChunks as $index=>$itemChunk) {
 
                 $postData['items'] = $itemChunk;
-                $indicator = '';
-                if($index == 0) {
-                    $indicator = 'start';
-                } elseif ($index+1 == $chunkSize) {
-                    $indicator = 'end';
-                }
-                $postData['indicator'] = $indicator;
+                $postData['index'] = $index;
+                $postData['chunkSize'] = $chunkSize;
+
                 $response = $this->dataRepo->create($postData);
                 //$response = json_decode($this->postGuzzleClient($postData, 'data')->getBody()->getContents(), true);
                 //break;
