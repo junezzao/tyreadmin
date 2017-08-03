@@ -301,9 +301,6 @@
 			"scrollY": false,
 			"autoWidth": false,
 			"orderCellsTop": true,
-			"fnDrawCallback": function (o) {
-				jQuery(window).scrollTop(0);
-			},
 			"columns": [
 		        { "data": "line_number", "name": "line_number", "targets": 0 },
 		        { "data": "jobsheet_date", "name": "jobsheet_date", "targets": 1 },

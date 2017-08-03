@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css', env('HTTPS', false)) }}">
 		<link rel="stylesheet" href="{{ asset('css/ionicons.min.css', env('HTTPS', false)) }}">
 
-		<script src="{{ asset('js/jquery-v1.11.1.js', env('HTTPS', false)) }}" type="text/javascript"></script>
+		<script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 		<script src="{{ asset('bootstrap/js/bootstrap.min.js', env('HTTPS', false)) }}" type="text/javascript"></script>
 		<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js', env('HTTPS', false)) }}"></script>
 		<script src="{{ asset('plugins/datatables/dataTables.bootstrap.min.js', env('HTTPS', false)) }}"></script>

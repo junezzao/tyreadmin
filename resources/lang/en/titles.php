@@ -4,6 +4,7 @@ return [
 	'account_activation'		=> 'Account Activation',
 
 	'edit_profile'				=> 'Edit Profile',
+	'edit_user'					=> 'Edit User',
 	
 	'login' 					=> 'Login',
 

@@ -167,40 +167,19 @@ class UsersController extends AdminController
         $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$id)->getBody()->getContents());
         if (is_null($user->deleted_at) && ($this->admin->is('superadministrator') || $this->admin->level() > $user->level)) {
             $data['user'] = $user;
-            $roles = Role::select('name', 'slug', 'status');
-
-            if ($this->admin->level() < 100) {
-                $roles = $roles->where('level', '<', $this->admin->level());
-            }
-
-            $roles = $roles->orderBy('status', 'asc')->orderBy('level', 'desc')->get();
+            $roles = Role::select('name', 'slug', 'status')->orderBy('status', 'asc')->orderBy('level', 'desc')->get();
 
             $data['roles'] = array();
             foreach ($roles as $role) {
                 $data['roles'][$role->status][$role->slug] = $role->name;
             }
 
-            $data['id'] = $id;
             $data['statuses'] = $this->userRepo->getStatusList(null);
-            $data['merchants'] = array();
-            /*if ($this->admin->is('clientadmin')) {
-                $data['merchants'][$this->admin->merchant->slug] = $this->admin->merchant->name;
-            }
-            else {
-                $response = $this->getGuzzleClient(array(), 'admin/merchants');
-                $merchants = json_decode($response->getBody()->getContents())->merchants;
-
-                foreach ($merchants as $merchant) {
-                    $data['merchants'][$merchant->slug] = $merchant->name;
-                }
-            }*/
-
-            $data['timezones'] = $this->generate_timezone_list();
-            $data['currencies'] = config('globals.currency_list');
-            //$data['channels'] = json_decode($this->getGuzzleClient(array(), 'channels/channel')->getBody()->getContents());
-            $data['channels'] = array();
-            //$data['user_channels']  = $user->channels;
-            $data['user_channels'] = array();
+            $data['countryList'] = config('globals.countryList');
+            $data['operationTypes'] = [
+                'Tyre Service Centre' => 'Tyre Service Centre', 
+                'Fleet Operation Team' => 'Fleet Operation Team'
+            ];
 
             return view('admin.users.edit', $data);
         }
@@ -215,35 +194,37 @@ class UsersController extends AdminController
         $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$id)->getBody()->getContents());
 
         if ($this->admin->is('superadministrator') || ($this->admin->can('edit.user') && ($this->admin->level() > $user->level))) {
-            $inputs = $request->all();
-            $inputs['editUser'] = true;
-
             $this->validate($request, [
-                'first_name'    => 'required|max:255',
-                'last_name'     => 'required|max:255',
-                'category'      => 'required|exists:tyreapi.roles,slug,status,Active',
-                'merchant'      => 'required_if:category,clientadmin,clientuser,mobilemerchant',
-                'timezone'      => 'required_if:category,superadministrator,administrator,finance,accountexec,partner,channelmanager',
-                'currency'      => 'required_if:category,superadministrator,administrator,finance,accountexec,partner,channelmanager',
-                'status'        => 'required'
+                'first_name'        => 'required|max:255',
+                'last_name'         => 'required|max:255',
+                'contact_no'        => 'required|max:255',
+                'company_name'      => 'required|max:255',
+                'address_line_1'    => 'required|max:255',
+                'address_line_2'    => 'sometimes|max:255',
+                'address_city'      => 'required|max:255',
+                'address_postcode'  => 'required|max:255',
+                'address_state'     => 'required|max:255',
+                'address_country'   => 'required|max:2',
+                'operation_type'    => 'required|max:255',
+                'status'            => 'required'
             ]);
 
             $inputs = array(
-                'editUser'      => true,
-                'merchant'      => $request->input('merchant'),
-                'first_name'    => $request->input('first_name'),
-                'last_name'     => $request->input('last_name'),
-                'email'         => $request->input('email'),
-                'contact_no'    => $request->input('contact_no'),
-                'address'       => $request->input('address'),
-                'category'      => $request->input('category'),
-                'timezone'      => $request->input('timezone'),
-                'currency'      => $request->input('currency'),
-                'status'        => $request->input('status')
+                'editUser'          => true,
+                'email'             => $request->input('email'),
+                'first_name'        => $request->input('first_name'),
+                'last_name'         => $request->input('last_name'),
+                'company_name'      => $request->input('company_name'),
+                'contact_no'        => $request->input('contact_no'),
+                'address_line_1'    => $request->input('address_line_1'),
+                'address_line_2'    => $request->input('address_line_2'),
+                'address_city'      => $request->input('address_city'),
+                'address_postcode'  => $request->input('address_postcode'),
+                'address_state'     => $request->input('address_state'),
+                'address_country'   => $request->input('address_country'),
+                'status'            => $request->input('status'),
+                'operation_type'    => $request->input('operation_type')
             );
-
-            if($request->input('category') == 'channelmanager')
-                $inputs['channels'] = $request->input('merchant_id');
 
             $response = json_decode($this->putGuzzleClient($inputs, 'admin/users/'.$id)->getBody()->getContents());
             if ($response->success) {

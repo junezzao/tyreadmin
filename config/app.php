@@ -168,6 +168,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Chumper\Zipper\ZipperServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
 
         //For testing purposes only
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
@@ -232,6 +233,7 @@ return [
         'Helper'    => App\Helpers\Helper::class,
         'Zipper'    => Chumper\Zipper\Zipper::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+        'Captcha'   => Mews\Captcha\Facades\Captcha::class,
     ],
 
 ];

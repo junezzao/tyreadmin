@@ -9,6 +9,12 @@
 
 /* skin-black navbar */
 .skin-black {
+  .main-sidebar {
+    background-image: url('../../images/menu-bg.png');
+    background-position: center bottom;
+    background-repeat: no-repeat;
+  }
+
   //Navbar & Logo
   .main-header {
     .box-shadow(0px 1px 1px rgba(0, 0, 0, 0.05));
@@ -41,12 +47,13 @@
       }
     }
     > .logo {
-      .logo-variant(#222d32; #fff);
+      .logo-variant(#fff; #fff);
       border-right: 1px solid #222d32;
       @media (max-width: @screen-header-collapse) {
         .logo-variant(#222; #fff);
         border-right: none;
       }
+      position: fixed;
     }
 
     li.user-header {
@@ -70,5 +77,17 @@
       border-top-color: #222;
       border-left-color: #222;
     }
+  }
+}
+
+@media (max-width: 767px) {
+  .skin-black .main-header > .logo {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .skin-black .main-header > .logo:hover {
+    background-color: #fff;
   }
 }

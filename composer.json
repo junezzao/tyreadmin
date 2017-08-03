@@ -19,7 +19,8 @@
         "milon/barcode": "^5.1",
         "predis/predis": "^1.1",
         "chumper/zipper": "^0.6.1",
-        "maatwebsite/excel": "~2.1.0"
+        "maatwebsite/excel": "~2.1.0",
+        "mews/captcha": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

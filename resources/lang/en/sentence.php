@@ -18,9 +18,8 @@ return [
     '01_sign_up'								=> 'Sign up',
     '01_for_one_today'							=> 'for one today',
 
-    'forgot_password'                           => 'Please fill in your email address, a password reset link will then be sent to your email.',
     'enter_your_email_address'                  => 'Enter your email address',
-    'send_password_reset_link'                  => 'Send Password Reset Link',
+    'send_password_reset_link'                  => 'Get New Password',
     'forgot_password_validation'                => 'Please enter your email address to reset password.',
     'forgot_password_success'                   => 'Your password has been reset. Please check your email inbox :email',
 

@@ -10,12 +10,10 @@
 		        @include('includes.header')
 		    </header>
 
-		    <!-- Left side column. contains the logo and sidebar -->
 			<aside class="main-sidebar">
 				@include('partials.menus.nav-sidebar')
 			</aside>
 
-		    <!-- Content Wrapper. Contains page content -->
   			<div class="content-wrapper">
 		    	@include('flash::message')
 		        @yield('content')

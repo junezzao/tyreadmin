@@ -531,7 +531,7 @@ a:focus {
 .main-header .navbar .nav > li.user > a > .fa,
 .main-header .navbar .nav > li.user > a > .glyphicon,
 .main-header .navbar .nav > li.user > a > .ion {
-  margin-right: 5px;
+  margin-right: 0px;
 }
 
 .main-header .navbar .nav > li > a > .label {
@@ -710,6 +710,7 @@ a:focus {
 @media (max-width: 767px) {
   .main-sidebar,
   .left-side {
+    position: absolute;
     padding-top: 100px;
   }
 }
@@ -858,7 +859,7 @@ a:focus {
 }
 
 .sidebar-menu .treeview-menu > li > a {
-  padding: 5px 5px 5px 15px;
+  padding: 8px 5px 8px 28px;
   display: block;
   font-size: 14px;
 }
@@ -3154,7 +3155,7 @@ textarea.no-resize {
 .nav-tabs-custom {
   margin-bottom: 20px;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
 
@@ -7144,6 +7145,10 @@ fieldset[disabled] .btn-yahoo.active {
   float: right;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .data-upload .summary small {
   color: #808080;
 }
@@ -7313,6 +7318,53 @@ div.dt-buttons {
   margin-top: 20px;
 }
 
+.subscription .subs-tbl.table {
+  width: 90%;
+  margin: 0 auto;
+  border: 2px solid #808080;
+}
+
+.subscription .subs-tbl.table th {
+  width: 30%;
+  color: #fff;
+}
+
+.subscription .subs-tbl.table th,
+.subscription .subs-tbl.table td {
+  text-align: center;
+  border: 1px solid #f4f4f4;
+  border-right: 2px solid #808080;
+  border-left: 2px solid #808080;
+}
+
+.subscription .current-subs {
+  font-size: 34px;
+  font-weight: bold;
+  padding: 4px;
+  color: #fff;
+  font-style: italic;
+}
+
+.subscription .subs-day {
+  margin-bottom: 20px;
+}
+
+.subscription .subs-day span {
+  font-size: 32px;
+  font-style: italic;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.subscription .expiring-alert {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.subscription .expiring-alert-sub {
+  margin-bottom: 20px;
+}
+
 /*
  * Misc: print
  * -----------
@@ -7368,6 +7420,12 @@ div.dt-buttons {
  */
 
 /* skin-black navbar */
+
+.skin-black .main-sidebar {
+  background-image: url('../../images/menu-bg.png');
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
 
 .skin-black .main-header {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
@@ -7426,14 +7484,15 @@ div.dt-buttons {
 }
 
 .skin-black .main-header > .logo {
-  background-color: #222d32;
+  background-color: #fff;
   color: #fff;
   border-bottom: 0 solid transparent;
   border-right: 1px solid #222d32;
+  position: fixed;
 }
 
 .skin-black .main-header > .logo:hover {
-  background-color: #202a2f;
+  background-color: #fcfcfc;
 }
 
 @media (max-width: 767px) {
@@ -7555,6 +7614,18 @@ div.dt-buttons {
 .skin-black .pace .pace-activity {
   border-top-color: #222;
   border-left-color: #222;
+}
+
+@media (max-width: 767px) {
+  .skin-black .main-header > .logo {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .skin-black .main-header > .logo:hover {
+    background-color: #fff;
+  }
 }
 
 .error {
@@ -7735,7 +7806,7 @@ a.forgot-password {
 }
 
 .skin-black .main-header > .logo {
-  background-color: #222d32;
+  background-color: #fff;
   color: #fff;
   border-bottom: 0 solid transparent;
   border-right: 1px solid #222d32;

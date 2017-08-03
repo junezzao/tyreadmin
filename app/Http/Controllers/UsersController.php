@@ -261,4 +261,46 @@ class UsersController extends Controller
             return redirect()->back();
         }
     }
+
+    public function subscription()
+    {
+        $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$this->admin->id)->getBody()->getContents());
+        $data['user'] = $user;
+        $data['subscriptionType'] = array(
+            '3' => 'Elite'
+        );
+        $data['typeColor'] = array(
+            'Lite' => '#c7b199',
+            'Elite' => '#57a501'
+        );
+        $data['days'] = 0;
+
+        if(!empty($user->active_plan)) {
+            $today          = date_create(date('Y-m-d'));
+            $activeEndDate  = date_create($user->active_plan->end_date);
+            $diff           = date_diff($today, $activeEndDate);
+
+            $data['days'] = $diff->format("%a");
+        }
+        
+        // \Log::info('user... '.print_r($user, true));
+        return view('users.subscription', $data);
+    }
+
+    public function subscribe(Request $request)
+    {
+        $this->validate($request, array(
+            'subscription_type' => 'required'
+        ));
+
+        $response = json_decode($this->postGuzzleClient($request->all(), 'admin/users/subscribe/'.$this->admin->id)->getBody()->getContents());
+    
+        if ($response->success) {
+            flash()->success('New subscription has been made successfully.');
+            return redirect()->route('users.subscription', [$this->admin->id]);
+        } else {
+            flash()->error('An error has occurred while subscribing.');
+            return back()->withInput()->withErrors($response->errors);
+        }
+    }
 }

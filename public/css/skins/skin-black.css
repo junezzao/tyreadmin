@@ -5,6 +5,12 @@
 
 /* skin-black navbar */
 
+.skin-black .main-sidebar {
+  background-image: url('../../images/menu-bg.png');
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
 .skin-black .main-header {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
 }
@@ -62,14 +68,15 @@
 }
 
 .skin-black .main-header > .logo {
-  background-color: #222d32;
+  background-color: #fff;
   color: #fff;
   border-bottom: 0 solid transparent;
   border-right: 1px solid #222d32;
+  position: fixed;
 }
 
 .skin-black .main-header > .logo:hover {
-  background-color: #202a2f;
+  background-color: #fcfcfc;
 }
 
 @media (max-width: 767px) {
@@ -191,4 +198,16 @@
 .skin-black .pace .pace-activity {
   border-top-color: #222;
   border-left-color: #222;
+}
+
+@media (max-width: 767px) {
+  .skin-black .main-header > .logo {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .skin-black .main-header > .logo:hover {
+    background-color: #fff;
+  }
 }

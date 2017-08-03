@@ -13,6 +13,8 @@ return [
     'contact_number'                    => 'Contact Number',
     'country'                    		=> 'Country',
 
+    'details'                           => 'Details',
+
     'edit_profile'                      => 'Edit Profile',
     'email_address'                     => 'Email Address',
 
@@ -34,10 +36,14 @@ return [
     'reporting'                         =>' Reporting',
     
     'save_and_continue'                 => 'Save & Continue',
+    'save_changes'                      => 'Save Changes',
     'select_country'                    => 'Select Country',
     'sign_in'                           => 'Sign In',
     'sign_up'                      		=> 'Sign Up',
     'state'                    			=> 'State',
+    'status'                            => 'Status',
+    'subscriptions'                      => 'Subscriptions',
+    'subscription_plan'                 => 'Subscription Plan',
 
     'tyre_history'                      => 'Tyre History',
     'tyre_service_centre'               => 'Tyre Service Centre',

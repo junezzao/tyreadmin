@@ -44,9 +44,6 @@
 @section('footer_scripts')
 	<script type="text/javascript">
 		$(document).ready(function(){
-		    //$('#orders').DataTable({
-		    //	"dom": '<"H"r>t<"F">'
-		    //});
 		    window.print();
 		});
 	</script>

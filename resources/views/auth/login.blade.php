@@ -50,9 +50,9 @@
     </div>
 
     <!-- Password reset form -->
-    <div class="signin-form col-lg-5 col-md-6 col-sm-8 col-xs-11" id="password-reset-container">
+    <div class="signin-form col-lg-4 col-md-5 col-sm-7 col-xs-10" id="password-reset-container">
         <div class="close">&times;</div>
-        <p>{{ trans('sentence.forgot_password') }}</p>
+        <p>Please enter your email address.<br/>You will receive a link to create a new password via email.</p>
         @include('auth.password')
     </div>
     <!-- / Password reset form -->
@@ -60,6 +60,10 @@
 
 @section('footer_scripts')
 <script type="text/javascript">
+function refreshCaptcha(){
+    //$('div.refereshrecapcha').html('<?php echo captcha_img('flat') ?>');
+}
+
 jQuery(document).ready(function($){
     $("input[name=email]").focus();
     $('#forgot-password-link').click(function(){

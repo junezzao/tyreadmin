@@ -71,6 +71,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('account_details', array('uses' => 'UsersController@getAccountDetails', 'as' => 'user.account_details'));
     Route::post('account_details', 'UsersController@updateAccountDetails');
     Route::post('users/verify/', array('uses' => 'UsersController@verify', 'as' => 'users.verify'));
+    
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('subscription/{user_id}', array('uses' => 'UsersController@subscription', 'as' => 'users.subscription'));
+        Route::post('subscribe/{user_id', array('uses' => 'UsersController@subscribe', 'as' => 'users.subscribe'));
+    });
     Route::resource('users','UsersController');
 
     Route::group(['prefix' => 'admin'], function () {
@@ -92,4 +97,29 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('roles', 'Admin\AccessController');
     });
 
+});
+
+Route::any('captcha-test', function()
+{
+    if (Request::getMethod() == 'POST')
+    {
+        $rules = ['captcha' => 'required|captcha'];
+        $validator = Validator::make(Input::all(), $rules);
+        if ($validator->fails())
+        {
+            echo '<p style="color: #ff0000;">Incorrect!</p>';
+        }
+        else
+        {
+            echo '<p style="color: #00ff30;">Matched :)</p>';
+        }
+    }
+
+    $form = '<form method="post" action="captcha-test">';
+    $form .= '<input type="hidden" name="_token" value="' . csrf_token() . '">';
+    $form .= '<p>' . captcha_img('flat') . '</p>';
+    $form .= '<p><input type="text" name="captcha"></p>';
+    $form .= '<p><button type="submit" name="check">Check</button></p>';
+    $form .= '</form>';
+    return $form;
 });

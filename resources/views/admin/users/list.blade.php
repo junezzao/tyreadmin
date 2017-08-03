@@ -1,9 +1,6 @@
 @extends('layouts.master')
 
 @section('header_scripts')
-<!-- DataTables -->
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js', env('HTTPS', false)) }}"></script>
-<script src="{{ asset('plugins/datatables/dataTables.bootstrap.min.js', env('HTTPS', false)) }}"></script>
 @append
 
 @section('title')
@@ -45,7 +42,7 @@
    	</section>
 @stop
 
-
+@include('includes.datatables')
 @section('footer_scripts')
 <link href="{{ asset('plugins/datatables/dataTables.bootstrap.css', env('HTTPS', false)) }}" rel="stylesheet" type="text/css">
 <script type="text/javascript">

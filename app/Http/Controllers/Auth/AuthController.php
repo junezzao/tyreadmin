@@ -151,15 +151,35 @@ class AuthController extends Controller
 
     public function forgot(Request $request)
     {
-        $inputs = $request->input();
-        if(empty($inputs['email'])) {
-            flash()->error(trans('sentence.forgot_password_validation'));
-            return back()->withInput();
+        $rules = [
+            'reset_email' => 'required|email',
+            'captcha' => 'required|captcha'
+        ];
+
+        $messages = [
+            'reset_email.required' => trans('sentence.forgot_password_validation')
+        ];
+
+        $v = \Validator::make($request->input(), $rules, $messages);
+        if ($v->fails()) {
+            \Log::info('v... '.print_r($v->errors()->toArray(), true));
+            flash()->error('Email Address is not given or invalid CAPTCHA. Please try again.');
+            return back();
+
+            // return ['error'=>$v->errors()->toArray()];
+            // throw new ValidationException($v);
         }
 
+        $inputs = array();
+        /*if(empty($inputs['email'])) {
+            flash()->error(trans('sentence.forgot_password_validation'));
+            return back()->withInput();
+        }*/
+
+        $input['email'] = $request->input('reset_email');
         $inputs['url'] = config('app.url');
 
-        $response = $this->postGuzzleClient($inputs, 'users/forgot');
+        /*$response = $this->postGuzzleClient($inputs, 'users/forgot');
         if ($response->getStatusCode() == 200) {
             $content = json_decode($response->getBody()->getContents(), true);
 
@@ -174,7 +194,7 @@ class AuthController extends Controller
         } else {
             flash()->error('Something wrong happens');
             return back()->withInput();
-        }
+        }*/
 
     }
 }

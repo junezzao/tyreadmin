@@ -39,7 +39,7 @@
 			            				</p>
 			            				
 			            				<div class="footer align-right">
-		                                	<a href="{{ route('reports.truckServiceRecord') }}" target="_blank">Generate</a>
+		                                	<a href="{{ route('reports.truckServiceRecord') }}">Generate</a>
 		                                </div>
 		                            </div>
 	            				</div>
@@ -57,7 +57,7 @@
 			            					2. Serial No. being repeated. (Being fitted twice without removing)
 			            				</p>
 			            				<div class="footer align-right">
-		                                	<a href="{{ route('reports.serialNoAnalysis') }}" target="_blank">Generate</a>
+		                                	<a href="{{ route('reports.serialNoAnalysis') }}">Generate</a>
 		                                </div>
 		                            </div>
 	            				</div>
@@ -78,7 +78,7 @@
 			            				<p>2. Latter odometer is less than previous record.</p>
 			            				
 			            				<div class="footer align-right">
-		                                	<a href="javascript:odometerAnalysis();" target="_blank">Generate</a>
+		                                	<a href="javascript:odometerAnalysis();">Generate</a>
 		                                </div>
 		                            </div>
 	            				</div>
@@ -96,7 +96,7 @@
 			            					2. Tyre In/Out Conflict<br/>(Removed tyre info does not match with previous fitting record)
 			            				</p>
 			            				<div class="footer align-right">
-		                                	<a href="{{ route('reports.tyreRemovalRecord') }}" target="_blank">Generate</a>
+		                                	<a href="{{ route('reports.tyreRemovalRecord') }}">Generate</a>
 		                                </div>
 		                            </div>
 	            				</div>
@@ -118,7 +118,7 @@
 			            				</p>
 			            				
 			            				<div class="footer align-right">
-		                                	<a href="{{ route('reports.tyreRemovalMileage') }}" target="_blank">Generate</a>
+		                                	<a href="{{ route('reports.tyreRemovalMileage') }}">Generate</a>
 		                                </div>
 		                            </div>
 	            				</div>
@@ -140,22 +140,18 @@
 			$(this).siblings('.setting').slideToggle(500);
 		});
 
-		/*$('.footer a').on('click', function() {
-			$(this).closest('.setting').slideToggle(500);
-		});*/
-
 		$('input[name="limit"]').on('click', function() {
 			$(this).select();
 		});
 	});
 
 	function odometerAnalysis() {
-		window.open('{{ route('reports.odometerAnalysis') }}' + '?check_trailer=' + ($('#odometer-check').is(":checked") ? 'Y' : 'N'));
+		window.location.href = '{{ route('reports.odometerAnalysis') }}' + '?check_trailer=' + ($('#odometer-check').is(":checked") ? 'Y' : 'N');
 	}
 
 	function truckTyreCost() {
 		var limit = isNaN($('input[name="limit"]').val()) ? 10 : Math.abs(parseInt($('input[name="limit"]').val()));
-		window.open('{{ route('reports.truckTyreCost') }}' + '?sort=' + $('select[name="sort"]').val() + '&limit=' + limit);
+		window.location.href = '{{ route('reports.truckTyreCost') }}' + '?sort=' + $('select[name="sort"]').val() + '&limit=' + limit;
 	}
 </script>
 @append

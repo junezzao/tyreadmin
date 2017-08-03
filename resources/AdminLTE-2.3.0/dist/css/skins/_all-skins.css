@@ -359,14 +359,14 @@
   border-right-width: 0;
 }
 .skin-black .main-header > .logo {
-  background-color: #222d32;
+  background-color: #fff;
   color: #fff;
   border-bottom: 0 solid transparent;
   border-right: 1px solid #222d32;
 }
 @media (max-width: 767px) {
   .skin-black .main-header > .logo {
-    background-color: #222222;
+    background-color: #fff;
     color: #ffffff;
     border-bottom: 0 solid transparent;
     border-right: none;

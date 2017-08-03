@@ -119,6 +119,9 @@ class PasswordController extends Controller
         $session['expires_on'] = Carbon::now()->addminutes($resp->expires_in);
         Session::put('tyreapi', $session);
 
+        $userSession['user_id'] = $u->id;
+        Session::put('user', $userSession);
+
         switch ($response) {
             case Password::PASSWORD_RESET:
                 return redirect($this->redirectPath())->with('status', trans($response));
