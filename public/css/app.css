@@ -7780,6 +7780,18 @@ a.forgot-password {
   padding: 16px;
 }
 
+#password-reset-container .input[name="captcha"] {
+  margin-top: 2px;
+}
+
+#password-reset-container .form-group {
+  width: 80%;
+}
+
+#password-reset-container .captcha-div {
+  line-height: 20px;
+}
+
 .no-left-padding {
   padding-left: 0px;
 }

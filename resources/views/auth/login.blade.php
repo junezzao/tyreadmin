@@ -6,14 +6,6 @@
 
 @section('content')
     <div class="login-box clearfix">
-        <!-- <div class="col-md-4 col-sm-12-offset-2 signin-info">
-            {!! Html::image("images/signin-logo.png", "Logo", array('class'=>'img-responsive center-block login-logo'),env('HTTPS',false)) !!}
-            <p>
-                We take pride in helping our clients grow, thrive and prosper and we enjoy the relationships we build along the way.
-                <br/><br/><br/>&copy; {{ date('Y') }} Hubwire.
-            </p>
-        </div> -->
-
         <div class="login-box-body col-xs-12">
             <p class="login-box-msg">{{ trans('sentence.login_header') }}</p>
 
@@ -49,26 +41,35 @@
         </div>
     </div>
 
-    <!-- Password reset form -->
     <div class="signin-form col-lg-4 col-md-5 col-sm-7 col-xs-10" id="password-reset-container">
         <div class="close">&times;</div>
-        <p>Please enter your email address.<br/>You will receive a link to create a new password via email.</p>
+        <p>Please enter your email address.<br/>You will receive a link to reset your password.</p>
         @include('auth.password')
     </div>
-    <!-- / Password reset form -->
 @stop
 
 @section('footer_scripts')
 <script type="text/javascript">
 function refreshCaptcha(){
-    //$('div.refereshrecapcha').html('<?php echo captcha_img('flat') ?>');
+    $.ajax({
+        url: '{{ URL::to("captcha/refresh") }}',
+        type: 'get',
+        dataType: 'html',        
+        success: function(json) {
+            $('.captcha').html(json);
+            $('input[name="captcha"]').focus();
+        },
+        error: function(data) {
+            alert('Try Again.');
+        }
+    });
 }
 
 jQuery(document).ready(function($){
     $("input[name=email]").focus();
     $('#forgot-password-link').click(function(){
         $('#password-reset-container').fadeIn(300);
-        $("input[name=email]").focus();
+        $("input[name=reset_email]").focus();
     });
     $('#password-reset-container .close').click(function () {
         $('#password-reset-container').hide();

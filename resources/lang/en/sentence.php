@@ -19,7 +19,7 @@ return [
     '01_for_one_today'							=> 'for one today',
 
     'enter_your_email_address'                  => 'Enter your email address',
-    'send_password_reset_link'                  => 'Get New Password',
+    'send_password_reset_link'                  => 'Reset My Password',
     'forgot_password_validation'                => 'Please enter your email address to reset password.',
     'forgot_password_success'                   => 'Your password has been reset. Please check your email inbox :email',
 

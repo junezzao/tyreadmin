@@ -3,6 +3,8 @@
 return [
 	'account_activation'		=> 'Account Activation',
 
+	'change_password'			=> 'Change Password',
+	
 	'edit_profile'				=> 'Edit Profile',
 	'edit_user'					=> 'Edit User',
 	

@@ -6,6 +6,7 @@ return [
     'address_line_1'                    => 'Address Line 1',
     'address_line_2'                    => 'Address Line 2',
 
+    'change_password'                   => 'Change Password', 
     'city'                    			=> 'City',
     'company_name'                      => 'Company Name',
     'confirm_new_password'              => 'Confirm New Password',
@@ -25,6 +26,8 @@ return [
 
     'new_password'                      => 'New Password',
 
+    'old_password'                      => 'Old Password', 
+
     'operation_type'                    => 'Operation Type',
 
     'password'                          => 'Password',
@@ -42,7 +45,8 @@ return [
     'sign_up'                      		=> 'Sign Up',
     'state'                    			=> 'State',
     'status'                            => 'Status',
-    'subscriptions'                      => 'Subscriptions',
+    'submit'                            => 'Submit',
+    'subscriptions'                     => 'Subscriptions',
     'subscription_plan'                 => 'Subscription Plan',
 
     'tyre_history'                      => 'Tyre History',

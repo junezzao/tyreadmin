@@ -115,7 +115,6 @@ class UsersController extends Controller
             'operation_type'    => 'required|max:255',
             'first_name'        => 'required|max:255',
             'last_name'         => 'required|max:255',
-            'new_password'      => 'regex:"^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{6,}"|confirmed',
             'contact_no'        => 'required|max:255',
             'company_name'      => 'required|max:255',
             'address_line_1'    => 'required|max:255',
@@ -127,7 +126,6 @@ class UsersController extends Controller
         );
 
         $errorMessages = array(
-            'new_password.regex' => trans('passwords.format'),
             'email.exists' => trans('passwords.user')
         );
 
@@ -301,6 +299,37 @@ class UsersController extends Controller
         } else {
             flash()->error('An error has occurred while subscribing.');
             return back()->withInput()->withErrors($response->errors);
+        }
+    }
+
+    public function changePassword()
+    {
+        $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$this->admin->id)->getBody()->getContents());
+        $data['user'] = $user;
+        return view('users.change-password', $data);
+    }
+
+    public function changePasswordSubmit(Request $request, $id)
+    {
+        $rules = array(
+            'old_password'      => 'required',
+            'new_password'      => 'required|regex:"^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{6,}"|confirmed'
+        );
+
+        $errorMessages = array(
+            'new_password.regex' => trans('passwords.format')
+        );
+
+        $this->validate($request, $rules, $errorMessages);
+        
+        $response = json_decode($this->putGuzzleClient($request->all(), 'admin/users/'.$id)->getBody()->getContents());
+    
+        if ($response->success) {
+            flash()->success('Your password has been changed successfully.');
+            return redirect()->route('user.changePassword', [$id]);
+        } else {
+            // flash()->error('An error has occurred while changing your password.');
+            return back()->withErrors($response->errors);
         }
     }
 }

@@ -149,6 +149,10 @@ class AuthController extends Controller
         }
     }
 
+    public function captchaRefresh() {
+        return captcha_img('flat');
+    }
+
     public function forgot(Request $request)
     {
         $rules = [
@@ -157,29 +161,28 @@ class AuthController extends Controller
         ];
 
         $messages = [
-            'reset_email.required' => trans('sentence.forgot_password_validation')
+            'reset_email.required' => trans('sentence.forgot_password_validation'),
+            'captcha.required' => 'Please enter CAPTCHA.',
+            'captcha.captcha' => 'Incorrect CAPTCHA.'
         ];
 
         $v = \Validator::make($request->input(), $rules, $messages);
         if ($v->fails()) {
-            \Log::info('v... '.print_r($v->errors()->toArray(), true));
-            flash()->error('Email Address is not given or invalid CAPTCHA. Please try again.');
+            $errors = array_flatten($v->errors()->toArray());
+            $err_msg = '';
+            foreach($errors as $error) {
+                $err_msg .= $error."<br/>";
+            }
+            flash()->error($err_msg);
             return back();
-
-            // return ['error'=>$v->errors()->toArray()];
-            // throw new ValidationException($v);
         }
 
         $inputs = array();
-        /*if(empty($inputs['email'])) {
-            flash()->error(trans('sentence.forgot_password_validation'));
-            return back()->withInput();
-        }*/
 
-        $input['email'] = $request->input('reset_email');
+        $inputs['email'] = $request->input('reset_email');
         $inputs['url'] = config('app.url');
 
-        /*$response = $this->postGuzzleClient($inputs, 'users/forgot');
+        $response = $this->postGuzzleClient($inputs, 'users/forgot');
         if ($response->getStatusCode() == 200) {
             $content = json_decode($response->getBody()->getContents(), true);
 
@@ -194,7 +197,7 @@ class AuthController extends Controller
         } else {
             flash()->error('Something wrong happens');
             return back()->withInput();
-        }*/
+        }
 
     }
 }

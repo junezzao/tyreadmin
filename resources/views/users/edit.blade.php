@@ -65,22 +65,6 @@
 			                </div>
 
 			                <div class="form-group has-feedback">
-			                    <label class="col-md-4 col-sm-5 col-xs-12 control-label" for="new_password">{{ trans('terms.new_password') }}</label>
-			                    <div class="col-md-8 col-sm-7 col-xs-12">
-			                        {!! Form::password('new_password', ['class' => 'form-control', 'placeholder' => trans('terms.new_password')] ) !!}
-			                        <div class="error">{{ $errors->first('new_password') }}</div>
-			                    </div>
-			                </div>
-
-			                <div class="form-group has-feedback">
-			                    <label class="col-md-4 col-sm-5 col-xs-12 control-label" for="new_password_confirmation">{{ trans('terms.confirm_new_password') }}</label>
-			                    <div class="col-md-8 col-sm-7 col-xs-12">
-			                        {!! Form::password('new_password_confirmation', ['class' => 'form-control', 'placeholder' => trans('terms.confirm_new_password')] ) !!}
-			                        <div class="error">{{ $errors->first('new_password_confirmation') }}</div>
-			                    </div>
-			                </div>
-
-			                <div class="form-group has-feedback">
 			                    <label class="col-md-4 col-sm-5 col-xs-12 control-label required" for="contact_no">{{ trans('terms.contact_number') }}</label>
 			                    <div class="col-md-8 col-sm-7 col-xs-12">
 			                        {!! Form::text( 'contact_no', $user->contact_no, ['class' => 'form-control', 'placeholder' => trans('terms.contact_number')] ) !!}

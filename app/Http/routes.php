@@ -33,6 +33,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('register', 'Auth\RegisterController@getRegister');
     Route::post('register', 'Auth\RegisterController@postRegister');
 });
+Route::get('captcha/refresh','Auth\AuthController@captchaRefresh');
 Route::post('password/forgot','Auth\AuthController@forgot');
 // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');
@@ -72,10 +73,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('account_details', 'UsersController@updateAccountDetails');
     Route::post('users/verify/', array('uses' => 'UsersController@verify', 'as' => 'users.verify'));
     
-    Route::group(['prefix' => 'users'], function () {
-        Route::get('subscription/{user_id}', array('uses' => 'UsersController@subscription', 'as' => 'users.subscription'));
-        Route::post('subscribe/{user_id', array('uses' => 'UsersController@subscribe', 'as' => 'users.subscribe'));
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('subscription/{user_id}', array('uses' => 'UsersController@subscription', 'as' => 'user.subscription'));
+        Route::post('subscribe/{user_id', array('uses' => 'UsersController@subscribe', 'as' => 'user.subscribe'));
+        Route::get('change_password/{user_id}', array('uses' => 'UsersController@changePassword', 'as' => 'user.changePassword'));
+        Route::put('change_password/{user_id}', array('uses' => 'UsersController@changePasswordSubmit', 'as' => 'user.changePassword.submit'));
     });
+    Route::resource('user','UsersController');
     Route::resource('users','UsersController');
 
     Route::group(['prefix' => 'admin'], function () {
@@ -97,29 +101,4 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('roles', 'Admin\AccessController');
     });
 
-});
-
-Route::any('captcha-test', function()
-{
-    if (Request::getMethod() == 'POST')
-    {
-        $rules = ['captcha' => 'required|captcha'];
-        $validator = Validator::make(Input::all(), $rules);
-        if ($validator->fails())
-        {
-            echo '<p style="color: #ff0000;">Incorrect!</p>';
-        }
-        else
-        {
-            echo '<p style="color: #00ff30;">Matched :)</p>';
-        }
-    }
-
-    $form = '<form method="post" action="captcha-test">';
-    $form .= '<input type="hidden" name="_token" value="' . csrf_token() . '">';
-    $form .= '<p>' . captcha_img('flat') . '</p>';
-    $form .= '<p><input type="text" name="captcha"></p>';
-    $form .= '<p><button type="submit" name="check">Check</button></p>';
-    $form .= '</form>';
-    return $form;
 });
