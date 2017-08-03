@@ -24,14 +24,14 @@
                 <div class="form-group has-feedback">
                     <label class="col-lg-5 col-xs-12 control-label required" for="password">{{ trans('terms.password') }}</label>
                     <div class="col-lg-7 col-xs-12">
-                        {!! Form::password('password', array('class' => 'form-control', 'placeholder' => trans('terms.password'))) !!}
+                        {!! Form::password('password', array('class' => 'form-control', 'placeholder' => trans('terms.password'), 'autocomplete' => 'off')) !!}
                         <div class="error">{{ $errors->first('password') }}</div>
                     </div>
                 </div>
                 <div class="form-group has-feedback">
                     <label class="col-lg-5 col-xs-12 control-label required" for="password_confirmation">{{ trans('terms.confirm_password') }}</label>
                     <div class="col-lg-7 col-xs-12">
-                        {!! Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => trans('terms.confirm_password'))) !!}
+                        {!! Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => trans('terms.confirm_password'), 'autocomplete' => 'off')) !!}
                         <div class="error">{{ $errors->first('password_confirmation') }}</div>
                     </div>
                 </div>

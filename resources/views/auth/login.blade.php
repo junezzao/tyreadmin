@@ -16,7 +16,7 @@
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div> 
                 <div class="form-group has-feedback">
-                    {!! Form::password('password', array('class' => 'form-control', 'placeholder' => trans('terms.password'))) !!}
+                    {!! Form::password('password', array('class' => 'form-control', 'placeholder' => trans('terms.password'), 'autocomplete' => 'off')) !!}
                     <div class="error">{{ $errors->first('password') }}</div>
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
