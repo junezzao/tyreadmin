@@ -11,7 +11,7 @@
 	          	<div class="box">
 	            	<div class="box-header">
 	              		<h3 class="box-title">{{ trans('terms.edit_profile') }}</h3>
-	            	</div><!-- /.box-header -->
+	            	</div>
 	            	<div class="box-body">
 	            		{!! Form::open(array('url' => route('users.update', [$id]), 'role'=>'form', 'method' => 'PUT')) !!}
 			                <div class="form-group" style="text-align:center">

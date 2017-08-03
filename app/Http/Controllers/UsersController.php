@@ -295,7 +295,7 @@ class UsersController extends Controller
     
         if ($response->success) {
             flash()->success('New subscription has been made successfully.');
-            return redirect()->route('users.subscription', [$this->admin->id]);
+            return redirect()->route('user.subscription', [$this->admin->id]);
         } else {
             flash()->error('An error has occurred while subscribing.');
             return back()->withInput()->withErrors($response->errors);

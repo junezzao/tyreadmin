@@ -14,10 +14,7 @@
 	          	<div class="box">
 	            	<div class="box-header">
 	              		<h3 class="box-title">@lang('admin/user.box_header_users')</h3>
-	              		<!--@if (Auth::user()->can('create.user'))
-	              			<buttton type="button" id="new_user" class="btn btn-default pull-right">@lang('admin/user.button_add_new_user')</button>
-	              		@endif-->
-	            	</div><!-- /.box-header -->
+	            	</div>
 	            	<div class="box-body">
 	            		<table id="user_table" class="table table-bordered table-striped">
 		                    <thead>
