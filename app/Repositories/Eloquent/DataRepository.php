@@ -46,9 +46,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $chunkSize = $data['chunkSize'];
 
         // validate data
-        // \Log::info('Validating...');
         $errorRows = $this->validate($data);
-        // \Log::info('Finished validating...');
         $remarks = array();
         $invalidLines = array();
         foreach($errorRows['error'] as $key => $error) {
@@ -79,7 +77,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
             'invalid_count' => 0,
             'invalid_pct'   => 0,
             'summary'       => json_encode(array()),
-            'remarks'       => json_encode($remarks)
+            'remarks'       => json_encode(array())
           );
 
           $dataSheet = $this->dataSheetRepo->create($dataSheetData);
@@ -157,13 +155,13 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $rules['items.'.$key.'.customer_name'] = 'required';
         $rules['items.'.$key.'.odometer'] = 'required|numeric';
         $rules['items.'.$key.'.position'] = 'required|numeric';
-        $rules['items.'.$key.'.in_attr'] = 'required|in:NT,STK,COC,USED';
+        $rules['items.'.$key.'.in_attr'] = 'required|in:NT,NT SUB CON,STK,STK SUB CON,COC,USED,OTHER';
         $rules['items.'.$key.'.in_price'] = 'sometimes|numeric';
         $rules['items.'.$key.'.in_size'] = 'required';
         $rules['items.'.$key.'.in_brand'] = 'required';
         $rules['items.'.$key.'.in_pattern'] = 'required';
-        $rules['items.'.$key.'.in_retread_brand'] = 'required_if:items.'.$key.'.in_attr,STK,COC';
-        $rules['items.'.$key.'.in_retread_pattern'] = 'required_if:items.'.$key.'.in_attr,STK,COC';
+        $rules['items.'.$key.'.in_retread_brand'] = 'required_if:items.'.$key.'.in_attr,STK,STK SUB CON,COC';
+        $rules['items.'.$key.'.in_retread_pattern'] = 'required_if:items.'.$key.'.in_attr,STK,STK SUB CON,COC';
         $rules['items.'.$key.'.in_serial_no'] = 'required';
         $rules['items.'.$key.'.in_job_card_no'] = 'required_if:items.'.$key.'.in_attr,STK,COC';
         $rules['items.'.$key.'.out_reason'] = 'required';
@@ -171,7 +169,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $rules['items.'.$key.'.out_brand'] = 'required';
         $rules['items.'.$key.'.out_pattern'] = 'required';
         $rules['items.'.$key.'.out_serial_no'] = 'required';
-        $rules['items.'.$key.'.out_rtd'] = 'required|numeric';
+        $rules['items.'.$key.'.out_rtd'] = 'required_with:items.'.$key.'.trailer_no|numeric';
 
         $messages['items.'.$key.'.line_number.required'] = 'Ref field is required.';
         $messages['items.'.$key.'.line_number.numeric'] = 'Ref must be a number.';
@@ -193,7 +191,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $messages['items.'.$key.'.position.required'] = 'Position field is required.';
         $messages['items.'.$key.'.position.numeric'] = 'Position must be a number.';
         $messages['items.'.$key.'.in_attr.required'] = 'Tyre In Attribute is required';
-        $messages['items.'.$key.'.in_attr.in'] = 'Tyre In Attribute is invalid. Accepted values: NT, STK, COC, USED.';
+        $messages['items.'.$key.'.in_attr.in'] = 'Tyre In Attribute is invalid. Accepted values: NT, NT SUB CON, STK, STK SUB CON, COC, USED, OTHER.';
         $messages['items.'.$key.'.in_price.numeric'] = 'Tyre In Price must be a number.';
         $messages['items.'.$key.'.in_size.required'] = 'Tyre In Size is required.';
         $messages['items.'.$key.'.in_brand.required'] = 'Tyre In Brand is required.';
@@ -207,7 +205,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $messages['items.'.$key.'.out_brand.required'] = 'Tyre Out Brand is required.';
         $messages['items.'.$key.'.out_pattern.required'] = 'Tyre Out Pattern is required.';
         $messages['items.'.$key.'.out_serial_no.required'] = 'Tyre Out Serial No is required.';
-        $messages['items.'.$key.'.out_rtd.required'] = 'Tyre Out RTD field is required.';
+        $messages['items.'.$key.'.out_rtd.required_with'] = 'Tyre Out RTD field is required when Trailer has value.';
         $messages['items.'.$key.'.out_rtd.numeric'] = 'Tyre Out RTD must be a number.';
       }
 

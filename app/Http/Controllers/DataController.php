@@ -316,8 +316,11 @@ class DataController extends AdminController
             }
             $path = $file->getRealPath();
 
-            $data = Excel::selectSheets('Sheet1')->load($path, function($reader) {})->get();
-            //\Log::info('Data length '.count($data));
+            $data = Excel::selectSheets('Sheet1')->load($path, function($reader) {
+                $reader->setDateColumns(array(
+                    'date'
+                ))->get();
+            })->get();
 
             $postData = array();
             $postData['filename'] = $file->getClientOriginalName();

@@ -137,7 +137,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.title').on('click', function() {
-			$(this).siblings('.setting').slideToggle(500);
+			// $(this).siblings('.setting').slideToggle(500);
 		});
 
 		$('input[name="limit"]').on('click', function() {
