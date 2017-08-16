@@ -118,10 +118,6 @@ class AuthController extends Controller
                     $this->redirectPath = '/password/reset';
                 }
 
-                // store modules
-                $modules = $this->config->getModulesStatus();
-                Session::put('modules', $modules);
-
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
         }
