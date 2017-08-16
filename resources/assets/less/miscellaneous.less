@@ -553,7 +553,6 @@
 }
 
 .diagnostic {
-  display: none; 
   border: 1px solid #808080; 
   padding: 14px 20px; 
   margin-top: 10px; 
@@ -619,6 +618,24 @@
     font-weight: bold;
     margin: 20px 0px 16px;
     cursor: pointer;
+  }
+
+  .treeview .list-group-item {
+    padding: 0px 4px;
+    cursor: default;
+
+    .icon {
+      font-size: 12px;
+      margin-right: 3px;
+    }
+
+    .check-icon {
+      margin-top: 2px;
+    }
+    
+    .expand-icon, .check-icon {
+      cursor: pointer;
+    }
   }
 
   .level {
@@ -715,7 +732,6 @@
       color: #fff;
       padding: 12px;
       text-align: center;
-      cursor: pointer;
     }
 
     .title-1 {
@@ -815,4 +831,17 @@ div.dt-buttons {
   .expiring-alert-sub {
     margin-bottom: 20px;
   }
+}
+
+.limited-access-alert {
+  font-size: 26px;
+  padding: 16px;
+  color: #aaa;
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.skin-black .main-header > .logo {
+  background-color: #fff !important;
 }

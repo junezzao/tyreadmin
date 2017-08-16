@@ -74,6 +74,10 @@ jQuery(document).ready(function($){
     $('#password-reset-container .close').click(function () {
         $('#password-reset-container').hide();
     });
+
+    $("input[name=reset_email]").focusout(function (){ 
+        $('input[name="captcha"]').focus();
+    });
 });
 </script>
 @append

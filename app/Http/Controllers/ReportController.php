@@ -22,12 +22,16 @@ class ReportController extends AdminController
 
     public function __construct()
     {
+        $this->middleware('permission:view.report', ['except' => ['index']]);
         $this->user = \Auth::user();
     }
 
     public function index()
     {
-        return view('reports.index');
+        $data = array();
+        $data['no_access'] = $this->user->category == 'Lite' ? true : false;
+
+        return view('reports.index', $data);
     }
 
     public function serialNoAnalysis()

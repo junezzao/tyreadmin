@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php 
+
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -31,9 +33,9 @@ class UsersController extends AdminController
         $this->admin = \Auth::user();
     }
 
-    public function index($channel_id=null)
+    public function index()
     {
-        return view('admin.users.list', ['channel_id'=>$channel_id]);
+        return view('admin.users.list');
     }
 
     /**
@@ -48,132 +50,51 @@ class UsersController extends AdminController
 
     public function getTableData()
     {
-        /*if ($this->admin->is('clientadmin')) {
-            $users = User::with('merchant')->where('merchant_id', $this->admin->merchant->id)->get();
-        }
-        else {
-            $users = User::with('merchant')->get();
-        }*/
-
-        $filters = request()->all();
-        if($this->admin->is('clientadmin'))
-        {
-            $filters['merchant_id'] = $this->admin->merchant_id;
-        }
-        $filters['with_trashed'] = true;
-        $users = json_decode($this->getGuzzleClient($filters, 'admin/users')->getBody()->getContents())->users;
+        $users = json_decode($this->getGuzzleClient([], 'admin/users')->getBody()->getContents());
 
         $data = array();
-
         foreach ($users as $user) {
             $user = User::find($user->id);
 
-            if($user->id == 230) \Log::info(print_r($user, true));
-            // only return users who are of lesser level or return all users if the user is a super admin
+            // only return users who are of lower level or return all users if the user is a super admin
             if (($this->admin->is('superadministrator') || ($this->admin->level() >= $user->level() && is_null($user->deleted_at)))) {
                 $editButton = '';
                 $deleteButton = '';
 
-                if (empty($user->deleted_at) && $this->admin->can('edit.user|delete.user') && $this->admin->id != $user->id) {
+                if ($this->admin->can('edit.user') && $this->admin->id != $user->id) {
                     $editUrl = route('admin.users.edit', [$user->id]);
-                    $deleteUrl = route('admin.users.destroy', [$user->id]);
-
-                    $editButton = $this->admin->can('edit.user') ? Form::open(array('url'=> $editUrl, 'method' => 'get', 'class' => 'form-inline')) . '<button type="submit" class="btn btn-link no-padding">Edit</button>' . Form::close() : '';
-                    //$editButton .= ($this->admin->can('edit.user') && $this->admin->can('delete.user')) ? ' | ' : '';
-                    //$deleteButton = $this->admin->can('delete.user') ? Form::open(array('url'=> $deleteUrl, 'method' => 'delete', 'class' => 'form-inline')) . '<button type="submit" class="btn btn-link no-padding confirmation">Delete</button>' . Form::close() : '';
+                    $editButton = Form::open(array('url'=> $editUrl, 'method' => 'get', 'class' => 'form-inline')) . '<button type="submit" class="btn btn-link no-padding">Edit</button>' . Form::close();
                 }
 
-                $dataArray = [
-                    "id" => $user->id,
-                    "name" => $user->first_name . " " . $user->last_name,
-                    "email" => $user->email,
-                    "contact_no" => $user->contact_no,
-                    "company_name" => $user->company_name,
-                    "status" => $user->status,
-                    "user_type" => $user->category,
-                    "actions" => $editButton
+                $data[] = [
+                    "id"            => $user->id,
+                    "name"          => $user->first_name . " " . $user->last_name,
+                    "email"         => $user->email,
+                    "contact_no"    => $user->contact_no,
+                    "company_name"  => $user->company_name,
+                    "status"        => $user->status,
+                    "user_type"     => $user->category,
+                    "actions"       => $editButton
                 ];
-
-                $data[] = $dataArray;
             }
         }
 
-        return json_encode(array("data" => $data));
+        return json_encode(["data" => $data]);
     }
 
     public function create()
     {
-        $roles = Role::select('slug', 'name')->where('status', '=', 'Active');
-        if ($this->admin->level() < 100) {
-            $roles = $roles->where('level', '<', $this->admin->level());
-        }
-
-        $roles = $roles->orderBy('level', 'desc')->get();
-
-        $data['roles'] = array();
-        foreach ($roles as $role) {
-            $data['roles'][$role->slug] = $role->name;
-        }
-
-        $data['merchants'] = array();
-
-        if ($this->admin->is('clientadmin')) {
-            $data['selected_merchant'] = $this->admin->merchant->slug;
-            $data['merchants'][$this->admin->merchant->slug] = $this->admin->merchant->name;
-        } else {
-            $response = $this->getGuzzleClient(array(), 'admin/merchants');
-            $merchants = json_decode($response->getBody()->getContents())->merchants;
-
-            foreach ($merchants as $merchant) {
-                $data['merchants'][$merchant->slug] = $merchant->name;
-            }
-        }
-
-        $data['timezones'] = $this->generate_timezone_list();
-        $data['currencies'] = config('globals.currency_list');
-
-        return view('admin.users.create', $data);
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, array(
-            'first_name'        => 'required|max:255',
-            'last_name'            => 'required|max:255',
-            'email'                => 'required|email|max:255|unique:tyreapi.users',
-            'user_category'        => 'required|exists:tyreapi.roles,slug,status,Active',
-            'merchant'            => 'required_if:user_category,clientadmin,clientuser,mobilemerchant',
-            'default_timezone'    => 'required_if:user_category,superadministrator,administrator,finance,accountexec,partner',
-            'default_currency'    => 'required_if:user_category,superadministrator,administrator,finance,accountexec,partner'
-        ));
-
-        $inputs = $request->input();
-        $inputs['url'] = config('app.url');
-
-        $response = $this->postGuzzleClient($inputs, 'admin/users/create');
-
-        if ($response->getStatusCode() == 200) {
-            $message = 'User ' . $request->input('first_name') . ' ' . $request->input('last_name') . ' (' . $request->input('email') . ') has been successfully created.';
-
-            flash()->success($message);
-            return redirect()->route('admin.users.index');
-        } else {
-            return back()->withInput();
-        }
     }
 
     public function edit($id)
     {
         $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$id)->getBody()->getContents());
-        if (is_null($user->deleted_at) && ($this->admin->is('superadministrator') || $this->admin->level() > $user->level)) {
+        if(is_null($user->deleted_at) && ($this->admin->is('superadministrator') || $this->admin->level() > $user->level)) {
             $data['user'] = $user;
-            $roles = Role::select('name', 'slug', 'status')->orderBy('status', 'asc')->orderBy('level', 'desc')->get();
-
-            $data['roles'] = array();
-            foreach ($roles as $role) {
-                $data['roles'][$role->status][$role->slug] = $role->name;
-            }
-
             $data['statuses'] = $this->userRepo->getStatusList(null);
             $data['countryList'] = config('globals.countryList');
             $data['operationTypes'] = [
@@ -185,7 +106,7 @@ class UsersController extends AdminController
         }
         else {
             flash()->error(trans('permissions.unauthorized'));
-            return redirect('data');
+            return redirect()->route('admin.users.index');
         }
     }
 
@@ -242,18 +163,5 @@ class UsersController extends AdminController
 
     public function destroy(Request $request, $id)
     {
-        // make sure the user isn't deleting him/herself and has permission to delete this user
-        $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$id)->getBody()->getContents());
-        if ($this->admin->id != $id && ($this->admin->is('superadministrator') || ($this->admin->can('delete.user') && ($this->admin->level() > $user->level)))) {
-            $response = json_decode($this->deleteGuzzleClient([], 'admin/users/'.$id)->getBody()->getContents());
-            if ($response->success) {
-                flash()->success('The user has been successfully deleted.');
-            } else {
-                flash()->error('An error has occurred while deleting user '.$user->email.'.');
-            }
-        } else {
-            flash()->error(trans('permissions.unauthorized'));
-        }
-        return redirect()->route('admin.users.index');
     }
 }

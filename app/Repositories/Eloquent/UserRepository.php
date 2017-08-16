@@ -20,18 +20,4 @@ class UserRepository extends Repository implements UserRepositoryInterface
 
         return $this->getList($prepend, $toStr, $items);
     }
-
-    public function getMerchantList($user_id, $prepend = ['' => ''], $toStr = false)
-    {
-        $items = $this->model->merchantList($user_id);
-        
-        return $this->getList($prepend, $toStr, $items);
-    }
-
-    public function getAEList($prepend = ['' => ''], $toStr = false)
-    {
-        $items = $this->model->aeList();
-        
-        return $this->getList($prepend, $toStr, $items);
-    }
 }

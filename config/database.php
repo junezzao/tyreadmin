@@ -78,7 +78,7 @@ return [
             'strict'    => false,
         ],
 
-        // Secondary current hubwire API database
+        // Secondary current API database
         'mysql2' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST2', 'localhost'),

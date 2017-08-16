@@ -5,7 +5,7 @@ return [
 
     'account_registration_header'               => 'Hello! Nice to meet you!',
     'account_registration_sub_header'           => 'We\'re glad that you\'ve chosen us! Let us know more about you!',
-    'account_registration_success'				=> 'Your account has been created successfully. You will receive a verification email soon. Follow the instructions on the email to verify your account.',
+    'account_registration_success'				=> 'Your account has been created successfully. You will receive a verification email soon. <br/>Follow the instructions on the email to verify your account.',
     
     '00_already_have_an_account'				=> 'Already have an account?',
     '00_log_in'									=> 'Log in',

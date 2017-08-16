@@ -6,8 +6,6 @@ use App\Repositories\Contracts\DataRepositoryContract as DataRepositoryInterface
 use App\Repositories\Eloquent\DataSheetRepository as DataSheetRepo;
 use App\Models\DataSheet;
 use App\Models\Data;
-use App\Exceptions\ValidationException as ValidationException;
-//use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use Activity;
 
 class DataRepository extends Repository implements DataRepositoryInterface
@@ -38,10 +36,6 @@ class DataRepository extends Repository implements DataRepositoryInterface
 
     public function create(array $data)
     {
-        if(count($data['items']) > 10) {
-          // return ['success'=>false, 'exceed_limit'=>true];
-        }
-
         $index = $data['index'];
         $chunkSize = $data['chunkSize'];
 
@@ -66,7 +60,6 @@ class DataRepository extends Repository implements DataRepositoryInterface
           if(!empty($lastDataSheet)) {
             DataSheet::find($lastDataSheet->id)->data()->forceDelete();
             DataSheet::find($lastDataSheet->id)->forceDelete();
-            // \Log::info('Deleted existing sheet...');
           }
 
           // create data sheet
@@ -81,7 +74,6 @@ class DataRepository extends Repository implements DataRepositoryInterface
           );
 
           $dataSheet = $this->dataSheetRepo->create($dataSheetData);
-          // \Log::info('Created new sheet...');
         } else {
           $dataSheet = $lastDataSheet;
         }
@@ -89,19 +81,16 @@ class DataRepository extends Repository implements DataRepositoryInterface
         // insert data
         foreach($data['items'] as $key => $val) {
           $val['sheet_id'] = $dataSheet->id;
+
           $jobSheetDate = null;
-          //\Log::info('jobSheetDate... '.print_r($val['jobsheet_date'], true));
           if(isset($val['jobsheet_date']) && isset($val['jobsheet_date']['date'])) {
             $jobSheetDate = date('Y-m-d', strtotime($val['jobsheet_date']['date']));
           } else {
             $jobSheetDate = $jobSheetDate[0];
           }
-          //$jobSheetDate = $val['jobsheet_date']->format('Y-m-d');
           $val['jobsheet_date'] = $jobSheetDate;
 
-          // \Log::info(print_r($val, true));
           $dataCreated = parent::create($val);
-          // \Log::info('Created data #'.$dataCreated->id);
         }
 
         DataSheet::where('id', $dataSheet->id)->update([
@@ -113,8 +102,7 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $dataSheet = DataSheet::find($dataSheet->id);
 
         if($index+1 == $chunkSize) {
-          // \Log::info(print_r($dataSheet, true));
-          $invalid_pct = number_format(($dataSheet->invalid_count  / $dataSheet->total_count) * 100, 2);
+          $invalid_pct = number_format(($dataSheet->invalid_count / $dataSheet->total_count) * 100, 2);
 
           $summary = $this->dataSheetRepo->getSummary($dataSheet->id);
           DataSheet::where('id', $dataSheet->id)->update([
@@ -171,24 +159,24 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $rules['items.'.$key.'.out_serial_no'] = 'required';
         $rules['items.'.$key.'.out_rtd'] = 'required_with:items.'.$key.'.trailer_no|numeric';
 
-        $messages['items.'.$key.'.line_number.required'] = 'Ref field is required.';
+        $messages['items.'.$key.'.line_number.required'] = 'Ref is required.';
         $messages['items.'.$key.'.line_number.numeric'] = 'Ref must be a number.';
-        $messages['items.'.$key.'.jobsheet_date.required'] = 'Date field is required.';
+        $messages['items.'.$key.'.jobsheet_date.required'] = 'Date is required.';
         $messages['items.'.$key.'.jobsheet_date.date.required'] = 'Date is invalid.';
         $messages['items.'.$key.'.jobsheet_date.date.date'] = 'Date is invalid.';
-        $messages['items.'.$key.'.jobsheet_no.required'] = 'Jobsheet No field is required.';
-        $messages['items.'.$key.'.inv_no.required'] = 'Invoice No field is required.';
-        $messages['items.'.$key.'.inv_amt.required'] = 'Invoice Amount field is required.';
+        $messages['items.'.$key.'.jobsheet_no.required'] = 'Jobsheet No is required.';
+        $messages['items.'.$key.'.inv_no.required'] = 'Invoice No is required.';
+        $messages['items.'.$key.'.inv_amt.required'] = 'Invoice Amount is required.';
         $messages['items.'.$key.'.inv_amt.numeric'] = 'Invoice Amount must be a number.';
-        $messages['items.'.$key.'.jobsheet_type.required'] = 'Yard / Breakdown field is required.';
+        $messages['items.'.$key.'.jobsheet_type.required'] = 'Yard / Breakdown is required.';
         $messages['items.'.$key.'.jobsheet_type.in'] = 'Yard / Breakdown is invalid. Accepted values: Yard, Breakdown.';
         $messages['items.'.$key.'.truck_no.required_without_all'] = 'One of Truck / PM / Trailer Number must exist.';
         $messages['items.'.$key.'.pm_no.required_without_all'] = 'One of Truck / PM / Trailer Number must exist.';
         $messages['items.'.$key.'.trailer_no.required_without_all'] = 'One of Truck / PM / Trailer Number must exist.';
-        $messages['items.'.$key.'.customer_name.required'] = 'Customer Name field is required.';
-        $messages['items.'.$key.'.odometer.required'] = 'Odometer field is required';
+        $messages['items.'.$key.'.customer_name.required'] = 'Customer Name is required.';
+        $messages['items.'.$key.'.odometer.required'] = 'Odometer is required';
         $messages['items.'.$key.'.odometer.numeric'] = 'Odometer must be a number';
-        $messages['items.'.$key.'.position.required'] = 'Position field is required.';
+        $messages['items.'.$key.'.position.required'] = 'Position is required.';
         $messages['items.'.$key.'.position.numeric'] = 'Position must be a number.';
         $messages['items.'.$key.'.in_attr.required'] = 'Tyre In Attribute is required';
         $messages['items.'.$key.'.in_attr.in'] = 'Tyre In Attribute is invalid. Accepted values: NT, NT SUB CON, STK, STK SUB CON, COC, USED, OTHER.';
@@ -196,16 +184,16 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $messages['items.'.$key.'.in_size.required'] = 'Tyre In Size is required.';
         $messages['items.'.$key.'.in_brand.required'] = 'Tyre In Brand is required.';
         $messages['items.'.$key.'.in_pattern.required'] = 'Tyre In Pattern is required.';
-        $messages['items.'.$key.'.in_retread_brand.required_if'] = 'Tyre In Retread Brand field is required when Tyre In Attribute is :value.';
-        $messages['items.'.$key.'.in_retread_pattern.required_if'] = 'Tyre In Retread Pattern field is required when Tyre In Attribute is :value.';
+        $messages['items.'.$key.'.in_retread_brand.required_if'] = 'Tyre In Retread Brand is required when Tyre In Attribute is :value.';
+        $messages['items.'.$key.'.in_retread_pattern.required_if'] = 'Tyre In Retread Pattern is required when Tyre In Attribute is :value.';
         $messages['items.'.$key.'.in_serial_no.required'] = 'Tyre In Serial No is required.';
-        $messages['items.'.$key.'.in_job_card_no.required_if'] = 'Tyre In Job Card No field is required when Tyre In Attribute is :value.';
+        $messages['items.'.$key.'.in_job_card_no.required_if'] = 'Tyre In Job Card No is required when Tyre In Attribute is :value.';
         $messages['items.'.$key.'.out_reason.required'] = 'Tyre Out Reason is required.';
         $messages['items.'.$key.'.out_size.required'] = 'Tyre Out Size is required.';
         $messages['items.'.$key.'.out_brand.required'] = 'Tyre Out Brand is required.';
         $messages['items.'.$key.'.out_pattern.required'] = 'Tyre Out Pattern is required.';
         $messages['items.'.$key.'.out_serial_no.required'] = 'Tyre Out Serial No is required.';
-        $messages['items.'.$key.'.out_rtd.required_with'] = 'Tyre Out RTD field is required when Trailer has value.';
+        $messages['items.'.$key.'.out_rtd.required_with'] = 'Tyre Out RTD is required when Trailer has value.';
         $messages['items.'.$key.'.out_rtd.numeric'] = 'Tyre Out RTD must be a number.';
       }
 
@@ -213,7 +201,6 @@ class DataRepository extends Repository implements DataRepositoryInterface
 
       if ($v->fails()) {
         return ['error'=>$v->errors()->toArray()];
-        // throw new ValidationException($v);
       }
 
       return true;

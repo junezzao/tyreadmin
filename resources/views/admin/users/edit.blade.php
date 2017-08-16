@@ -164,7 +164,13 @@
 								                    <td>{{ $subs->end_date }}</td>
 								                    <td>{{ $subs->status }}</td>
 								                </tr>
-								            @endforeach
+								            	@endforeach
+
+								            	@if(empty($user->subscriptions))
+								            	<tr>
+								            		<td colspan="4">No subscription record.</td>
+								            	</tr>
+								            	@endif
 						                    </tbody>
 					                    </table>
 					                </div>

@@ -24,7 +24,7 @@
 
 	              		<div class="row col-xs-12 margin-bottom">
 	              			<div class="row col-xs-12 align-center">
-		              			<a href="javascript:toggleDiagnostic();">View data diagnostic</a>
+		              			<a href="javascript:void(0)" onclick="javascript:toggleDiagnostic();" id="diagnostic-link">Hide data diagnostic</a>
 		              		</div>
 	              			<div class="diagnostic col-xs-10 col-xs-offset-1">
                                 <div class="float-right">
@@ -67,18 +67,14 @@
 		              		</div>
 		              	</div>
 
-		              	<div class="row exceed-limit-div hide">
-		              		<div class="col-xs-12">
-		              			<div style="font-size:26px;padding:16px;color:#aaa;text-align:center;cursor:pointer"><b><i>
-			              			Oops!! Free users are limited to 10 entries only.<br/>
-			              			Subscribe now!!
-			              		</i></b></div>
-		              		</div>
-		              	</div>
+		              	<div class="col-xs-12 limited-access-alert hide">
+	              			Oops!! Free users are limited to 10 entries only.<br/>
+		              		Subscribe now!!
+	              		</div>
 
 		              	{!! Form::open(array('id'=>'download-template', 'url' => route('data.download.template'), 'method' => 'POST')) !!}
                             <input type="hidden" name="link" value="{{ $templateUrl }}">
-                            <input type="hidden" name="filename" value="tyre_admin_excel_template">
+                            <input type="hidden" name="filename" value="{{ $templateFileName }}">
                         {!! Form::close() !!}
 	                    
 	            	</div>
@@ -86,68 +82,68 @@
 	            		<table id="users_table" class="table table-bordered table-striped" style="width:100%">
 		                    <thead>
 		                      	<tr>
-		                      		<th style="width:3%">Ref</th>
-		                      		<th style="width:3%">Date</th>
-		                      		<th style="width:3%">Jobsheet</th>
-		                      		<th style="width:3%">Invoice No</th>
-		                      		<th style="width:3%">Amount</th>
-	                      			<th style="width:3%">Type</th>
-		                      		<th style="width:3%">Customer</th>
-		                      		<th style="width:3%">Truck</th>
-		                      		<th style="width:3%">PM</th>
-		                      		<th style="width:3%">Trailer</th>
-		                      		<th style="width:3%">Odometer</th>
-		                      		<th style="width:3%">Position</th>
-	                      			<th style="width:3%">Tyre In<br/>Attribute</th>
-		                      		<th style="width:102px">Tyre In<br/>Price</th>
-		                      		<th style="width:3%">Tyre In<br/>Size</th>
-		                      		<th style="width:3%">Tyre In<br/>Brand</th>
-		                      		<th style="width:3%">Tyre In<br/>Pattern</th>
-		                      		<th style="width:3%">Tyre In<br/>Retread Brand</th>
-		                      		<th style="width:3%">Tyre In<br/>Retread Pattern</th>
-	                      			<th style="width:3%">Tyre In<br/>Serial No</th>
-		                      		<th style="width:3%">Tyre In<br/>Job Card No</th>
-		                      		<th style="width:3%">Tyre Out<br/>Reason</th>
-		                      		<th style="width:3%">Tyre Out<br/>Size</th>
-		                      		<th style="width:3%">Tyre Out<br/>Brand</th>
-		                      		<th style="width:3%">Tyre Out<br/>Pattern</th>
-		                      		<th style="width:3%">Tyre Out<br/>Retread Brand</th>
-		                      		<th style="width:3%">Tyre Out<br/>Retread Pattern</th>
-	                      			<th style="width:3%">Tyre Out<br/>Serial No</th>
-		                      		<th style="width:3%">Tyre Out<br/>Job Card No</th>
-		                      		<th style="width:3%">Tyre Out<br/>RTD</th>
+		                      		<th>Ref</th>
+		                      		<th>Date</th>
+		                      		<th>Jobsheet</th>
+		                      		<th>Invoice No</th>
+		                      		<th>Amount</th>
+	                      			<th>Type</th>
+		                      		<th>Customer</th>
+		                      		<th>Truck</th>
+		                      		<th>PM</th>
+		                      		<th>Trailer</th>
+		                      		<th>Odometer</th>
+		                      		<th>Position</th>
+	                      			<th>Tyre In<br/>Attribute</th>
+		                      		<th>Tyre In<br/>Price</th>
+		                      		<th>Tyre In<br/>Size</th>
+		                      		<th>Tyre In<br/>Brand</th>
+		                      		<th>Tyre In<br/>Pattern</th>
+		                      		<th>Tyre In<br/>Retread Brand</th>
+		                      		<th>Tyre In<br/>Retread Pattern</th>
+	                      			<th>Tyre In<br/>Serial No</th>
+		                      		<th>Tyre In<br/>Job Card No</th>
+		                      		<th>Tyre Out<br/>Reason</th>
+		                      		<th>Tyre Out<br/>Size</th>
+		                      		<th>Tyre Out<br/>Brand</th>
+		                      		<th>Tyre Out<br/>Pattern</th>
+		                      		<th>Tyre Out<br/>Retread Brand</th>
+		                      		<th>Tyre Out<br/>Retread Pattern</th>
+	                      			<th>Tyre Out<br/>Serial No</th>
+		                      		<th>Tyre Out<br/>Job Card No</th>
+		                      		<th>Tyre Out<br/>RTD</th>
 		                      	</tr>
 		                      	<tr>
-	                                <td style="width:3%" data-index="0" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="1" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="2" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="3" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="4" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="5" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="6" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="7" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="8" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="9" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="10" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="11" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="12" class="search-col-text"></td>
-	                                <td style="width:102px" data-index="13" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="14" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="15" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="16" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="17" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="18" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="19" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="20" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="21" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="22" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="23" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="24" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="25" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="26" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="27" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="28" class="search-col-text"></td>
-	                                <td style="width:3%" data-index="29" class="search-col-text"></td>
+	                                <td data-index="0" class="search-col-text"></td>
+	                                <td data-index="1" class="search-col-text"></td>
+	                                <td data-index="2" class="search-col-text"></td>
+	                                <td data-index="3" class="search-col-text"></td>
+	                                <td data-index="4" class="search-col-text"></td>
+	                                <td data-index="5" class="search-col-text"></td>
+	                                <td data-index="6" class="search-col-text"></td>
+	                                <td data-index="7" class="search-col-text"></td>
+	                                <td data-index="8" class="search-col-text"></td>
+	                                <td data-index="9" class="search-col-text"></td>
+	                                <td data-index="10" class="search-col-text"></td>
+	                                <td data-index="11" class="search-col-text"></td>
+	                                <td data-index="12" class="search-col-text"></td>
+	                                <td data-index="13" class="search-col-text"></td>
+	                                <td data-index="14" class="search-col-text"></td>
+	                                <td data-index="15" class="search-col-text"></td>
+	                                <td data-index="16" class="search-col-text"></td>
+	                                <td data-index="17" class="search-col-text"></td>
+	                                <td data-index="18" class="search-col-text"></td>
+	                                <td data-index="19" class="search-col-text"></td>
+	                                <td data-index="20" class="search-col-text"></td>
+	                                <td data-index="21" class="search-col-text"></td>
+	                                <td data-index="22" class="search-col-text"></td>
+	                                <td data-index="23" class="search-col-text"></td>
+	                                <td data-index="24" class="search-col-text"></td>
+	                                <td data-index="25" class="search-col-text"></td>
+	                                <td data-index="26" class="search-col-text"></td>
+	                                <td data-index="27" class="search-col-text"></td>
+	                                <td data-index="28" class="search-col-text"></td>
+	                                <td data-index="29" class="search-col-text"></td>
 	                            </tr>
 		                    </thead>
 		                    <tbody>
@@ -167,12 +163,17 @@
 <script src="{{ asset('packages/blueimp/js/jquery.fileupload.js',env('HTTPS',false)) }}" type="text/javascript"></script>
 
 <script type="text/javascript">
-	function toggleDiagnostic() {
-		//$('div.diagnostic').toggle();
-		$('div.diagnostic').slideToggle(500);
+	function toggleDiagnostic(link) {
+		$('div.diagnostic').slideToggle(500, function() {
+		    if($('div.diagnostic').is(":visible")) {
+				$('#diagnostic-link').text('Hide data diagnostic');
+			} else {
+				$('#diagnostic-link').text('Show data diagnostic');
+			}
+		});
 	}
 
-	function scrollToTopDiagnostic(ele) {
+	function scrollToTopDiagnostic() {
 		$('div.diagnostic').animate({ scrollTop: 0 }, 500);
 	}
 
@@ -187,57 +188,40 @@
             url: '{{ route('data.upload') }}',
             dataType: 'json',
             add: function (e, data) {
-            	console.log('Start ' + new Date());
-                //$('#log').empty();
-                //$('#log').hide();
+            	// console.log('Start ' + new Date());
                 $('.progress-div').removeClass('hide');
                 $('#progress').addClass('active');
-                $('#progress').css('width', '0%');
-                //data.formData = $("#create_product_form").serializeArray();     
+                $('#progress').css('width', '0%'); 
                 data.submit();
             },
             done: function (e, data) {
-                console.log('End   ' + new Date());
+                // console.log('End   ' + new Date());
                 var result = data.result;
                 
                 $('#progress').removeClass('active');
-                //console.log(result);
                 
                 if(result.success){
                 	$('.progress-div').addClass('hide');
                 	location.reload()
-                	//table.ajax.reload();
-                    if(result.existed){
-
-                    }
-                    else{
-                        //$('<p/>').text('Create product batch created successfully! Now redirecting to the edit page...').appendTo('#log');
-                        //$('#log').removeClass('alert-danger').addClass('alert-success').show();
-                        //console.log(result.data.items);
-                        //updateProductsTable(result.data.items);
-                        //location.reload(result.redirect);
-                        //window.location.replace(result.redirect);
-                    }
+                	// table.ajax.reload();
                 }
                 else{
-
                     if(result.exceed_limit) {
-                    	$('div.exceed-limit-div').removeClass('hide');
-                		console.log('limit exceeded!');
+                    	$('div.limited-access-alert').removeClass('hide');
                 	}
+
                 	$('#upload-error').empty();
-                   	$('<p/>').html('<h4>Upload process return error(s):-</h4>').appendTo('#upload-error');
-                    console.log(result.error.messages);
-                    if (result.error.messages!==undefined) {
-                        $.each(result.error.messages, function (index, message){
-                            // console.log(index);
-                            $('#upload-error').append('<p>'+message+'</p>');
-                        });
-                    }
-                    else {
-                        $('<p/>').html("An error has occurred on the server. Please try again.").appendTo('#upload-error');
-                    }                   
-                    //$('#log').removeClass('alert-success').addClass('alert-danger').show();
+                	if(result.error != undefined) {
+                		if(result.error.messages != undefined) {
+	                		$('<p/>').html('<h4>Upload process return error(s):-</h4>').appendTo('#upload-error');
+	                		$.each(result.error.messages, function(index, message){
+	                			$('#upload-error').append('<p>'+message+'</p>');
+	                		});
+	                	}
+	                	else {
+	                		$('<p/>').html("An error has occured on the server. Please try again.").appendTo('#upload-error');
+	                	}
+                	}
 
                     setTimeout(function(){
                         $('#progress').css('width', '0%');
@@ -361,14 +345,11 @@
 		    var that = this;
 		    $('#search-col-'+this.index()).on('keyup change', function (){
 		        if (that.search() !== this.value){
-		            that
-		                .search(this.value)
+		            that.search(this.value)
 		                .draw();
 		        }
 		    });
 		});
-
-		//jQuery('#users_table').offset().top;
 
 	});
 </script>

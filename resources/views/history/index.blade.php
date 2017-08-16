@@ -10,276 +10,46 @@
 	        <div class="col-xs-12">
 	          	<div class="box">
 	            	
-	            	<div class="box-body tyre-history" style="overflow-y:auto">
+	            	<div class="box-body tyre-history">
 	            		
-	            		<div class="view">
+	            		<div class="col-xs-12">
+		            		<div class="col-xs-3" style="padding-left:0px;">
+					            <div class="form-group">
+					            	<label for="input-search" class="sr-only">Search Tree:</label>
+					            	<input type="input" class="form-control" id="input-search" placeholder="Type keyword and enter to search..." value="">
+					            </div>
+					        </div>
+
+					        <div class="col-xs-9" style="padding-left:0px;">
+					            <button type="button" class="btn btn-default" id="btn-search">Search</button>
+					            <button type="button" class="btn btn-default" id="btn-clear-search">Clear Search</button>
+					            <button type="button" class="btn btn-success" id="btn-expand">Expand All</button>
+					            <button type="button" class="btn btn-success" id="btn-collapse">Collapse All</button>
+					            <button type="button" class="btn btn-warning" id="btn-expand-selected">Expand Selected</button>
+					            <button type="button" class="btn btn-warning" id="btn-collapse-selected">Collapse Selected</button>
+					        </div>
+					    </div>
+
+	            		<div class="col-xs-12 view">
 		            		<div class="title">View by Truck Position</div>
-		            		<div class="level level-0"><div class="item header"><a>Customer <div class="symbol">&#9654;</div></a></div>
-		            		@foreach ($truckPositionData as $customer => $customerData) 
-		            			<div class="level level-1"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
-
-		            			@foreach ($customerData as $vehicle => $vehicleData)
-		            				<div class="level level-2"><div class="item"><a>{{ $vehicle }} <div class="symbol">&#9654;</div></a></div>
-
-		            				@foreach ($vehicleData as $vehicleNo => $vehicleNoData)
-			            				<div class="level level-3"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
-
-			            				@foreach ($vehicleNoData as $position => $positionData)
-				            				<div class="level level-4"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
-
-				            				@foreach ($positionData as $index => $job)
-				            					<div class="level level-5"><div class="item"><a>{{ $job['date'] }} <div class="symbol">&#9654;</div></a></div>
-						            				
-						            				<div class="level level-6"><div class="item"><a>IN: {{ $job['in'] }} <div class="symbol">&#9654;</div></a></div>
-							            				<div class="level level-7"><div class="item">{{ $job['invoice'] }}</div></div>
-							            			</div>
-
-							            			<div class="level level-6"><div class="item">OUT: {{ $job['out'] }}</div></div>
-						            			</div>
-					            			@endforeach
-					            			</div>
-				            			@endforeach
-				            			</div>
-			            			@endforeach
-			            			</div>
-		            			@endforeach
-		            			</div>
-		            		@endforeach
-		            		</div>
+		            		<div id="truck-position"></div>
 		            	</div>
 
-		            	<div class="view">
+		            	<div class="col-xs-12 view">
 		            		<div class="title">View by Truck Serviced Date and Job Sheet</div>
-		            		<div class="level level-0"><div class="item header"><a>Customer <div class="symbol">&#9654;</div></a></div>
-		            		@foreach ($truckServiceData as $customer => $customerData) 
-		            			<div class="level level-1"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
-
-		            			@foreach ($customerData as $vehicle => $vehicleData)
-		            				<div class="level level-2"><div class="item"><a>{{ $vehicle }} <div class="symbol">&#9654;</div></a></div>
-
-		            				@foreach ($vehicleData as $vehicleNo => $vehicleNoData)
-			            				<div class="level level-3"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
-
-			            				@foreach ($vehicleNoData as $jobsheetDate => $jobsheetDateData)
-				            				<div class="level level-4"><div class="item"><a>{{ $jobsheetDate }} <div class="symbol">&#9654;</div></a></div>
-
-				            					@foreach ($jobsheetDateData as $jobsheet => $jobsheetData)
-					            					<div class="level level-5"><div class="item"><a>{{ str_replace('TOTAL_PRICE', 'RM'.number_format($jobsheetData['totalPrice'], 2), $jobsheet) }} <div class="symbol">&#9654;</div></a></div>
-							            				
-							            				@foreach ($jobsheetData['positions'] as $index => $job)
-							            					<div class="level level-6"><div class="item"><a>Pos {{ $job['position'] }} <div class="symbol">&#9654;</div></a></div>
-									            				
-									            				<div class="level level-7"><div class="item"><a>IN: {{ $job['in'] }} <div class="symbol">&#9654;</div></a></div>
-										            				<div class="level level-8"><div class="item">{{ $job['invoice'] }}</div></div>
-										            			</div>
-
-										            			<div class="level level-7"><div class="item">OUT: {{ $job['out'] }}</div></div>
-									            			</div>
-								            			@endforeach
-							            			</div>
-							            		@endforeach
-					            			</div>
-				            			@endforeach
-				            			</div>
-			            			@endforeach
-			            			</div>
-		            			@endforeach
-		            			</div>
-		            		@endforeach
-		            		</div>
+		            		<div id="truck-service"></div>
 		            	</div>
 
-		            	<div class="view">
-		            		<div class="title">View by Tyre Brand</div>
-		            		<div class="level level-0"><div class="item header"><a>New Tyre (NT) <div class="symbol">&#9654;</div></a></div>
-		            		@foreach ($tyreBrand['NT'] as $brand => $brandData) 
-		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
-
-		            			@foreach ($brandData as $pattern => $patternData)
-		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
-
-		            				@foreach ($patternData as $size => $sizeData)
-			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
-
-			            				@foreach ($sizeData as $serialNo => $serialNoData)
-				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
-
-				            					@foreach ($serialNoData as $customer => $customerData)
-					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
-							            				
-							            				@foreach ($customerData as $vehicleType => $vehicleData)
-							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
-									            				
-									            				@foreach ($vehicleData as $vehicleNo => $positionData)
-									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
-											            				
-											            				@foreach ($positionData as $position => $jobs)
-											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
-													            				
-													            				@foreach ($jobs as $index => $job)
-													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
-														            			@endforeach
-													            			</div>
-												            			@endforeach
-											            			</div>
-										            			@endforeach
-									            			</div>
-								            			@endforeach
-							            			</div>
-							            		@endforeach
-					            			</div>
-				            			@endforeach
-				            			</div>
-			            			@endforeach
-			            			</div>
-		            			@endforeach
-		            			</div>
-		            		@endforeach
-		            		</div>
-
-
-		            		<div class="level level-0"><div class="item header"><a>Stock Retread (STK) <div class="symbol">&#9654;</div></a></div>
-		            		@foreach ($tyreBrand['STK'] as $brand => $brandData) 
-		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
-
-		            			@foreach ($brandData as $pattern => $patternData)
-		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
-
-		            				@foreach ($patternData as $size => $sizeData)
-			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
-
-			            				@foreach ($sizeData as $serialNo => $serialNoData)
-				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
-
-				            					@foreach ($serialNoData as $customer => $customerData)
-					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
-							            				
-							            				@foreach ($customerData as $vehicleType => $vehicleData)
-							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
-									            				
-									            				@foreach ($vehicleData as $vehicleNo => $positionData)
-									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
-											            				
-											            				@foreach ($positionData as $position => $jobs)
-											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
-													            				
-													            				@foreach ($jobs as $index => $job)
-													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
-														            			@endforeach
-													            			</div>
-												            			@endforeach
-											            			</div>
-										            			@endforeach
-									            			</div>
-								            			@endforeach
-							            			</div>
-							            		@endforeach
-					            			</div>
-				            			@endforeach
-				            			</div>
-			            			@endforeach
-			            			</div>
-		            			@endforeach
-		            			</div>
-		            		@endforeach
-		            		</div>
-
-
-		            		<div class="level level-0"><div class="item header"><a>Customer Own Casing (COC) <div class="symbol">&#9654;</div></a></div>
-		            		@foreach ($tyreBrand['COC'] as $brand => $brandData) 
-		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
-
-		            			@foreach ($brandData as $pattern => $patternData)
-		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
-
-		            				@foreach ($patternData as $size => $sizeData)
-			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
-
-			            				@foreach ($sizeData as $serialNo => $serialNoData)
-				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
-
-				            					@foreach ($serialNoData as $customer => $customerData)
-					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
-							            				
-							            				@foreach ($customerData as $vehicleType => $vehicleData)
-							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
-									            				
-									            				@foreach ($vehicleData as $vehicleNo => $positionData)
-									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
-											            				
-											            				@foreach ($positionData as $position => $jobs)
-											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
-													            				
-													            				@foreach ($jobs as $index => $job)
-													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
-														            			@endforeach
-													            			</div>
-												            			@endforeach
-											            			</div>
-										            			@endforeach
-									            			</div>
-								            			@endforeach
-							            			</div>
-							            		@endforeach
-					            			</div>
-				            			@endforeach
-				            			</div>
-			            			@endforeach
-			            			</div>
-		            			@endforeach
-		            			</div>
-		            		@endforeach
-		            		</div>
-
-
-		            		<div class="level level-0"><div class="item header"><a>Used Tyre (USED) <div class="symbol">&#9654;</div></a></div>
-		            		@foreach ($tyreBrand['USED'] as $brand => $brandData) 
-		            			<div class="level level-1"><div class="item"><a>{{ $brand }} <div class="symbol">&#9654;</div></a></div>
-
-		            			@foreach ($brandData as $pattern => $patternData)
-		            				<div class="level level-2"><div class="item"><a>{{ $pattern }} <div class="symbol">&#9654;</div></a></div>
-
-		            				@foreach ($patternData as $size => $sizeData)
-			            				<div class="level level-3"><div class="item"><a>{{ $size }} <div class="symbol">&#9654;</div></a></div>
-
-			            				@foreach ($sizeData as $serialNo => $serialNoData)
-				            				<div class="level level-4"><div class="item"><a>{{ $serialNo }} <div class="symbol">&#9654;</div></a></div>
-
-				            					@foreach ($serialNoData as $customer => $customerData)
-					            					<div class="level level-5"><div class="item"><a>{{ $customer }} <div class="symbol">&#9654;</div></a></div>
-							            				
-							            				@foreach ($customerData as $vehicleType => $vehicleData)
-							            					<div class="level level-6"><div class="item"><a>{{ $vehicleType }} <div class="symbol">&#9654;</div></a></div>
-									            				
-									            				@foreach ($vehicleData as $vehicleNo => $positionData)
-									            					<div class="level level-7"><div class="item"><a>{{ $vehicleNo }} <div class="symbol">&#9654;</div></a></div>
-											            				
-											            				@foreach ($positionData as $position => $jobs)
-											            					<div class="level level-8"><div class="item"><a>Pos {{ $position }} <div class="symbol">&#9654;</div></a></div>
-													            				
-													            				@foreach ($jobs as $index => $job)
-													            					<div class="level level-9"><div class="item">{{ $job }}</div></div>
-														            			@endforeach
-													            			</div>
-												            			@endforeach
-											            			</div>
-										            			@endforeach
-									            			</div>
-								            			@endforeach
-							            			</div>
-							            		@endforeach
-					            			</div>
-				            			@endforeach
-				            			</div>
-			            			@endforeach
-			            			</div>
-		            			@endforeach
-		            			</div>
-		            		@endforeach
-		            		</div>
-
-		            	</div>
-
+		            	<div class="col-xs-12 view">
+							<div class="title">View by Tyre Brand</div>
+							<div id="tyre-brand-nt"></div>
+							<div id="tyre-brand-nt-sub-con"></div>
+							<div id="tyre-brand-stk"></div>
+							<div id="tyre-brand-stk-sub-con"></div>
+							<div id="tyre-brand-coc"></div>
+							<div id="tyre-brand-used"></div>
+							<div id="tyre-brand-other"></div>
+						</div>
 	            	</div>
 	        	</div>
 	    	</div>
@@ -288,7 +58,14 @@
 @stop
 
 @section('footer_scripts')
+<link href="{{ asset('css/bootstrap-treeview.css',env('HTTPS',false)) }}" rel="stylesheet" type="text/css">
+<script src="{{ asset('js/bootstrap-treeview.js',env('HTTPS',false)) }}" type="text/javascript"></script>
+
 <script type="text/javascript">
+	function toggleSelectedBtn() {
+		//console.log($('.fa-check-square-o').length);
+	}
+
 	$(document).ready(function() {
 		
 		$('div.level').on('click', function(e) {
@@ -302,6 +79,239 @@
 			e.stopPropagation();
 
 			$(this).siblings('div.level').slideToggle(500);
+		});
+
+		var truckPosition = '<?php echo $truckPosition; ?>';
+		$('#truck-position').treeview({
+			data: JSON.parse(truckPosition),
+			levels: 1,
+			multiSelect: true,
+			onNodeChecked: function(event, data) {
+			    //toggleSelectedBtn();
+			},
+			onNodeUnchecked: function(event, data) {
+			    //toggleSelectedBtn();
+			}
+		});
+
+		var truckService = '<?php echo $truckService; ?>';
+		$('#truck-service').treeview({
+			data: JSON.parse(truckService),
+			levels: 1,
+			multiSelect: true
+		});
+		
+		var tyreBrandNt = '<?php echo $tyreBrand['NT']; ?>';
+		$('#tyre-brand-nt').treeview({
+			data: JSON.parse(tyreBrandNt),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var tyreBrandNtSubCon = '<?php echo $tyreBrand['NT_SUB_CON']; ?>';
+		$('#tyre-brand-nt-sub-con').treeview({
+			data: JSON.parse(tyreBrandNtSubCon),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var tyreBrandStk = '<?php echo $tyreBrand['STK']; ?>';
+		$('#tyre-brand-stk').treeview({
+			data: JSON.parse(tyreBrandStk),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var tyreBrandStkSubCon = '<?php echo $tyreBrand['STK_SUB_CON']; ?>';
+		$('#tyre-brand-stk-sub-con').treeview({
+			data: JSON.parse(tyreBrandStkSubCon),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var tyreBrandCoc = '<?php echo $tyreBrand['COC']; ?>';
+		$('#tyre-brand-coc').treeview({
+			data: JSON.parse(tyreBrandCoc),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var tyreBrandUsed = '<?php echo $tyreBrand['USED']; ?>';
+		$('#tyre-brand-used').treeview({
+			data: JSON.parse(tyreBrandUsed),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var tyreBrandOther = '<?php echo $tyreBrand['OTHER']; ?>';
+		$('#tyre-brand-other').treeview({
+			data: JSON.parse(tyreBrandOther),
+			levels: 1,
+			multiSelect: true
+		});
+
+		var search = function(e) {
+			var pattern = $('#input-search').val();
+			var options = {
+				ignoreCase: true,
+				exactMatch: false,
+				revealResults: true
+			};
+
+			$('#truck-position').treeview('search', [ pattern, options]);
+			$('#truck-service').treeview('search', [ pattern, options]);
+			$('#tyre-brand-nt').treeview('search', [ pattern, options]);
+			$('#tyre-brand-nt-sub-con').treeview('search', [ pattern, options]);
+			$('#tyre-brand-stk').treeview('search', [ pattern, options]);
+			$('#tyre-brand-stk-sub-con').treeview('search', [ pattern, options]);
+			$('#tyre-brand-coc').treeview('search', [ pattern, options]);
+			$('#tyre-brand-used').treeview('search', [ pattern, options]);
+			$('#tyre-brand-other').treeview('search', [ pattern, options]);
+		};
+
+		var expand = function(e) {
+			$('#truck-position').treeview('expandAll', { silent: true });
+			$('#truck-service').treeview('expandAll', { silent: true });
+			$('#tyre-brand-nt').treeview('expandAll', { silent: true });
+			$('#tyre-brand-nt-sub-con').treeview('expandAll', { silent: true });
+			$('#tyre-brand-stk').treeview('expandAll', { silent: true });
+			$('#tyre-brand-stk-sub-con').treeview('expandAll', { silent: true });
+			$('#tyre-brand-coc').treeview('expandAll', { silent: true });
+			$('#tyre-brand-used').treeview('expandAll', { silent: true });
+			$('#tyre-brand-other').treeview('expandAll', { silent: true });
+		};
+
+		var collapse = function(e) {
+			$('#truck-position').treeview('collapseAll', { silent: true });
+			$('#truck-service').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-nt').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-nt-sub-con').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-stk').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-stk-sub-con').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-coc').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-used').treeview('collapseAll', { silent: true });
+			$('#tyre-brand-other').treeview('collapseAll', { silent: true });
+		};
+
+		$('#btn-search').on('click', search);
+		$('#input-search').keypress(function(e) {
+		    if(e.which == 13) {
+		        $('#btn-search').trigger('click');
+		    }
+		});
+
+		$('#btn-clear-search').on('click', function(e) {
+			$('#truck-position').treeview('clearSearch');
+			$('#truck-service').treeview('clearSearch');
+			$('#tyre-brand-nt').treeview('clearSearch');
+			$('#tyre-brand-nt-sub-con').treeview('clearSearch');
+			$('#tyre-brand-stk').treeview('clearSearch');
+			$('#tyre-brand-stk-sub-con').treeview('clearSearch');
+			$('#tyre-brand-coc').treeview('clearSearch');
+			$('#tyre-brand-used').treeview('clearSearch');
+			$('#tyre-brand-other').treeview('clearSearch');
+			$('#input-search').val('');
+		});
+
+		$('#btn-expand').on('click', expand);
+		$('#btn-collapse').on('click', collapse);
+		
+		$('#btn-expand-selected').on('click', function(e) {
+			var selectedNodes = $('#truck-position').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#truck-position').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#truck-service').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#truck-service').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-nt').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-nt').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-nt-sub-con').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-nt-sub-con').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-stk').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-stk').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-stk-sub-con').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-stk-sub-con').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-coc').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-coc').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-used').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-used').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-other').treeview('getSelected');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-other').treeview('expandNode', [ selectedNode.nodeId, { levels: 10, silent: true } ]);
+			});
+		});
+
+		$('#btn-collapse-selected').on('click', function(e) {
+			var selectedNodes = $('#truck-position').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#truck-position').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#truck-service').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#truck-service').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-nt').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-nt').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-nt-sub-con').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-nt-sub-con').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-stk').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-stk').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-stk-sub-con').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-stk-sub-con').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-coc').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-coc').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-used').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-used').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+
+			var selectedNodes = $('#tyre-brand-other').treeview('getChecked');
+			selectedNodes.forEach(function(selectedNode){
+			    $('#tyre-brand-other').treeview('collapseNode', [ selectedNode.nodeId, { silent: true, ignoreChildren: false } ]);
+			});
+		});
+
+		$('.check-icon').on('click', function(e) {
+			console.log('checked');
 		});
 	});
 </script>

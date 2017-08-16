@@ -12,6 +12,12 @@
 	            	<div class="box-header">
 	              	</div>
 	            	<div class="box-body">
+	            		@if($no_access == true)
+	            		<div class="limited-access-alert col-xs-12">
+	              			Upgrade your subscription plan to access reports below!
+	              		</div>
+	              		@endif
+
 	            		<div class="col-xs-12">
 	            			<div class="col-md-6 col-xs-12">
 	            				<div class="card">
@@ -23,7 +29,7 @@
 			            					Sort by: {!! Form::select('sort', ['desc' => 'Highest to Lowest', 'asc' => 'Lowest to Highest'], null) !!}<br/>
 			            					Show only top {!! Form::text( 'limit', '10', ['style'=>'width:45px; text-align:right'] ) !!} records
 			            				</p>
-			            				<div class="footer align-right">
+			            				<div class="footer align-right @if($no_access == true) hide @endif">
 		                                	<a href="javascript:truckTyreCost();">Generate</a>
 		                                </div>
 		                            </div>
@@ -38,7 +44,7 @@
 			            					Service record of the trucks
 			            				</p>
 			            				
-			            				<div class="footer align-right">
+			            				<div class="footer align-right @if($no_access == true) hide @endif">
 		                                	<a href="{{ route('reports.truckServiceRecord') }}">Generate</a>
 		                                </div>
 		                            </div>
@@ -56,7 +62,7 @@
 			            					1. Serial No. column with missing entry.<br/>
 			            					2. Serial No. being repeated. (Being fitted twice without removing)
 			            				</p>
-			            				<div class="footer align-right">
+			            				<div class="footer align-right @if($no_access == true) hide @endif">
 		                                	<a href="{{ route('reports.serialNoAnalysis') }}">Generate</a>
 		                                </div>
 		                            </div>
@@ -77,7 +83,7 @@
 			            				</div>
 			            				<p>2. Latter odometer is less than previous record.</p>
 			            				
-			            				<div class="footer align-right">
+			            				<div class="footer align-right @if($no_access == true) hide @endif">
 		                                	<a href="javascript:odometerAnalysis();">Generate</a>
 		                                </div>
 		                            </div>
@@ -95,7 +101,7 @@
 			            					1. Only Tyre In/Out Record<br/>(Entry with only Tyre In but no Tyre Out, vice versa)<br/>
 			            					2. Tyre In/Out Conflict<br/>(Removed tyre info does not match with previous fitting record)
 			            				</p>
-			            				<div class="footer align-right">
+			            				<div class="footer align-right @if($no_access == true) hide @endif">
 		                                	<a href="{{ route('reports.tyreRemovalRecord') }}">Generate</a>
 		                                </div>
 		                            </div>
@@ -117,7 +123,7 @@
 			            					3. Tyre In Serial No<br/>
 			            				</p>
 			            				
-			            				<div class="footer align-right">
+			            				<div class="footer align-right @if($no_access == true) hide @endif">
 		                                	<a href="{{ route('reports.tyreRemovalMileage') }}">Generate</a>
 		                                </div>
 		                            </div>

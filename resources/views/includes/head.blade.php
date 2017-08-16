@@ -5,7 +5,7 @@
 <link href="{{ asset('bootstrap/css/bootstrap.min.css',env('HTTPS',false)) }}" rel="stylesheet" type="text/css">
 
 <link href="{{ asset('css/app.css',env('HTTPS',false)) }}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="{{ asset('css/skins/skin-black.css', env('HTTPS', false)) }}">
+<!--<link rel="stylesheet" href="{{ asset('css/skins/skin-black.css', env('HTTPS', false)) }}">-->
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
 <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css',env('HTTPS',false)) }}">

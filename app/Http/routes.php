@@ -83,22 +83,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users','UsersController');
 
     Route::group(['prefix' => 'admin'], function () {
-
         Route::get('users/table_data', 'Admin\UsersController@getTableData');
         Route::resource('users', 'Admin\UsersController');
-
-        Route::resource('roles', 'Admin\AccessController');
-        Route::get('permissions', array('uses' => 'Admin\UsersController@getPermissions', 'as' => 'admin.permissions'));
-	    Route::get('roles/create', 'Admin\UsersController@createRole');
-	    Route::post('roles/create', 'Admin\UsersController@storeRole');
-
-        Route::group(['prefix' => 'config', 'middleware' => 'role:administrator|superadministrator'], function() {
-            Route::get('/', array('uses' => 'Admin\ConfigurationsController@index', 'as' => 'admin.configurations.index'));
-            Route::post('/enable', array('uses' => 'Admin\ConfigurationsController@enableModule', 'as' => 'admin.module.enable'));
-            Route::post('/disable', array('uses' => 'Admin\ConfigurationsController@disableModule', 'as' => 'admin.module.disable'));
-        });
-
-        Route::resource('roles', 'Admin\AccessController');
     });
 
 });

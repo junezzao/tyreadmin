@@ -13,7 +13,8 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.less([
-        'app.less'
+        'app.less',
+        'skins/skin-black.less'
 	]);
-	mix.less('skins/skin-black.less', 'public/css/skins/skin-black.css');
+	// mix.less('skins/skin-black.less', 'public/css/skins/skin-black.css');
 });

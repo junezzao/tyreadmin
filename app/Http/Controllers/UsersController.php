@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\UserRepository;
-use App\Http\Requests;
+//use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GuzzleClient;
-use Bican\Roles\Models\Role;
-use Session;
-use Config;
-use DateTimeZone;
-use DateTime;
-use Validator;
-use App\Services\MediaService as MediaService;
-use App\Models\Merchant;
-use App\Models\User;
+//use Bican\Roles\Models\Role;
+//use Session;
+//use Config;
+//use DateTimeZone;
+//use DateTime;
+//use Validator;
+//use App\Services\MediaService as MediaService;
+//use App\Models\Merchant;
+//use App\Models\User;
 
 class UsersController extends Controller
 {
@@ -32,7 +32,6 @@ class UsersController extends Controller
     public function __construct(UserRepository $userRepo)
     {
         $this->middleware('auth');
-        $this->middleware('role:clientadmin', ['only' => ['getAccountDetails']]);
         $this->userRepo = $userRepo;
         $this->admin = \Auth::user();
     }
@@ -87,12 +86,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
         if ($this->admin->id == $id) {
             $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$id)->getBody()->getContents());
             $data['user'] = $user;
-            $data['currency'] = Config::get('globals.currency_list');
-            $data['timezone'] = $this->generate_timezone_list();
             $data['id'] = $id;
             $data['countryList'] = config('globals.countryList');
 
@@ -153,7 +149,7 @@ class UsersController extends Controller
         //
     }
 
-    public function showVerify()
+    /*public function showVerify()
     {
         if (strcasecmp($this->admin->status, "Unverified") !== 0) {
             flash()->error(trans('permissions.unauthorized'));
@@ -258,7 +254,7 @@ class UsersController extends Controller
             flash()->success('Your account details have been updated.');
             return redirect()->back();
         }
-    }
+    }*/
 
     public function subscription()
     {
@@ -281,7 +277,6 @@ class UsersController extends Controller
             $data['days'] = $diff->format("%a");
         }
         
-        // \Log::info('user... '.print_r($user, true));
         return view('users.subscription', $data);
     }
 
@@ -312,8 +307,8 @@ class UsersController extends Controller
     public function changePasswordSubmit(Request $request, $id)
     {
         $rules = array(
-            'old_password'      => 'required',
-            'new_password'      => 'required|regex:"^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{6,}"|confirmed'
+            'old_password'  => 'required',
+            'new_password'  => 'required|regex:"^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{6,}"|confirmed'
         );
 
         $errorMessages = array(
@@ -328,7 +323,6 @@ class UsersController extends Controller
             flash()->success('Your password has been changed successfully.');
             return redirect()->route('user.changePassword', [$id]);
         } else {
-            // flash()->error('An error has occurred while changing your password.');
             return back()->withErrors($response->errors);
         }
     }

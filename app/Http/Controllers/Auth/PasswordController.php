@@ -92,6 +92,7 @@ class PasswordController extends Controller
 
         $passwordReset = \DB::table('password_resets')->where('email', $request->input('email'))->where('token', $request->input('token'))->first();
         if(empty($passwordReset)) {
+            \Log::info('error');
             return redirect()->back()
                             ->withInput($request->only('email'))
                             ->withErrors(['email' => trans('passwords.invalid_reset_link')]);
@@ -109,7 +110,7 @@ class PasswordController extends Controller
         $u = User::where('email', '=', $request->input('email'))->first();
         $u->status = 'Active';
         $u->save();
-
+        \Log::info('proceed');
         // get access token
         $resp = $this->authenticateUser($request);
         $resp = json_decode($resp);

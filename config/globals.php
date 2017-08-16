@@ -307,14 +307,6 @@ return [
         '#333',
     ),
 
-    // documents to print for bulk print feature in picking manifest
-    'docs_to_print' => array(
-        0   => 'Order Sheet',
-        1   => 'Hubwire Tax Invoice',
-        2   => 'Return Slip',
-        3   => 'Zalora Tax Invoice',
-    ),
-
     'shipping_provider' => array(
         "GDex",
         "Pos Laju",
@@ -380,11 +372,6 @@ return [
         'COD - unpaid'                              =>  'COD - unpaid',
         'Emergency recall'                          =>  'Emergency recall',
     ),
-    
-    'contract_type' => array(
-        'Channel Fee'   =>  'Channel Fee',
-        'Hubwire Fee'   =>  'Hubwire Fee'
-    ),
 
     'malaysia_region' => array(
         'East Malaysia'     =>  'East Malaysia',
@@ -408,16 +395,7 @@ return [
         'Kuala Lumpur'      =>  'Kuala Lumpur',
         'Labuan'            =>  'Labuan',
     ),
-    'third_party_report_remarks' => array(
-        'Third Party Order' => 'Third Party Order',
-        'Third Party Item' => 'Third Party Item',
-        'Hubwire SKU' => 'Hubwire SKU',
-        'Product ID' => 'Product ID',
-        'RRP' => 'RRP',
-        'Listing Price' => 'Listing Price',
-        'Net Payout' => 'Net Payout',
-        'Item Status' => 'Item Status'
-    ),
+
     'countryList' => array(
         'AF' => 'Afghanistan',
         'AX' => 'Åland Islands',
