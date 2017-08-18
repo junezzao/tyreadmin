@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
+include 'm2upay_backend/M2UPay.php';
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\UserRepository;
-//use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GuzzleClient;
-//use Bican\Roles\Models\Role;
-//use Session;
-//use Config;
-//use DateTimeZone;
-//use DateTime;
-//use Validator;
-//use App\Services\MediaService as MediaService;
-//use App\Models\Merchant;
-//use App\Models\User;
+use M2U\M2UPay;
 
 class UsersController extends Controller
 {
@@ -149,113 +141,6 @@ class UsersController extends Controller
         //
     }
 
-    /*public function showVerify()
-    {
-        if (strcasecmp($this->admin->status, "Unverified") !== 0) {
-            flash()->error(trans('permissions.unauthorized'));
-            return redirect()->route('data.index');
-        }
-
-        $user_id = $this->admin->id;
-        return view('users.verify', array('user_id' => $user_id));
-    }
-
-    public function verify(Request $request)
-    {
-        if (strcasecmp($this->admin->status, "Unverified") !== 0) {
-            flash()->error(trans('permissions.unauthorized'));
-            return redirect()->route('data.index');
-        }
-        
-        $rules = array(
-            'password' => 'regex:"^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{6,}"|confirmed|required'
-        );
-
-        $errorMessages = array(
-            'password.regex' => trans('passwords.format')
-        );
-
-        $this->validate($request, $rules, $errorMessages);
-
-        $response = $this->postGuzzleClient($request->input(), 'users/verify');
-
-        if ($response->getStatusCode() == 200) {
-            //flash()->success('Your account has been verified.');
-            return redirect()->route('data.index');
-        } else {
-            flash()->error('Error verifying account.');
-            return back()->withInput();
-        }
-    }
-
-    public function getAccountDetails()
-    {
-        if (!is_null($this->admin->merchant)) {
-            $merchant = $this->admin->merchant;
-            $ae = $merchant->ae()->first()->first_name.' '.$merchant->ae()->first()->last_name;
-            $supported_currencies = json_decode($merchant->forex_rate, true);
-            $currencies_arr = config('currencies');
-            $timezones = Controller::generate_timezone_list();
-            return view('users.account', compact('merchant', 'ae', 'supported_currencies', 'currencies_arr', 'timezones'));
-        }
-        flash()->info('Your account is not linked to any merchant account. Kindly contact your Account Manager or Customer Support for assistance.');
-        return redirect('/data');
-    }
-
-    public function updateAccountDetails(Request $request)
-    {
-        $rules = array(
-            'name' => 'sometimes|required|string',
-            'address' => 'sometimes|required',
-            'contact' => 'sometimes|required',
-            'email' => 'sometimes|required|email',
-            'gst_reg_no' => 'required_if:self_invoicing,true',
-            'timezone' => 'required',
-            'currency' => 'required',
-        );
-
-        $messages = array();
-
-        foreach ($request->input('currencies') as $key => $val) {
-            foreach ($request->input('rate') as $key => $rate_val) {
-                $rules['currencies.'.$key] = 'required_with:rate.'.$key.'|not_in:'.$request->input('currency');
-                $rules['rate.'.$key] = 'required_with:currencies.'.$key.'|numeric|min:0.0001';
-                $messages['currencies.'.$key.'.required_with'] = 'Currency is required.';
-                $messages['currencies.'.$key.'.not_in'] = 'Currency cannot be the same with default.';
-                $messages['rate.'.$key.'.required_with'] = 'Currency rate is required.';
-                $messages['rate.'.$key.'.numeric'] = 'Currency rate must be in numeric.';
-                $messages['rate.'.$key.'.min'] = 'Currency rate minimum is :min.';
-            }
-        }
-
-        $v = \Validator::make($request->input(), $rules, $messages);
-
-        if ($v->fails()) {
-            flash()->error('There was an error in updating your account details. Please review the fields below and ensure that the details are correct.');
-            return redirect()->back()->withErrors($v)->withInput();
-        }
-
-        if ($request->hasFile('logo')) {
-            $mediaService = new MediaService();
-            $response = $mediaService->uploadFile($request->file('logo'), 'logo', null, null, array(), 10000, 'logo-'.$request->input('slug'), 'merchants/'.$request->input('slug'));
-            if (isset($response->errors)) {
-                flash()->error('There was an error in uploading the logo image. Please try uploading the image again.');
-                return redirect()->back();
-            }
-            $request->merge(array( 'logo_url' => str_replace('https://', 'http://', $response->media_url) ));
-        }
-
-        $response = json_decode($this->putGuzzleClient($request->except(['_token', 'merchant_id']), 'admin/merchants/'.$request->input('id'))->getBody()->getContents());
-        
-        if (isset($response->code)) {
-            flash()->error('There was an error in updating your account details. Please review the fields below and ensure that the details are correct.');
-            return redirect()->back()->withErrors($response->error)->withInput();
-        } else {
-            flash()->success('Your account details have been updated.');
-            return redirect()->back();
-        }
-    }*/
-
     public function subscription()
     {
         $user = json_decode($this->getGuzzleClient([], 'admin/users/'.$this->admin->id)->getBody()->getContents());
@@ -277,6 +162,17 @@ class UsersController extends Controller
             $data['days'] = $diff->format("%a");
         }
         
+        $m2u_json= array(
+          'amount'=> 100.00,
+          'accountNumber'=>"A123456",
+          'payeeCode'=>"407"
+        );
+
+        $envType = 1; 
+        $M2UPay = new M2UPay();
+        $encrypt_json = $M2UPay->getEncryptionString($m2u_json, $envType);
+        \Log::info('encrypt_json... '.$encrypt_json);
+        $data['encrypt_json'] = $encrypt_json;
         return view('users.subscription', $data);
     }
 

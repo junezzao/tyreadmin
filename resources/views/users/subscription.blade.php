@@ -95,6 +95,7 @@
 			                </div>
 			            {!! Form::close() !!}
 
+			            	<div id="m2upay"></div>
 			            <hr/>
 
 			            <div class="col-xs-12">
@@ -130,6 +131,7 @@
 
 @include('includes.datatables')
 @section('footer_scripts')
+<script src="{{ asset('js/m2upay_frontend.js',env('HTTPS',false)) }}"></script>
 
 <script type="text/javascript">
 jQuery(document).ready(function($){
@@ -143,6 +145,9 @@ jQuery(document).ready(function($){
 		"autoWidth": false,
 		"orderCellsTop": true
     });
+
+    var encrypt_json = '<?php echo $encrypt_json; ?>';
+	m2upay.initPayment(encrypt_json.encryptedString, encrypt_json.actionUrl, 'OT');
 
 });
 </script>
