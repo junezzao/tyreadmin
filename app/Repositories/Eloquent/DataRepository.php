@@ -43,12 +43,15 @@ class DataRepository extends Repository implements DataRepositoryInterface
         $errorRows = $this->validate($data);
         $remarks = array();
         $invalidLines = array();
-        foreach($errorRows['error'] as $key => $error) {
-          $itemNo = explode('.', $key);
-          $line = $itemNo[1]+1;
-          $remarks[] = 'Error at line #' . $line . ': ' . $error[0];
 
-          if(!in_array($line, $invalidLines)) array_push($invalidLines, $line);
+        if(isset($errorRows['error'])) {
+          foreach($errorRows['error'] as $key => $error) {
+            $itemNo = explode('.', $key);
+            $line = $itemNo[1]+1;
+            $remarks[] = 'Error at line #' . $line . ': ' . $error[0];
+
+            if(!in_array($line, $invalidLines)) array_push($invalidLines, $line);
+          }
         }
         // to eliminate identical validation error
         $remarks = array_values(array_unique($remarks));

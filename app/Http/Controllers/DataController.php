@@ -151,7 +151,7 @@ class DataController extends Controller
             }
 
             // check sheet or number of data
-            if(count($postData['items']) <= 0) {
+            if(count($postData['items']) <= 0 || count($postData['items']) == 1 && empty($postData['items'][0]['line_number'])) {
                 $return['success'] = false;
                 $return['error']['messages'][] = 'No data detected. Please make sure uploaded file contains <b>'.$sheetName.'</b> with data.';
                 return json_encode($return);

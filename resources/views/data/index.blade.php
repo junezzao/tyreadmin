@@ -22,24 +22,26 @@
 			              	</div>
 	              		</div>
 
-	              		<div class="row col-xs-12 margin-bottom">
-	              			<div class="row col-xs-12 align-center">
-		              			<a href="javascript:void(0)" onclick="javascript:toggleDiagnostic();" id="diagnostic-link">Hide data diagnostic</a>
+	              		@if(count($sheet['remarks']) > 0)
+		              		<div class="row col-xs-12 margin-bottom">
+		              			<div class="row col-xs-12 align-center">
+			              			<a href="javascript:void(0)" onclick="javascript:toggleDiagnostic();" id="diagnostic-link">Hide data diagnostic</a>
+			              		</div>
+		              			<div class="diagnostic col-xs-10 col-xs-offset-1">
+	                                <div class="float-right">
+	                                	<a href="{{ route('data.print.diagnostic') }}" target="_blank">print</a>
+	                                </div>
+	                                @foreach($sheet['remarks'] as $i=>$remark)
+	                                   <div><span class="pad-right">{{ $i+1 }}.</span>{{ $remark }}</div>
+	                                @endforeach
+	                                <div class="float-right">
+	                                	<a class="pad-right" href="javascript:toggleDiagnostic();">hide</a> | 
+	                                	<a class="pad-left" href="javascript:scrollToTopDiagnostic(this);">back to top</a>
+	                                </div>
+		              			</div>
 		              		</div>
-	              			<div class="diagnostic col-xs-10 col-xs-offset-1">
-                                <div class="float-right">
-                                	<a href="{{ route('data.print.diagnostic') }}" target="_blank">print</a>
-                                </div>
-                                @foreach($sheet['remarks'] as $i=>$remark)
-                                   <div><span class="pad-right">{{ $i+1 }}.</span>{{ $remark }}</div>
-                                @endforeach
-                                <div class="float-right">
-                                	<a class="pad-right" href="javascript:toggleDiagnostic();">hide</a> | 
-                                	<a class="pad-left" href="javascript:scrollToTopDiagnostic(this);">back to top</a>
-                                </div>
-	              			</div>
-	              		</div>
-	              		@endif
+		              	@endif
+		              	@endif
 	              		<div class="row margin-top">
 	              			<div class="col-lg-6 col-lg-offset-3 col-xs-10 col-xs-offset-1 fileinput-button">
 	              				<div class="upload-sheet-btn">
