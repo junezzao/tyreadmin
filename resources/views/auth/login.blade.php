@@ -11,7 +11,7 @@
 
             {!! Form::open(array('url' => 'auth/login', 'id'=>'login-form')) !!}
                 <div class="form-group has-feedback">
-                    {!! Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('terms.username'))) !!}
+                    {!! Form::text('email', null, array('class' => 'form-control', 'placeholder' => trans('terms.username'), 'autocomplete' => 'off')) !!}
                     <div class="error">{{ $errors->first('email') }}</div>
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div> 
