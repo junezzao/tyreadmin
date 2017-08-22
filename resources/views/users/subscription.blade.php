@@ -75,7 +75,7 @@
 
 		                <hr/>
 
-		                {!! Form::open(array('url' => route('user.subscribe', [$user->id]), 'role'=>'form', 'method' => 'POST')) !!}
+		                {!! Form::open(array('url' => route('user.subscribe'), 'role'=>'form', 'method' => 'POST')) !!}
 			                <div class="form-group">
 			                    <label class="col-xs-12 underline">Make a Payment</label>
 			                </div>

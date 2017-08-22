@@ -13,7 +13,7 @@
 	              		<h3 class="box-title">{{ trans('terms.change_password') }}</h3>
 	            	</div>
 	            	<div class="box-body">
-	            		{!! Form::open(array('url' => route('user.changePassword.submit', [$user->id]), 'role'=>'form', 'method' => 'PUT')) !!}
+	            		{!! Form::open(array('url' => route('user.changePassword.submit'), 'role'=>'form', 'method' => 'PUT')) !!}
 			                <div class="form-group has-feedback">
 			                    <label class="col-md-4 col-sm-5 col-xs-12 control-label" for="email">{{ trans('terms.email_address') }}</label>
 			                    <div class="col-md-8 col-sm-7 col-xs-12">

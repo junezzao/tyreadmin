@@ -74,10 +74,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('users/verify/', array('uses' => 'UsersController@verify', 'as' => 'users.verify'));
     
     Route::group(['prefix' => 'user'], function () {
-        Route::get('subscription/{user_id}', array('uses' => 'UsersController@subscription', 'as' => 'user.subscription'));
-        Route::post('subscribe/{user_id', array('uses' => 'UsersController@subscribe', 'as' => 'user.subscribe'));
-        Route::get('change_password/{user_id}', array('uses' => 'UsersController@changePassword', 'as' => 'user.changePassword'));
-        Route::put('change_password/{user_id}', array('uses' => 'UsersController@changePasswordSubmit', 'as' => 'user.changePassword.submit'));
+        Route::get('subscription', array('uses' => 'UsersController@subscription', 'as' => 'user.subscription'));
+        Route::post('subscribe', array('uses' => 'UsersController@subscribe', 'as' => 'user.subscribe'));
+        Route::get('change_password', array('uses' => 'UsersController@changePassword', 'as' => 'user.changePassword'));
+        Route::put('change_password', array('uses' => 'UsersController@changePasswordSubmit', 'as' => 'user.changePassword.submit'));
+        Route::get('editUser', array('uses' => 'UsersController@editUser', 'as' => 'user.editUser'));
+        Route::put('updateUser', array('uses' => 'UsersController@updateUser', 'as' => 'user.updateUser'));
     });
     Route::resource('user','UsersController');
     Route::resource('users','UsersController');

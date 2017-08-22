@@ -230,6 +230,9 @@
                     }, 1000);
                 }
             },
+            fail: function (e, data) {
+            	$('#progress').css('width', '0%');
+            },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progress').css('width', progress + '%');

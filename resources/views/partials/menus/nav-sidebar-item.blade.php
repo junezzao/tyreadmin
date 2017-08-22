@@ -30,15 +30,15 @@
     </a>
     <ul class="treeview-menu">
         <li>
-            <a href="{{ route('user.edit', [$userId]) }}">Edit Profile</a>
+            <a href="{{ route('user.editUser') }}">Edit Profile</a>
         </li>
         @if(strcasecmp( $user->category, 'Super Administrator') != 0)
         <li>
-            <a href="{{ route('user.subscription', [$userId]) }}">Manage Subscription</a>
+            <a href="{{ route('user.subscription') }}">Manage Subscription</a>
         </li>
         @endif
         <li>
-            <a href="{{ route('user.changePassword', [$userId]) }}">Change Password</a>
+            <a href="{{ route('user.changePassword') }}">Change Password</a>
         </li>
         <li><a href="{!! route('logout') !!}">Sign Out</a></li>
     </ul>

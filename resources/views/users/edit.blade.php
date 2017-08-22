@@ -13,7 +13,7 @@
 	              		<h3 class="box-title">{{ trans('terms.edit_profile') }}</h3>
 	            	</div>
 	            	<div class="box-body">
-	            		{!! Form::open(array('url' => route('users.update', [$id]), 'role'=>'form', 'method' => 'PUT')) !!}
+	            		{!! Form::open(array('url' => route('user.updateUser'), 'role'=>'form', 'method' => 'PUT')) !!}
 			                <div class="form-group" style="text-align:center">
 			                    <label class="col-xs-12 required">{{ trans('terms.operation_type') }}</label>
 			                    <small class="help-text col-xs-12">{{ trans('terms.please_pick_1') }}</small>
