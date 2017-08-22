@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpdox xmlns="http://xml.phpdox.net/config" silent="false">
 
-    <project name="HubwireArc" source="app" workdir="${basedir}/build/api/xml">
+    <project name="Pro Tyre Admin" source="app" workdir="${basedir}/build/api/xml">
 
         <collector publiconly="false" backend="parser">
         	<include mask="*.php" />

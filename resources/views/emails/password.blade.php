@@ -4,6 +4,6 @@
 
 <p>Click here to reset your password: {{ url('password/reset/'.$token) }} </p>
 
-<p>If you did not make such a request, please report the incident to our our customer support team at <a href="mailto:support@hubwire.com"></a>.
+<p>If you did not make such a request, please report the incident to our our customer support team at <a href="mailto:support@prog.com.my"></a>.
 
-<p>- Hubwire Team</p>
+<p>- Pro tyre Admin Team</p>

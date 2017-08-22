@@ -12,7 +12,7 @@ modules:
         - \Helper\Acceptance
     config:
         WebDriver:
-            url: 'http://www.hapiadmin.dev'
+            url: 'http://www.tyreadmin.dev'
             browser: 'chrome'
             window_size: 'maximize'
         MailCatcher:
@@ -26,7 +26,7 @@ env:
                 WebDriver:
                     host: localhost
                     port: 4444
-                    url: 'http://www.hapiadmin.dev'
+                    url: 'http://www.tyreadmin.dev'
     develop:
         modules:
             config:

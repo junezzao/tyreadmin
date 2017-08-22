@@ -12,7 +12,7 @@ modules:
         - \Helper\Functional
         - REST:
            depends: PhpBrowser
-           url: 'http://www.hapiadmin.dev'
+           url: 'http://www.tyreadmin.dev'
     config:
         Laravel5:
             environment_file: .env.codecept

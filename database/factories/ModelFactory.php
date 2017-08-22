@@ -16,7 +16,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'first_name' => $faker->name,
         'last_name' => $faker->name,
         'email' => $faker->email,
-        'password' => bcrypt('Hubwiretest!'),
+        'password' => bcrypt('Test!'),
         'remember_token' => str_random(10),
         'timezone' => $faker->timezone,
         'currency' => $faker->currencyCode,

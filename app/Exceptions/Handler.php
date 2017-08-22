@@ -19,8 +19,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        HttpException::class,
-        ModelNotFoundException::class,
+        //HttpException::class,
+        //ModelNotFoundException::class,
     ];
 
     /**
@@ -33,7 +33,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-
         return parent::report($e);
     }
 
@@ -46,6 +45,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        $errorCode = $e->getCode() > 0 ? $e->getCode() : 500;
+
         if ($e instanceof NotFoundHttpException) {
             flash()->error(trans('permissions.notfound'));
             return redirect('/data');
@@ -61,13 +62,14 @@ class Handler extends ExceptionHandler
             flash()->error(trans('permissions.unauthorized'));
             return redirect('data');
         }
-        if (!env('APP_DEBUG') && $e instanceof Exception) {
+        if (!env('APP_DEBUG')) {
             // if user is logged in
-            if (Session::has('tyreapi') && isset(Session::get('tyreapi')['access_token'])) 
-                return response()->view('errors.generic');
-            
-            else
-                return response()->view('errors.500');
+            if (Session::has('tyreapi') && isset(Session::get('tyreapi')['access_token'])) {
+                return response()->view('errors.generic', ['errorCode' => $errorCode]);
+            }
+            else {
+                return response()->view('errors.500', ['errorCode' => $errorCode]);
+            }
         }
 
         return parent::render($request, $e);

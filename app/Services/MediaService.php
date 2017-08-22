@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Traits\GuzzleClient;
 
 /**
- * A service used to upload/delete files from AWS S3 bucket as well as creating record at HAPI
- *
- * @author Chris Chua
+ * A service used to upload/delete files from AWS S3 bucket as well as creating record at HPI
  */
 class MediaService
 {
@@ -42,7 +40,7 @@ class MediaService
     }
 
     /**
-     * Performs validation and then uploads the file to S3 and records it in HAPI media table.
+     * Performs validation and then uploads the file to S3 and records it in API media table.
      *
      * @param File $inputFile The file input
      *
@@ -127,7 +125,7 @@ class MediaService
     }
 
     /**
-     * Performs validation and then uploads multiple files to S3 and records it in HAPI media table.
+     * Performs validation and then uploads multiple files to S3 and records it in API media table.
      *
      * @param array $inputFiles The array of input files
      *
@@ -285,7 +283,7 @@ class MediaService
     }
 
     /**
-     * Deletes the file DB record through HAPI and then deletes the file at the S3 bucket.
+     * Deletes the file DB record through API and then deletes the file at the S3 bucket.
      *
      * @param int $mediaID The media record's ID
      *
@@ -346,7 +344,7 @@ class MediaService
     }
 
     /**
-     * Gets the media's information thru HAPI based on the media ID.
+     * Gets the media's information thru API based on the media ID.
      *
      * @param int $mediaID
      *

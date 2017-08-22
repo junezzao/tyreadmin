@@ -110,7 +110,7 @@ class PasswordController extends Controller
         $u = User::where('email', '=', $request->input('email'))->first();
         $u->status = 'Active';
         $u->save();
-        \Log::info('proceed');
+        // \Log::info('proceed');
         // get access token
         $resp = $this->authenticateUser($request);
         $resp = json_decode($resp);
