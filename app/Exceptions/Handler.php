@@ -45,24 +45,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        $errorCode = $e->getCode() > 0 ? $e->getCode() : 500;
-
-        if ($e instanceof NotFoundHttpException) {
-            flash()->error(trans('permissions.notfound'));
-            return redirect('/data');
-        }
-        if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
-        }
-        if ($e instanceof PermissionDeniedException) {
-            flash()->error(trans('permissions.unauthorized'));
-            return redirect('data');
-        }
-        if ($e instanceof RoleDeniedException) {
-            flash()->error(trans('permissions.unauthorized'));
-            return redirect('data');
-        }
         if (!env('APP_DEBUG')) {
+            $errorCode = $e->getCode();
+
+            if ($e instanceof NotFoundHttpException) {
+                $errorCode = 404;
+            }
+            if ($e instanceof ModelNotFoundException) {
+                $errorCode = 404;
+            }
+            if ($e instanceof PermissionDeniedException) {
+                $errorCode = 403;
+            }
+            if ($e instanceof RoleDeniedException) {
+                $errorCode = 403;
+            }
+
+            $errorCode = $errorCode > 0 ? $errorCode : 500;
+
             // if user is logged in
             if (Session::has('tyreapi') && isset(Session::get('tyreapi')['access_token'])) {
                 return response()->view('errors.generic', ['errorCode' => $errorCode]);
@@ -70,6 +70,7 @@ class Handler extends ExceptionHandler
             else {
                 return response()->view('errors.500', ['errorCode' => $errorCode]);
             }
+
         }
 
         return parent::render($request, $e);
