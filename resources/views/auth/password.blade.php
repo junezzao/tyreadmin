@@ -1,6 +1,6 @@
 {!! Form::open(array('url' => '/password/forgot', 'id' => 'password-reset-form')) !!}
     <div class="form-group has-feedback">
-        {!! Form::text('reset_email', '', array('class' => 'form-control', 'placeholder' => trans('sentence.enter_your_email_address'))) !!}
+        {!! Form::text('reset_email', '', array('class' => 'form-control', 'placeholder' => trans('sentence.enter_your_email_address'), 'autocomplete' => 'off')) !!}
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
     </div>
     <div class="form-group">

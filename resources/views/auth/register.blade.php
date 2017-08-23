@@ -50,7 +50,7 @@
                 <div class="form-group has-feedback">
                     <label class="col-md-4 col-sm-5 col-xs-12 control-label required" for="email">{{ trans('terms.email_address') }}</label>
                     <div class="col-md-8 col-sm-7 col-xs-12">
-                        {!! Form::text( 'email', null, ['class' => 'form-control', 'placeholder' => trans('terms.email_address')] ) !!}
+                        {!! Form::text( 'email', null, ['class' => 'form-control', 'placeholder' => trans('terms.email_address'), 'autocomplete' => 'off'] ) !!}
                         <div class="error">{{ $errors->first('email') }}</div>
                     </div>
                 </div>
