@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-	@lang('titles.edit_user')
+@lang('titles.edit_user')
 @stop
 
 @section('content')
@@ -12,7 +12,7 @@
 	          	<div class="box">
 	            	<div class="box-header">
 	              		<h3 class="box-title">@lang('admin/user.box_header_user_edit')</h3>
-	            	</div><!-- /.box-header -->
+	            	</div>
 	            	<div class="box-body channels channel-page channel-edit">
 	            		<div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
@@ -187,22 +187,6 @@
    	</section>
 @stop
 
-@include('includes.datatables')
 @section('footer_scripts')
-
-<script type="text/javascript">
-$(document).ready(function() {
-
-	/* var history_tbl = jQuery('#history_tbl').DataTable({
-		"dom": 't<"clearfix"ip>',
-		"pageLength": 10,
-		"order": [[0, "asc"]],
-		"scrollX": true,
-		"scrollY": false,
-		"autoWidth": false,
-		"orderCellsTop": true
-    }); */
-
-});
-</script>
+<script src="{{ asset('plugins/select2/select2.full.min.js',env('HTTPS',false)) }}" type="text/javascript"></script>
 @append

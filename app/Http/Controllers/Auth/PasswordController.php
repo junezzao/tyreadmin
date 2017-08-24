@@ -50,7 +50,7 @@ class PasswordController extends Controller
             throw new NotFoundHttpException;
         }
 
-        return view('auth.reset')->with('token', $token);
+        return view('auth.activate')->with('token', $token);
     }
 
     /**
@@ -65,7 +65,7 @@ class PasswordController extends Controller
             throw new NotFoundHttpException;
         }
 
-        return view('users.verify')->with('token', $token);
+        return view('users.reset-password')->with('token', $token);
     }
 
     /**

@@ -1,14 +1,14 @@
 @extends('layouts.plain')
 
 @section('title')
-    @lang('titles.account_activation')
+@lang('titles.reset_password')
 @stop
 
 @section('content')
     <div class="login-box clearfix" style="width:45%">
         <div class="login-box-body col-xs-12">
             <div class="login-box-msg">
-                <h4><b>{{ trans('sentence.account_activation_header') }}</b></h4>
+                <h4><b>{{ trans('sentence.reset_password') }}</b></h4>
             </div>
 
             {!! Form::open(array('url' => 'password/reset', 'id'=>'login-form')) !!}
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    {!! Form::submit(strtoupper(trans('terms.activate_account')), array('class' => 'signin-btn bg-primary'))!!}
+                    {!! Form::submit(strtoupper(trans('terms.save_and_continue')), array('class' => 'signin-btn bg-primary'))!!}
                 </div>
             {!! Form::close() !!}
 
@@ -46,8 +46,10 @@
 
 @section('footer_scripts')
 <script type="text/javascript">
-jQuery(document).ready(function($){
+jQuery(document).ready(function(){
     $("input[name=email]").focus();
 });
 </script>
 @append
+
+

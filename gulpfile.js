@@ -14,7 +14,26 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     mix.less([
         'app.less',
-        'skins/skin-black.less'
-	]);
-	// mix.less('skins/skin-black.less', 'public/css/skins/skin-black.css');
+        'skins/skin-black.less',
+        'font-awesome/font-awesome.less',
+        'fileupload/jquery.fileupload.less'
+	], 'public/css/app.min.css');
+
+	mix.scripts([
+        'app.js',
+        'common.js'
+    ], 'public/js/app.min.js');
+
+    mix.scripts([
+        'jquery_ui_widgets.js',
+        'jquery.fileupload.js'
+    ], 'public/js/fileupload.min.js');
+
+    mix.scripts([
+        'bootstrap-treeview.js'
+    ], 'public/js/bootstrap-treeview.min.js');
+
+    mix.less([
+        'bootstrap-treeview/bootstrap-treeview.less'
+    ], 'public/css/bootstrap-treeview.min.css');
 });

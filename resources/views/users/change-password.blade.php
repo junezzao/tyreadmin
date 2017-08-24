@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-	@lang('titles.change_password')
+@lang('titles.change_password')
 @stop
 
 @section('content')
@@ -59,7 +59,7 @@
 
 @section('footer_scripts')
 <script type="text/javascript">
-jQuery(document).ready(function($){
+jQuery(document).ready(function(){
     $("input[name=first_name]").focus();
 });
 </script>

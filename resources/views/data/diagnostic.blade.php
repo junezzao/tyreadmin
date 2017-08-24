@@ -1,7 +1,7 @@
 @extends('layouts.print')
 
 @section('title')
-	@lang('titles.data_diagnostic')
+@lang('titles.data_diagnostic')
 @stop
 
 @section('header_scripts')
@@ -10,7 +10,6 @@
 @append
 
 @section('content')
-	<!-- Main content -->
     <section class="content">
 	    <div class="row">
 	        <div class="col-xs-12">
@@ -42,9 +41,9 @@
 @stop
 
 @section('footer_scripts')
-	<script type="text/javascript">
-		$(document).ready(function(){
-		    window.print();
-		});
-	</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    window.print();
+});
+</script>
 @append

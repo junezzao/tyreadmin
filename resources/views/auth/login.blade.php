@@ -1,7 +1,7 @@
 @extends('layouts.plain')
 
 @section('title')
-    @lang('titles.login')
+@lang('titles.login')
 @stop
 
 @section('content')
@@ -50,6 +50,7 @@
 
 @section('footer_scripts')
 <script type="text/javascript">
+
 function refreshCaptcha(){
     $.ajax({
         url: '{{ URL::to("captcha/refresh") }}',
@@ -65,7 +66,7 @@ function refreshCaptcha(){
     });
 }
 
-jQuery(document).ready(function($){
+jQuery(document).ready(function(){
     $("input[name=email]").focus();
     $('#forgot-password-link').click(function(){
         $('#password-reset-container').fadeIn(300);

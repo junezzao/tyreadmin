@@ -1,16 +1,10 @@
 @extends('layouts.master')
 
 @section('title')
-    Error
+Error
 @stop
 
 @section('content')
-    <!-- Content Header (Page header) -->
-    <!-- <section class="content-header">
-      <h1>Title</h1>
-    </section> -->
-
-    <!-- Main content -->
     <section class="content">
         <div class="error-page">
             <h2 class="headline text-red">{{ $errorCode }}</h2>

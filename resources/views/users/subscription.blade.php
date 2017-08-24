@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-	@lang('titles.edit_profile')
+@lang('titles.edit_profile')
 @stop
 
 @section('content')
@@ -132,7 +132,7 @@
 @section('footer_scripts')
 
 <script type="text/javascript">
-jQuery(document).ready(function($){
+jQuery(document).ready(function(){
     
     var history_tbl = jQuery('#history_tbl').DataTable({
 		"dom": 't<"clearfix"ip>',

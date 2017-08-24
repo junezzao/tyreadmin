@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-	@lang('titles.edit_profile')
+@lang('titles.edit_profile')
 @stop
 
 @section('content')
@@ -128,8 +128,10 @@
 @stop
 
 @section('footer_scripts')
+<script src="{{ asset('plugins/select2/select2.full.min.js',env('HTTPS',false)) }}" type="text/javascript"></script>
+
 <script type="text/javascript">
-jQuery(document).ready(function($){
+jQuery(document).ready(function(){
     $("input[name=first_name]").focus();
     
     $('.operation-type-btn').click(function(){

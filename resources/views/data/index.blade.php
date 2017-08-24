@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-	@lang('titles.upload_data')
+@lang('titles.upload_data')
 @stop
 
 @section('content')
@@ -160,202 +160,175 @@
 
 @include('includes.datatables')
 @section('footer_scripts')
-<link href="{{ asset('packages/blueimp/css/jquery.fileupload.css',env('HTTPS',false)) }}" rel="stylesheet" type="text/css">
-<script src="{{ asset('js/jquery_ui_widgets.js',env('HTTPS',false)) }}" type="text/javascript"></script>
-<script src="{{ asset('packages/blueimp/js/jquery.fileupload.js',env('HTTPS',false)) }}" type="text/javascript"></script>
+<script src="{{ asset('js/fileupload.min.js',env('HTTPS',false)) }}" type="text/javascript"></script>
 
 <script type="text/javascript">
-	function toggleDiagnostic(link) {
-		$('div.diagnostic').slideToggle(500, function() {
-		    if($('div.diagnostic').is(":visible")) {
-				$('#diagnostic-link').text('Hide data diagnostic');
-			} else {
-				$('#diagnostic-link').text('Show data diagnostic');
-			}
-		});
-	}
-
-	function scrollToTopDiagnostic() {
-		$('div.diagnostic').animate({ scrollTop: 0 }, 500);
-	}
-
-	$(document).ready(function() {
-
-		$('#dl_template').on('click', function() {
-			$("#download-template").submit();
-		});
-
-		// For uploading file
-        $('#file_upload').fileupload({
-            url: '{{ route('data.upload') }}',
-            dataType: 'json',
-            add: function (e, data) {
-            	// console.log('Start ' + new Date());
-                $('.progress-div').removeClass('hide');
-                $('#progress').addClass('active');
-                $('#progress').css('width', '0%'); 
-                data.submit();
-            },
-            done: function (e, data) {
-                // console.log('End   ' + new Date());
-                var result = data.result;
-                
-                $('#progress').removeClass('active');
-                
-                if(result.success){
-                	$('.progress-div').addClass('hide');
-                	location.reload()
-                	// table.ajax.reload();
-                }
-                else{
-                    if(result.exceed_limit) {
-                    	$('div.limited-access-alert').removeClass('hide');
-                	}
-
-                	$('#upload-error').empty();
-                	if(result.error != undefined) {
-                		if(result.error.messages != undefined) {
-	                		$('<p/>').html('<h4>Upload process return error(s):-</h4>').appendTo('#upload-error');
-	                		$.each(result.error.messages, function(index, message){
-	                			$('#upload-error').append('<p>'+message+'</p>');
-	                		});
-	                	}
-	                	else {
-	                		$('<p/>').html("An error has occured on the server. Please try again.").appendTo('#upload-error');
-	                	}
-                	}
-
-                    setTimeout(function(){
-                        $('#progress').css('width', '0%');
-                    }, 1000);
-                }
-            },
-            fail: function (e, data) {
-            	$('#progress').css('width', '0%');
-            },
-            progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress').css('width', progress + '%');
-            }
-        })
-        .prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-
-
-        // Custom search columns
-		// Setup - add a text input to each the header cell
-		$('#users_table thead tr td.search-col-text').each(function(index, value){
-			var width = [];
-			width[0] = 50;
-			width[1] = 80;
-			width[2] = 90;
-			width[3] = 90;
-			width[4] = 110;
-			width[5] = 80;
-			width[6] = 90;
-			width[7] = 80;
-			width[8] = 80;
-			width[9] = 80;
-			width[10] = 84;
-			width[11] = 73;
-			width[12] = 90;
-			width[13] = 90;
-			width[14] = 90;
-			width[15] = 90;
-			width[16] = 90;
-			width[17] = 112;
-			width[18] = 121;
-			width[19] = 100;
-			width[20] = 100;
-			width[21] = 90;
-			width[22] = 90;
-			width[23] = 90;
-			width[24] = 90;
-			width[25] = 112;
-			width[26] = 121;
-			width[27] = 100;
-			width[28] = 100;
-			width[29] = 90;
-
-		    $(this).html('<input id="search-col-'+$(this).data('index')+'" class="form-control" type="text" style="width:' + width[index] + 'px"/>');
-		} );
-
-		var table = jQuery('#users_table').DataTable({
-			"dom": '<"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
-			"ajax": '{{ route('data.list') }}',
-			"lengthMenu": [[30, 50, 100], [30, 50, 100]],
-			"pageLength": 30,
-			"order": [[0, "asc"]],
-			"scrollX": true,
-			"scrollY": false,
-			"autoWidth": false,
-			"orderCellsTop": true,
-			"columns": [
-		        { "data": "line_number", "name": "line_number", "targets": 0 },
-		        { "data": "jobsheet_date", "name": "jobsheet_date", "targets": 1 },
-		        { "data": "jobsheet_no", "name": "jobsheet_no", "targets": 2 },
-		        { "data": "inv_no", "name": "inv_no", "targets": 3 },
-		        { "data": "inv_amt", "name": "inv_amt", "targets": 4 },
-		        { "data": "jobsheet_type", "name": "jobsheet_type", "targets": 5 },
-		        { "data": "customer_name", "name": "customer_name", "targets": 6 },
-		        { "data": "truck_no", "name": "truck_no", "targets": 7 },
-		        { "data": "pm_no", "name": "pm_no", "targets": 8 },
-		        { "data": "trailer_no", "name": "trailer_no", "targets": 9 },
-		        { "data": "odometer", "name": "odometer", "targets": 10 },
-		        { "data": "position", "name": "position", "targets": 11 },
-		        { "data": "in_attr", "name": "in_attr", "targets": 12 },
-		        { "data": "in_price", "name": "in_price", "targets": 13 },
-		        { "data": "in_size", "name": "in_size", "targets": 14 },
-		        { "data": "in_brand", "name": "in_brand", "targets": 15 },
-		        { "data": "in_pattern", "name": "in_pattern", "targets": 16 },
-		        { "data": "in_retread_brand", "name": "in_retread_brand", "targets": 17 },
-		        { "data": "in_retread_pattern", "name": "in_retread_pattern", "targets": 18 },
-		        { "data": "in_serial_no", "name": "in_serial_no", "targets": 19 },
-		        { "data": "in_job_card_no", "name": "in_job_card_no", "targets": 20 },
-		        { "data": "out_reason", "name": "out_reason", "targets": 21 },
-		        { "data": "out_size", "name": "out_size", "targets": 22 },
-		        { "data": "out_brand", "name": "out_brand", "targets": 23 },
-		        { "data": "out_pattern", "name": "out_pattern", "targets": 24 },
-		        { "data": "out_retread_brand", "name": "out_retread_brand", "targets": 25 },
-		        { "data": "out_retread_pattern", "name": "out_retread_pattern", "targets": 26 },
-		        { "data": "out_serial_no", "name": "out_serial_no", "targets": 27 },
-		        { "data": "out_job_card_no", "name": "out_job_card_no", "targets": 28 },
-		        { "data": "out_rtd", "name": "out_rtd", "targets": 29 }
-		    ],
-		    /*// to initialize drop down filter
-		    initComplete: function(){
-		        this.api().columns().every(function(){
-		            var column = this;
-		            if(column.index() == 2){
-		                var select = $('<select class="form-control"><option value="">All</option></select>')
-		                    .appendTo($('.dataTable thead tr td:nth-child(' + 3 + ')').first().empty())
-		                    .on('change', function(){
-		                        var val = $.fn.dataTable.util.escapeRegex(
-		                            $(this).val()
-		                        );
-
-		                        column.search(val ? '^'+val+'$' : '', true, false).draw();
-		                    });
-
-		                column.data().unique().sort().each(function(d, j){
-		                    select.append('<option value="'+d+'">'+d+'</option>')
-		                });
-		            }
-		        });
-		    },*/
-		});
-
-		// Apply the search
-		table.columns().every(function (){
-		    var that = this;
-		    $('#search-col-'+this.index()).on('keyup change', function (){
-		        if (that.search() !== this.value){
-		            that.search(this.value)
-		                .draw();
-		        }
-		    });
-		});
-
+function toggleDiagnostic(link) {
+	$('div.diagnostic').slideToggle(500, function() {
+	    if($('div.diagnostic').is(":visible")) {
+			$('#diagnostic-link').text('Hide data diagnostic');
+		} else {
+			$('#diagnostic-link').text('Show data diagnostic');
+		}
 	});
+}
+
+function scrollToTopDiagnostic() {
+	$('div.diagnostic').animate({ scrollTop: 0 }, 500);
+}
+
+$(document).ready(function() {
+
+	$('#dl_template').on('click', function() {
+		$("#download-template").submit();
+	});
+
+	// For uploading file
+    $('#file_upload').fileupload({
+        url: '{{ route('data.upload') }}',
+        dataType: 'json',
+        add: function (e, data) {
+        	// console.log('Start ' + new Date());
+            $('.progress-div').removeClass('hide');
+            $('#progress').addClass('active');
+            $('#progress').css('width', '0%'); 
+            data.submit();
+        },
+        done: function (e, data) {
+            // console.log('End   ' + new Date());
+            var result = data.result;
+            
+            $('#progress').removeClass('active');
+            
+            if(result.success){
+            	$('.progress-div').addClass('hide');
+            	location.reload()
+            	// table.ajax.reload();
+            }
+            else{
+                if(result.exceed_limit) {
+                	$('div.limited-access-alert').removeClass('hide');
+            	}
+
+            	$('#upload-error').empty();
+            	if(result.error != undefined) {
+            		if(result.error.messages != undefined) {
+                		$('<p/>').html('<h4>Upload process return error(s):-</h4>').appendTo('#upload-error');
+                		$.each(result.error.messages, function(index, message){
+                			$('#upload-error').append('<p>'+message+'</p>');
+                		});
+                	}
+                	else {
+                		$('<p/>').html("An error has occured on the server. Please try again.").appendTo('#upload-error');
+                	}
+            	}
+
+                setTimeout(function(){
+                    $('#progress').css('width', '0%');
+                }, 1000);
+            }
+        },
+        fail: function (e, data) {
+        	$('#progress').css('width', '0%');
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress').css('width', progress + '%');
+        }
+    })
+    .prop('disabled', !$.support.fileInput)
+    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+	$('#users_table thead tr td.search-col-text').each(function(index, value){
+		var width = [];
+		width[0] = 50;
+		width[1] = 80;
+		width[2] = 90;
+		width[3] = 90;
+		width[4] = 110;
+		width[5] = 80;
+		width[6] = 90;
+		width[7] = 80;
+		width[8] = 80;
+		width[9] = 80;
+		width[10] = 84;
+		width[11] = 73;
+		width[12] = 90;
+		width[13] = 90;
+		width[14] = 90;
+		width[15] = 90;
+		width[16] = 90;
+		width[17] = 112;
+		width[18] = 121;
+		width[19] = 100;
+		width[20] = 100;
+		width[21] = 90;
+		width[22] = 90;
+		width[23] = 90;
+		width[24] = 90;
+		width[25] = 112;
+		width[26] = 121;
+		width[27] = 100;
+		width[28] = 100;
+		width[29] = 90;
+
+	    $(this).html('<input id="search-col-'+$(this).data('index')+'" class="form-control" type="text" style="width:' + width[index] + 'px"/>');
+	} );
+
+	var table = jQuery('#users_table').DataTable({
+		"dom": '<"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('data.list') }}',
+		"lengthMenu": [[30, 50, 100], [30, 50, 100]],
+		"pageLength": 30,
+		"order": [[0, "asc"]],
+		"scrollX": true,
+		"scrollY": false,
+		"autoWidth": false,
+		"orderCellsTop": true,
+		"columns": [
+	        { "data": "line_number", "name": "line_number", "targets": 0 },
+	        { "data": "jobsheet_date", "name": "jobsheet_date", "targets": 1 },
+	        { "data": "jobsheet_no", "name": "jobsheet_no", "targets": 2 },
+	        { "data": "inv_no", "name": "inv_no", "targets": 3 },
+	        { "data": "inv_amt", "name": "inv_amt", "targets": 4 },
+	        { "data": "jobsheet_type", "name": "jobsheet_type", "targets": 5 },
+	        { "data": "customer_name", "name": "customer_name", "targets": 6 },
+	        { "data": "truck_no", "name": "truck_no", "targets": 7 },
+	        { "data": "pm_no", "name": "pm_no", "targets": 8 },
+	        { "data": "trailer_no", "name": "trailer_no", "targets": 9 },
+	        { "data": "odometer", "name": "odometer", "targets": 10 },
+	        { "data": "position", "name": "position", "targets": 11 },
+	        { "data": "in_attr", "name": "in_attr", "targets": 12 },
+	        { "data": "in_price", "name": "in_price", "targets": 13 },
+	        { "data": "in_size", "name": "in_size", "targets": 14 },
+	        { "data": "in_brand", "name": "in_brand", "targets": 15 },
+	        { "data": "in_pattern", "name": "in_pattern", "targets": 16 },
+	        { "data": "in_retread_brand", "name": "in_retread_brand", "targets": 17 },
+	        { "data": "in_retread_pattern", "name": "in_retread_pattern", "targets": 18 },
+	        { "data": "in_serial_no", "name": "in_serial_no", "targets": 19 },
+	        { "data": "in_job_card_no", "name": "in_job_card_no", "targets": 20 },
+	        { "data": "out_reason", "name": "out_reason", "targets": 21 },
+	        { "data": "out_size", "name": "out_size", "targets": 22 },
+	        { "data": "out_brand", "name": "out_brand", "targets": 23 },
+	        { "data": "out_pattern", "name": "out_pattern", "targets": 24 },
+	        { "data": "out_retread_brand", "name": "out_retread_brand", "targets": 25 },
+	        { "data": "out_retread_pattern", "name": "out_retread_pattern", "targets": 26 },
+	        { "data": "out_serial_no", "name": "out_serial_no", "targets": 27 },
+	        { "data": "out_job_card_no", "name": "out_job_card_no", "targets": 28 },
+	        { "data": "out_rtd", "name": "out_rtd", "targets": 29 }
+	    ]
+	});
+
+	table.columns().every(function (){
+	    var that = this;
+	    $('#search-col-'+this.index()).on('keyup change', function (){
+	        if (that.search() !== this.value){
+	            that.search(this.value)
+	                .draw();
+	        }
+	    });
+	});
+
+});
 </script>
 @append

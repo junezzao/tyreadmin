@@ -4,7 +4,7 @@
 @append
 
 @section('title')
-	@lang('titles.users')
+@lang('titles.users')
 @stop
 
 @section('content')
@@ -41,7 +41,6 @@
 
 @include('includes.datatables')
 @section('footer_scripts')
-
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	var table = jQuery('#user_table').DataTable({

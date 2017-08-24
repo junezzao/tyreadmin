@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-	@lang('titles.reports')
+@lang('titles.reports')
 @stop
 
 @section('content')
@@ -137,27 +137,21 @@
    	</section>
 @stop
 
-@include('includes.datatables')
 @section('footer_scripts')
-
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('.title').on('click', function() {
-			// $(this).siblings('.setting').slideToggle(500);
-		});
-
-		$('input[name="limit"]').on('click', function() {
-			$(this).select();
-		});
+$(document).ready(function() {
+	$('input[name="limit"]').on('click', function() {
+		$(this).select();
 	});
+});
 
-	function odometerAnalysis() {
-		window.location.href = '{{ route('reports.odometerAnalysis') }}' + '?check_trailer=' + ($('#odometer-check').is(":checked") ? 'Y' : 'N');
-	}
+function odometerAnalysis() {
+	window.location.href = '{{ route('reports.odometerAnalysis') }}' + '?check_trailer=' + ($('#odometer-check').is(":checked") ? 'Y' : 'N');
+}
 
-	function truckTyreCost() {
-		var limit = isNaN($('input[name="limit"]').val()) ? 10 : Math.abs(parseInt($('input[name="limit"]').val()));
-		window.location.href = '{{ route('reports.truckTyreCost') }}' + '?sort=' + $('select[name="sort"]').val() + '&limit=' + limit;
-	}
+function truckTyreCost() {
+	var limit = isNaN($('input[name="limit"]').val()) ? 10 : Math.abs(parseInt($('input[name="limit"]').val()));
+	window.location.href = '{{ route('reports.truckTyreCost') }}' + '?sort=' + $('select[name="sort"]').val() + '&limit=' + limit;
+}
 </script>
 @append
