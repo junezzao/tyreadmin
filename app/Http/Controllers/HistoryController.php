@@ -27,6 +27,11 @@ class HistoryController extends AdminController
 
     public function index()
     {
+        return view('history.index');
+    }
+
+    public function load()
+    {
         $data = array();
         
         $truckPositionData = json_decode($this->getGuzzleClient(array(), 'data/'.$this->user->id.'/view/truck_position')->getBody()->getContents(), true);
@@ -129,9 +134,8 @@ class HistoryController extends AdminController
         $data['tyreBrand']['COC']           = json_encode(array(array('text'=>'Customer Own Casing (COC)', 'nodes'=>$tyreBrand['COC'])), true);
         $data['tyreBrand']['USED']          = json_encode(array(array('text'=>'Used Tyre (USED)', 'nodes'=>$tyreBrand['USED'])), true);
         $data['tyreBrand']['OTHER']         = json_encode(array(array('text'=>'Other (OTHER)', 'nodes'=>$tyreBrand['OTHER'])), true);
-
-        // \Log::info(print_r($data['tyreBrand']['NT'], true));
-        return view('history.index', $data);
+        
+        return $data;
     }
 
     public function generateTyreBrandTree($data) {

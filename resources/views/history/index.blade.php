@@ -30,7 +30,7 @@
 					        </div>
 					    </div>
 
-	            		<div class="col-xs-12 view">
+					    <div class="col-xs-12 view">
 		            		<div class="title">View by Truck Position</div>
 		            		<div id="truck-position"></div>
 		            	</div>
@@ -76,67 +76,65 @@ $(document).ready(function() {
 		$(this).siblings('div.level').slideToggle(500);
 	});
 
-	var truckPosition = '<?php echo $truckPosition; ?>';
-	$('#truck-position').treeview({
-		data: JSON.parse(truckPosition),
-		levels: 1,
-		multiSelect: true
-	});
+	$.ajax({
+	  	type: "GET",  
+	  	url: '{{ route('history.load') }}',
+	  	dataType: "json",       
+	  	success: function(data){
+	  		$('#truck-position').treeview({
+				data: JSON.parse(data['truckPosition']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var truckService = '<?php echo $truckService; ?>';
-	$('#truck-service').treeview({
-		data: JSON.parse(truckService),
-		levels: 1,
-		multiSelect: true
-	});
-	
-	var tyreBrandNt = '<?php echo $tyreBrand['NT']; ?>';
-	$('#tyre-brand-nt').treeview({
-		data: JSON.parse(tyreBrandNt),
-		levels: 1,
-		multiSelect: true
-	});
+			$('#truck-service').treeview({
+				data: JSON.parse(data['truckService']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var tyreBrandNtSubCon = '<?php echo $tyreBrand['NT_SUB_CON']; ?>';
-	$('#tyre-brand-nt-sub-con').treeview({
-		data: JSON.parse(tyreBrandNtSubCon),
-		levels: 1,
-		multiSelect: true
-	});
+			$('#tyre-brand-nt').treeview({
+				data: JSON.parse(data['tyreBrand']['NT']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var tyreBrandStk = '<?php echo $tyreBrand['STK']; ?>';
-	$('#tyre-brand-stk').treeview({
-		data: JSON.parse(tyreBrandStk),
-		levels: 1,
-		multiSelect: true
-	});
+			$('#tyre-brand-nt-sub-con').treeview({
+				data: JSON.parse(data['tyreBrand']['NT_SUB_CON']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var tyreBrandStkSubCon = '<?php echo $tyreBrand['STK_SUB_CON']; ?>';
-	$('#tyre-brand-stk-sub-con').treeview({
-		data: JSON.parse(tyreBrandStkSubCon),
-		levels: 1,
-		multiSelect: true
-	});
+			$('#tyre-brand-stk').treeview({
+				data: JSON.parse(data['tyreBrand']['STK']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var tyreBrandCoc = '<?php echo $tyreBrand['COC']; ?>';
-	$('#tyre-brand-coc').treeview({
-		data: JSON.parse(tyreBrandCoc),
-		levels: 1,
-		multiSelect: true
-	});
+			$('#tyre-brand-stk-sub-con').treeview({
+				data: JSON.parse(data['tyreBrand']['STK_SUB_CON']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var tyreBrandUsed = '<?php echo $tyreBrand['USED']; ?>';
-	$('#tyre-brand-used').treeview({
-		data: JSON.parse(tyreBrandUsed),
-		levels: 1,
-		multiSelect: true
-	});
+			$('#tyre-brand-coc').treeview({
+				data: JSON.parse(data['tyreBrand']['COC']),
+				levels: 1,
+				multiSelect: true
+			});
 
-	var tyreBrandOther = '<?php echo $tyreBrand['OTHER']; ?>';
-	$('#tyre-brand-other').treeview({
-		data: JSON.parse(tyreBrandOther),
-		levels: 1,
-		multiSelect: true
+			$('#tyre-brand-used').treeview({
+				data: JSON.parse(data['tyreBrand']['USED']),
+				levels: 1,
+				multiSelect: true
+			});
+
+			$('#tyre-brand-other').treeview({
+				data: JSON.parse(data['tyreBrand']['OTHER']),
+				levels: 1,
+				multiSelect: true
+			});
+		}  
 	});
 
 	var search = function(e) {

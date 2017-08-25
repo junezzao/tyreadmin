@@ -55,6 +55,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::resource('data', 'DataController');
 
+    Route::group(['prefix' => 'history'], function () {
+        Route::get('/load', 'HistoryController@load')->name('history.load');
+    });
     Route::resource('history', 'HistoryController');
 
     Route::group(['prefix' => 'reports'], function () {
