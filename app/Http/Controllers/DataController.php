@@ -179,12 +179,22 @@ class DataController extends Controller
         }
     }
 
-    public function list() {
+    public function list(Request $request) {
         $data = array();
+        $data['start'] = $request->input('start');
+        $data['length'] = $request->input('length');
+        $data['draw'] = $request->input('draw');
+        $data['order'] = $request->input('order');
+        $data['columns'] = $request->input('columns');
+        $data['search'] = $request->input('search');
 
-        $data['data'] = json_decode($this->getGuzzleClient(array(), 'data/'.$this->user->id)->getBody()->getContents(), true);
+        $results = json_decode($this->getGuzzleClient($data, 'data/'.$this->user->id)->getBody()->getContents(), true);
 
-        return json_encode($data);
+        $return['draw'] = $data['draw'];
+        $return['recordsTotal'] = $return['recordsFiltered'] = $results['total'];
+        $return['data'] = $results['data'];
+
+        return json_encode($return);
     }
 
     public function printDiagnostic() {

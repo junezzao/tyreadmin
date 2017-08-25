@@ -276,7 +276,8 @@ $(document).ready(function() {
 	} );
 
 	var table = jQuery('#users_table').DataTable({
-		"dom": '<"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"dom": '<"clearfix"l><"clearfix"ip>t<"clearfix"ip>',
+		"serverSide": true,
 		"ajax": '{{ route('data.list') }}',
 		"lengthMenu": [[30, 50, 100], [30, 50, 100]],
 		"pageLength": 30,
@@ -285,6 +286,7 @@ $(document).ready(function() {
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"processing": true,
 		"columns": [
 	        { "data": "line_number", "name": "line_number", "targets": 0 },
 	        { "data": "jobsheet_date", "name": "jobsheet_date", "targets": 1 },
@@ -321,11 +323,13 @@ $(document).ready(function() {
 
 	table.columns().every(function (){
 	    var that = this;
-	    $('#search-col-'+this.index()).on('keyup change', function (){
-	        if (that.search() !== this.value){
-	            that.search(this.value)
-	                .draw();
-	        }
+	    $('#search-col-'+this.index()).on('keyup', function (e){
+	        if(e.keyCode == 13) {
+		        if (that.search() !== this.value){
+		            that.search(this.value)
+		                .draw();
+		        }
+		    }
 	    });
 	});
 
