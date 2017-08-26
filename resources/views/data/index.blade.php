@@ -27,19 +27,20 @@
 		              			<div class="row col-xs-12 align-center">
 			              			<a href="javascript:void(0)" onclick="javascript:toggleDiagnostic();" id="diagnostic-link">Hide data diagnostic</a>
 			              		</div>
-		              			<div class="diagnostic col-xs-10 col-xs-offset-1">
-	                                <div class="float-right">
-	                                	<a href="{{ route('data.print.diagnostic') }}" target="_blank">print</a>
-	                                </div>
-	                                @foreach($sheet['remarks'] as $i=>$remark)
-	                                   <div><span class="pad-right">{{ $i+1 }}.</span>{{ $remark }}</div>
-	                                @endforeach
-	                                <div class="float-right">
-	                                	<a class="pad-right" href="javascript:toggleDiagnostic();">hide</a> | 
-	                                	<a class="pad-left" href="javascript:scrollToTopDiagnostic(this);">back to top</a>
-	                                </div>
-		              			</div>
-		              		</div>
+		              			<div class="diagnostic col-xs-8 col-xs-offset-2">
+				            		<table id="diagnostic_table" class="table table-bordered" style="width:100%">
+					                    <thead>
+					                      	<tr>
+					                      		<th>No.</th>
+					                      		<th>Error</th>
+					                      	</tr>
+					                    </thead>
+					                    <tbody>
+			                    		</tbody>
+					                </table>
+				                </div>
+				            </div>
+		              		
 		              	@endif
 		              	@endif
 	              		<div class="row margin-top">
@@ -173,10 +174,6 @@ function toggleDiagnostic(link) {
 	});
 }
 
-function scrollToTopDiagnostic() {
-	$('div.diagnostic').animate({ scrollTop: 0 }, 500);
-}
-
 $(document).ready(function() {
 
 	$('#dl_template').on('click', function() {
@@ -275,7 +272,39 @@ $(document).ready(function() {
 	    $(this).html('<input id="search-col-'+$(this).data('index')+'" class="form-control" type="text" style="width:' + width[index] + 'px"/>');
 	} );
 
-	var table = jQuery('#users_table').DataTable({
+	var diagnostic_table = jQuery('#diagnostic_table').DataTable({
+		"dom": '<"clearfix"lB>t<"clearfix"ip>',
+		"ajax": '{{ route('data.load.sheetRemarks') }}',
+		"lengthMenu": [[10, 20, 50], [10, 20, 50]],
+		"pageLength": 10,
+		"scrollX": true,
+		"scrollY": false,
+		"autoWidth": false,
+		"orderCellsTop": true,
+		"ordering": false,
+		"columns": [
+	        { "data": "no", "name": "no", "targets": 0, "orderable": false },
+	        { "data": "remark", "name": "remark", "targets": 1, "orderable": false }
+	    ],
+	    buttons: [
+            {
+                extend: 'pdfHtml5',
+                title: '{{ date("Ymd") }}' + '_' + '{{ date("His") }}' + '_tyre_admin_data_diagnostic',
+                exportOptions: {
+                    columns: [ ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                title: '{{ date("Ymd") }}' + '_' + '{{ date("His") }}' + '_tyre_admin_data_diagnostic',
+                exportOptions: {
+                    columns: [ ':visible' ]
+                }
+            },
+        ],
+	});
+
+	var users_table = jQuery('#users_table').DataTable({
 		"dom": '<"clearfix"l><"clearfix"ip>t<"clearfix"ip>',
 		"serverSide": true,
 		"ajax": '{{ route('data.list') }}',
@@ -321,7 +350,7 @@ $(document).ready(function() {
 	    ]
 	});
 
-	table.columns().every(function (){
+	users_table.columns().every(function (){
 	    var that = this;
 	    $('#search-col-'+this.index()).on('keyup', function (e){
 	        if(e.keyCode == 13) {

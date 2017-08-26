@@ -31,6 +31,20 @@ class DataController extends Controller
         return view('data.index', $data);
     }
 
+    public function loadSheetRemarks()
+    {
+        $remarks = json_decode($this->getGuzzleClient(array(), 'data/sheet/'.$this->user->id)->getBody()->getContents())->remarks;
+
+        $data = array();
+        foreach($remarks as $index=>$remark) {
+            $line['no']       = $index + 1;
+            $line['remark']   = $remark;
+            $data[]           = $line;
+        }
+    
+        return json_encode(["data" => $data]);
+    }
+
     public function show($id)
     {
     }

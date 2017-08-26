@@ -15,3 +15,17 @@ $(document).ready(function () {
 	    });
 	}
 });
+
+var loadingTimer;
+$(document).on({
+    ajaxStart: function() { 
+    	loadingTimer = setTimeout(function(){
+    		waitingDialog.show('Loading....', {dialogSize: 'sm'});  
+        }, 1000);
+
+    },
+	ajaxStop: function() {
+		clearTimeout(loadingTimer);
+		waitingDialog.hide();
+	}    
+});

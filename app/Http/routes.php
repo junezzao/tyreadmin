@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/download/template', 'DataController@downloadTemplate')->name('data.download.template');
         Route::get('/list', 'DataController@list')->name('data.list');
         Route::get('/print/diagnostic', 'DataController@printDiagnostic')->name('data.print.diagnostic');
+        Route::get('/load/sheet_remarks', 'DataController@loadSheetRemarks')->name('data.load.sheetRemarks');
     });
     Route::resource('data', 'DataController');
 

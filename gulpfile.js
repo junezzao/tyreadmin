@@ -21,14 +21,17 @@ elixir(function(mix) {
 
 	mix.scripts([
         'app.js',
-        'common.js'
+        'common.js',
+        'loading-modal-prompt.js'
     ], 'public/js/app.min.js');
-
+    
+    // fileupload
     mix.scripts([
         'jquery_ui_widgets.js',
         'jquery.fileupload.js'
     ], 'public/js/fileupload.min.js');
 
+    // bootstrap treeview
     mix.scripts([
         'bootstrap-treeview.js'
     ], 'public/js/bootstrap-treeview.min.js');

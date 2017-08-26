@@ -553,12 +553,7 @@
 }
 
 .diagnostic {
-  border: 1px solid #808080; 
-  padding: 14px 20px; 
-  margin-top: 10px; 
-  height: 200px; 
-  overflow: scroll; 
-  overflow-x: hidden;
+  
 }
 
 .pad-right {
@@ -781,7 +776,7 @@
 
 div.dt-buttons {
   float: right !important;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .subscription {
@@ -843,4 +838,18 @@ div.dt-buttons {
 
 .skin-black .main-header > .logo {
   background-color: #fff !important;
+}
+
+#diagnostic_table_wrapper {
+  .clearfix {
+    width: 100%;
+  }
+
+  th, td {
+    padding: 4px 8px;
+  }
+
+  div.dt-buttons {
+    margin-top: 0px;
+  }
 }

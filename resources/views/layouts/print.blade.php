@@ -19,6 +19,6 @@
 		    </footer>
 
 		</div>
-		@yield('footer_scripts')
+		@include('includes.footer_scripts')
 	</body>
 </html>
