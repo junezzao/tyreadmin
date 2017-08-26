@@ -36,11 +36,30 @@ class ReportController extends AdminController
 
     public function serialNoAnalysis()
     {
-        $data = array();
-        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/serial_no_analysis')->getBody()->getContents(), true);
-        // \Log::info('data... '.print_r($data, true));
+        return view('reports.serial-no-analysis');
+    }
 
-        return view('reports.serial-no-analysis', $data);
+    public function serialNoAnalysisLoadMissing()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/serial_no_analysis/missing')->getBody()->getContents(), true);
+        return json_encode(['data' => $data]);
+    }
+
+    public function serialNoAnalysisLoadRepeated()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/serial_no_analysis/repeated')->getBody()->getContents(), true);
+
+        $return = array();
+        foreach($data as $serialNo => $fittings) {
+            foreach($fittings as $index => $fitting) {
+                $return[] = [
+                    'serialNo'  => $serialNo,
+                    'fitting'   => $fitting
+                ];
+            }
+        }
+
+        return json_encode(['data' => $return]);
     }
 
     public function odometerAnalysis(Request $request)

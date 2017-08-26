@@ -27,19 +27,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($missing as $data)
-					                <tr>
-					                    <td>{{ $data['line'] }}</td>
-					                    <td>{{ $data['jobsheet'] }}</td>
-					                    <td>{{ $data['type'] }}</td>
-					                    <td>{{ $data['customer'] }}</td>
-					                    <td>{{ $data['vehicle'] }}</td>
-					                    <td>{{ $data['position'] }}</td>
-					                    <td>{{ $data['in_out'] }}</td>
-					                    <td>{{ $data['tyre'] }}</td>
-					                    <td>{{ $data['remark'] }}</td>
-					                </tr>
-					            @endforeach
 		                    </tbody>
 	                    </table>
 
@@ -53,15 +40,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($repeated as $serialNo => $fittings)
-		                    		@foreach ($fittings as $index => $fitting)
-						                <tr>
-						                    <td>{{ $serialNo }}</td>
-						                    <td>@if($index == 0) {{ $serialNo }} @endif</td>
-						                    <td>{{ $fitting }}</td>
-						                </tr>
-						            @endforeach
-					            @endforeach
 		                    </tbody>
 	                    </table>
 
@@ -81,6 +59,7 @@
 jQuery(document).ready(function(){
 	var missing_table = jQuery('#missing_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('reports.serialNoAnalysis.load.missing') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [[0, "asc"]],
@@ -88,6 +67,17 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "line", "name": "line", "targets": 0 },
+            { "data": "jobsheet", "name": "jobsheet", "targets": 1 },
+            { "data": "type", "name": "type", "targets": 2 },
+            { "data": "customer", "name": "customer", "targets": 3 },
+            { "data": "vehicle", "name": "vehicle", "targets": 4 },
+            { "data": "position", "name": "position", "targets": 5 },
+            { "data": "in_out", "name": "in_out", "targets": 7 },
+            { "data": "tyre", "name": "tyre", "targets": 8 },
+            { "data": "remark", "name": "remark", "targets": 9 },
+        ],
 		buttons: [
             {
                 extend: 'pdfHtml5',
@@ -108,6 +98,7 @@ jQuery(document).ready(function(){
 
     var repeated_table = $('#repeated_table').DataTable({
         "dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+        "ajax": '{{ route('reports.serialNoAnalysis.load.repeated') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [],
@@ -115,6 +106,11 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "serialNo", "name": "serialNo", "targets": 0 },
+            { "data": "serialNo", "name": "serialNo", "targets": 1 },
+            { "data": "fitting", "name": "fitting", "targets": 2, "orderable": false },
+        ],
 		"columnDefs": [
 			{ "targets": 0, "visible": false }
         ],
@@ -133,7 +129,19 @@ jQuery(document).ready(function(){
                     columns: [ ':visible' ]
                 }
             },
-        ]
+        ],
+        "drawCallback": function( settings ) {
+        	console.log('drawn');
+        	var lastSerialNo = '';
+        	var serialNo = '';
+	        $('#repeated_table > tbody  > tr').each(function() {
+	        	serialNo = $(this).children('td:eq(0)').text();
+	        	if(serialNo == lastSerialNo) {
+					$(this).children('td:eq(0)').text('');
+	        	}
+	        	lastSerialNo = serialNo;
+	        });
+	    }
     } );
 });
 </script>

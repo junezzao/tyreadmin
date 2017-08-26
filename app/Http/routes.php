@@ -63,6 +63,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/serial_no_analysis', 'ReportController@serialNoAnalysis')->name('reports.serialNoAnalysis');
+        Route::get('/serial_no_analysis/load/missing', 'ReportController@serialNoAnalysisLoadMissing')->name('reports.serialNoAnalysis.load.missing');
+        Route::get('/serial_no_analysis/load/repeated', 'ReportController@serialNoAnalysisLoadRepeated')->name('reports.serialNoAnalysis.load.repeated');
+        
         Route::get('/odometer_analysis', 'ReportController@odometerAnalysis')->name('reports.odometerAnalysis');
         Route::get('/tyre_removal_mileage', 'ReportController@tyreRemovalMileage')->name('reports.tyreRemovalMileage');
         Route::get('/tyre_removal_record', 'ReportController@tyreRemovalRecord')->name('reports.tyreRemovalRecord');
