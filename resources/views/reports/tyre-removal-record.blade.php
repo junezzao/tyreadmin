@@ -25,17 +25,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($only_in as $data)
-					                <tr>
-					                    <td>{{ $data['line'] }}</td>
-					                    <td>{{ $data['jobsheet'] }}</td>
-					                    <td>{{ $data['type'] }}</td>
-					                    <td>{{ $data['customer'] }}</td>
-					                    <td>{{ $data['vehicle'] }}</td>
-					                    <td>{{ $data['position'] }}</td>
-					                    <td>{{ $data['remark'] }}</td>
-					                </tr>
-					            @endforeach
 		                    </tbody>
 	                    </table>
 
@@ -53,17 +42,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($only_out as $data)
-					                <tr>
-					                    <td>{{ $data['line'] }}</td>
-					                    <td>{{ $data['jobsheet'] }}</td>
-					                    <td>{{ $data['type'] }}</td>
-					                    <td>{{ $data['customer'] }}</td>
-					                    <td>{{ $data['vehicle'] }}</td>
-					                    <td>{{ $data['position'] }}</td>
-					                    <td>{{ $data['remark'] }}</td>
-					                </tr>
-					            @endforeach
 		                    </tbody>
 	                    </table>
 
@@ -78,16 +56,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($conflict as $vehicle => $fittings)
-		                    		@foreach ($fittings as $index => $fitting)
-						                <tr>
-						                    <td>{{ $vehicle }}</td>
-						                    <td>@if($index == 0) {{ $vehicle }} @endif</td>
-						                    <td>{{ $fitting['info'] }}</td>
-						                    <td>{{ $fitting['remark'] }}</td>
-						                </tr>
-						            @endforeach
-					            @endforeach
 		                    </tbody>
 	                    </table>
 	            	</div>
@@ -104,6 +72,7 @@
 jQuery(document).ready(function(){
 	var only_in_table = jQuery('#only_in_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('reports.tyreRemovalRecord.load.onlyIn') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [[0, "asc"]],
@@ -111,6 +80,15 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "line", "name": "line", "targets": 0 },
+            { "data": "jobsheet", "name": "jobsheet", "targets": 1 },
+            { "data": "type", "name": "type", "targets": 2 },
+            { "data": "customer", "name": "customer", "targets": 3 },
+            { "data": "vehicle", "name": "vehicle", "targets": 4 },
+            { "data": "position", "name": "position", "targets": 5 },
+            { "data": "remark", "name": "remark", "targets": 6 },
+        ],
 		buttons: [
             {
                 extend: 'pdfHtml5',
@@ -131,6 +109,7 @@ jQuery(document).ready(function(){
 
 	var only_out_table = jQuery('#only_out_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('reports.tyreRemovalRecord.load.onlyOut') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [[0, "asc"]],
@@ -138,6 +117,15 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "line", "name": "line", "targets": 0 },
+            { "data": "jobsheet", "name": "jobsheet", "targets": 1 },
+            { "data": "type", "name": "type", "targets": 2 },
+            { "data": "customer", "name": "customer", "targets": 3 },
+            { "data": "vehicle", "name": "vehicle", "targets": 4 },
+            { "data": "position", "name": "position", "targets": 5 },
+            { "data": "remark", "name": "remark", "targets": 6 },
+        ],
 		buttons: [
             {
                 extend: 'pdfHtml5',
@@ -158,6 +146,7 @@ jQuery(document).ready(function(){
 
 	var conflict_table = jQuery('#conflict_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('reports.tyreRemovalRecord.load.conflict') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [],
@@ -165,6 +154,12 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "vehicle", "name": "vehicle", "targets": 0 },
+            { "data": "vehicle", "name": "vehicle", "targets": 1 },
+            { "data": "info", "name": "info", "targets": 2, "orderable": false },
+            { "data": "remark", "name": "remark", "targets": 3, "orderable": false },
+        ],
 		"columnDefs": [
 			{ "targets": 0, "visible": false }
         ],
@@ -183,7 +178,18 @@ jQuery(document).ready(function(){
                     columns: [ ':visible' ]
                 }
             },
-        ]
+        ],
+        "drawCallback": function( settings ) {
+        	var lastVehicleNo = '';
+        	var vehicleNo = '';
+	        $('#conflict_table > tbody  > tr').each(function() {
+	        	vehicleNo = $(this).children('td:eq(0)').text();
+	        	if(vehicleNo == lastVehicleNo) {
+					$(this).children('td:eq(0)').text('');
+	        	}
+	        	lastVehicleNo = vehicleNo;
+	        });
+	    }
     });
 });
 </script>

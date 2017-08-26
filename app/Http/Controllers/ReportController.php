@@ -101,11 +101,37 @@ class ReportController extends AdminController
 
     public function tyreRemovalRecord()
     {
-        $data = array();
-        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/tyre_removal_record')->getBody()->getContents(), true);
-        // \Log::info('data... '.print_r($data, true));
+        return view('reports.tyre-removal-record');
+    }
 
-        return view('reports.tyre-removal-record', $data);
+    public function tyreRemovalRecordLoadOnlyIn()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/tyre_removal_record/only_in')->getBody()->getContents(), true);
+        return json_encode(['data' => $data]);
+    }
+
+    public function tyreRemovalRecordLoadOnlyOut()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/tyre_removal_record/only_out')->getBody()->getContents(), true);
+        return json_encode(['data' => $data]);
+    }
+
+    public function tyreRemovalRecordLoadConflict()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/tyre_removal_record/conflict')->getBody()->getContents(), true);
+        
+        $return = array();
+        foreach($data as $vehicle => $fittings) {
+            foreach($fittings as $index => $fitting) {
+                $return[] = [
+                    'vehicle'   => $vehicle,
+                    'info'      => $fitting['info'],
+                    'remark'    => $fitting['remark']
+                ];
+            }
+        }
+
+        return json_encode(['data' => $return]);
     }
 
     public function truckTyreCost(Request $request)

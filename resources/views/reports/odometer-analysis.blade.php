@@ -98,7 +98,7 @@ jQuery(document).ready(function(){
 		"columns": [
             { "data": "vehicle", "name": "vehicle", "targets": 0 },
             { "data": "vehicle", "name": "vehicle", "targets": 1 },
-            { "data": "reading", "name": "reading", "targets": 2, "orderable": false  },
+            { "data": "reading", "name": "reading", "targets": 2, "orderable": false },
         ],
 		"columnDefs": [
 			{ "targets": 0, "visible": false }
