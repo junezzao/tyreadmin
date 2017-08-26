@@ -25,29 +25,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	<?php 
-		                    		$lastCustomer 		= '';
-		                    		$lastVehicleType 	= '';
-		                    	?>
-		                    	@foreach ($data as $customer => $customerData)
-		                    		@foreach ($customerData['costs'] as $vehicleType => $costs)
-		                    			@foreach ($costs as $index => $cost)
-		                    				<tr>
-		                    					<td>{{ $customer }}</td>
-		                    					<td><b>@if($customer != $lastCustomer) {{ $customer }} @endif</b></td>
-		                    					<td>@if($customer != $lastCustomer) {{ $customerData['from'] }} till {{ $customerData['to'] }} @endif</td>
-		                    					<td><b>@if($vehicleType != $lastVehicleType) {{ strtoupper($vehicleType) }} @endif</b></td>
-		                    					<td>{{ $index + 1 }}</td>
-		                    					<td>{{ $cost['vehicleNo'] }}</td>
-		                    					<td>{{ $cost['cost'] }}</td>
-		                    				</tr>
-		                    				<?php
-						                      		$lastCustomer 		= $customer;
-						                      		$lastVehicleType 	= $vehicleType;
-						                      	?>
-					            		@endforeach
-					            	@endforeach
-					            @endforeach
 		                    </tbody>
 	                    </table>
 	            	</div>
@@ -65,13 +42,23 @@
 jQuery(document).ready(function(){
 	var table = jQuery('#table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
-		"lengthMenu": [[50, 80, 100], [50, 80, 100]],
-		"pageLength": 50,
+		"ajax": '{{ route('reports.truckTyreCost.load') }}?sort={{ $sort }}&limit={{ $limit }}',
+		"lengthMenu": [[30, 50, 100], [30, 50, 100]],
+		"pageLength": 30,
 		"order": [],
 		"scrollX": true,
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "customer", "name": "customer", "targets": 0 },
+            { "data": "customer2", "name": "customer2", "targets": 1, "orderable": false },
+            { "data": "date", "name": "date", "targets": 2, "orderable": false },
+            { "data": "vehicleType", "name": "vehicleType", "targets": 3, "orderable": false },
+            { "data": "rank", "name": "rank", "targets": 4, "orderable": false },
+            { "data": "vehicleNo", "name": "vehicleNo", "targets": 5, "orderable": false },
+            { "data": "cost", "name": "cost", "targets": 6, "orderable": false },
+        ],
 		"columnDefs": [
 			{ "targets": 0, "visible": false }
         ],

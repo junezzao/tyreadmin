@@ -27,37 +27,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	<?php 
-		                    		$lastCustomer 		= '';
-		                    		$lastVehicleType 	= '';
-		                    		$lastVehicleNo 		= '';
-		                    	?>
-		                    	@foreach ($data as $customer => $customerData)
-		                    		@foreach ($customerData as $vehicleType => $vehicleData)
-		                    			@foreach ($vehicleData as $vehicleNo => $positionData)
-		                    				@foreach ($positionData as $position => $jobs)
-		                    					@foreach ($jobs as $index => $job)
-		                    						<tr>
-								                        <td>{{ $customer }}</td>
-								                        <td>{{ $vehicleNo }}</td>
-								                        <td><b>@if($customer != $lastCustomer) {{ $customer }} @endif</b></td>
-								                        <td><b>@if($vehicleType != $lastVehicleType) {{ strtoupper($vehicleType) }} @endif</b></td>
-								                        <td><b>@if($vehicleNo != $lastVehicleNo) {{ $vehicleNo }} @endif</b></td>
-								                        <td>{{ $position }}</td>
-								                        <td>{{ $job['info'] }}</td>
-								                        <td>{{ $job['in'] }}</td>
-								                        <td>{{ $job['out'] }}</td>
-							                      	</tr>
-							                      	<?php
-							                      		$lastCustomer 		= $customer;
-							                      		$lastVehicleType 	= $vehicleType;
-		                    							$lastVehicleNo 		= $vehicleNo;
-							                      	?>
-		                    					@endforeach
-		                    				@endforeach
-		                    			@endforeach
-					            	@endforeach
-					            @endforeach
 		                    </tbody>
 	                    </table>
 	            	</div>
@@ -75,8 +44,9 @@
 jQuery(document).ready(function(){
 	var table = jQuery('#table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
-		"lengthMenu": [[50, 80, 100], [50, 80, 100]],
-		"pageLength": 50,
+		"ajax": '{{ route('reports.truckServiceRecord.load') }}',
+		"lengthMenu": [[30, 50, 100], [30, 50, 100]],
+		"pageLength": 30,
 		"order": [],
 		"scrollX": true,
 		"scrollY": false,
@@ -85,6 +55,18 @@ jQuery(document).ready(function(){
 		"columnDefs": [
 			{ "targets": [0, 1], "visible": false }
         ],
+        "columns": [
+            { "data": "customer", "name": "customer", "targets": 0 },
+            { "data": "vehicleNo", "name": "vehicleNo", "targets": 1 },
+            { "data": "customer2", "name": "customer2", "targets": 2, "orderable": false },
+            { "data": "vehicleType", "name": "vehicleType", "targets": 3, "orderable": false },
+            { "data": "vehicleNo2", "name": "vehicleNo2", "targets": 4, "orderable": false },
+            { "data": "position", "name": "position", "targets": 5, "orderable": false },
+            { "data": "info", "name": "info", "targets": 6, "orderable": false },
+            { "data": "in", "name": "in", "targets": 7, "orderable": false },
+            { "data": "out", "name": "out", "targets": 8, "orderable": false },
+        ],
+		
 		buttons: [
             {
                 extend: 'pdfHtml5',

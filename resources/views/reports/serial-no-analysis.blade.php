@@ -74,9 +74,9 @@ jQuery(document).ready(function(){
             { "data": "customer", "name": "customer", "targets": 3 },
             { "data": "vehicle", "name": "vehicle", "targets": 4 },
             { "data": "position", "name": "position", "targets": 5 },
-            { "data": "in_out", "name": "in_out", "targets": 7 },
-            { "data": "tyre", "name": "tyre", "targets": 8 },
-            { "data": "remark", "name": "remark", "targets": 9 },
+            { "data": "in_out", "name": "in_out", "targets": 6 },
+            { "data": "tyre", "name": "tyre", "targets": 7 },
+            { "data": "remark", "name": "remark", "targets": 8 },
         ],
 		buttons: [
             {
@@ -101,14 +101,14 @@ jQuery(document).ready(function(){
         "ajax": '{{ route('reports.serialNoAnalysis.load.repeated') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
-		"order": [],
+		"order": [[0, "asc"]],
 		"scrollX": true,
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
 		"columns": [
             { "data": "serialNo", "name": "serialNo", "targets": 0 },
-            { "data": "serialNo", "name": "serialNo", "targets": 1 },
+            { "data": "serialNo2", "name": "serialNo2", "targets": 1, "orderable": false },
             { "data": "fitting", "name": "fitting", "targets": 2, "orderable": false },
         ],
 		"columnDefs": [
@@ -129,18 +129,7 @@ jQuery(document).ready(function(){
                     columns: [ ':visible' ]
                 }
             },
-        ],
-        "drawCallback": function( settings ) {
-        	var lastSerialNo = '';
-        	var serialNo = '';
-	        $('#repeated_table > tbody  > tr').each(function() {
-	        	serialNo = $(this).children('td:eq(0)').text();
-	        	if(serialNo == lastSerialNo) {
-					$(this).children('td:eq(0)').text('');
-	        	}
-	        	lastSerialNo = serialNo;
-	        });
-	    }
+        ]
     } );
 });
 </script>

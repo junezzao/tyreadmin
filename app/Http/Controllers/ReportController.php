@@ -54,6 +54,7 @@ class ReportController extends AdminController
             foreach($fittings as $index => $fitting) {
                 $return[] = [
                     'serialNo'  => $serialNo,
+                    'serialNo2' => $index == 0 ? $serialNo : '',
                     'fitting'   => $fitting
                 ];
             }
@@ -64,7 +65,7 @@ class ReportController extends AdminController
 
     public function odometerAnalysis(Request $request)
     {
-        return view('reports.odometer-analysis');
+        return view('reports.odometer-analysis', $request->all());
     }
 
     public function odometerAnalysisLoadMissing(Request $request)
@@ -73,15 +74,16 @@ class ReportController extends AdminController
         return json_encode(['data' => $data]);
     }
 
-    public function odometerAnalysisLoadLess(Request $request)
+    public function odometerAnalysisLoadLess()
     {
-        $data = json_decode($this->getGuzzleClient($request->all(), 'reports/'.$this->user->id.'/odometer_analysis/less')->getBody()->getContents(), true);
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/odometer_analysis/less')->getBody()->getContents(), true);
 
         $return = array();
         foreach($data as $vehicle => $readings) {
             foreach($readings as $index => $reading) {
                 $return[] = [
-                    'vehicle'  => $vehicle,
+                    'vehicle'   => $vehicle,
+                    'vehicle2'  => $index == 0 ? $vehicle : '',
                     'reading'   => $reading
                 ];
             }
@@ -92,11 +94,52 @@ class ReportController extends AdminController
 
     public function tyreRemovalMileage()
     {
-        $data = array();
-        $data['data'] = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/tyre_removal_mileage')->getBody()->getContents(), true);
-        // \Log::info('data... '.print_r($data['data'], true));
+        return view('reports.tyre-removal-mileage');
+    }
 
-        return view('reports.tyre-removal-mileage', $data);
+    public function tyreRemovalMileageLoad()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/tyre_removal_mileage')->getBody()->getContents(), true);
+        
+        $return = array();
+        foreach($data as $serialNo => $fittings) {
+            $totalMileage = 0;
+            foreach($fittings as $index => $fitting) {
+                if(is_numeric($fitting['mileage'])) $totalMileage += $fitting['mileage'];
+
+                $return[] = [
+                    'serialNo'      => $serialNo,
+                    'serialNo2'     => $index == 0 ? $serialNo : '',
+                    'tyre'          => $fitting['tyre'],
+                    'tyre_retread'  => $fitting['tyre_retread'],
+                    'in_out'        => $fitting['in_out'],
+                    'remark'        => $fitting['remark'],
+                    'date'          => $fitting['date'],
+                    'jobsheet'      => $fitting['jobsheet'],
+                    'vehicle'       => $fitting['vehicle'],
+                    'position'      => $fitting['position'],
+                    'odometer'      => $fitting['odometer'],
+                    'mileage'       => $fitting['mileage'],
+                ];
+            }
+
+            $return[] = [
+                'serialNo'      => $serialNo,
+                'serialNo2'      => '',
+                'tyre'          => '',
+                'tyre_retread'  => '',
+                'in_out'        => '',
+                'remark'        => '',
+                'date'          => '',
+                'jobsheet'      => '',
+                'vehicle'       => '',
+                'position'      => '',
+                'odometer'      => '<b>Total Mileage</b>',
+                'mileage'       => $totalMileage,
+            ];
+        }
+
+        return json_encode(['data' => $return]);
     }
 
     public function tyreRemovalRecord()
@@ -125,6 +168,7 @@ class ReportController extends AdminController
             foreach($fittings as $index => $fitting) {
                 $return[] = [
                     'vehicle'   => $vehicle,
+                    'vehicle2'  => $index == 0 ? $vehicle : '',
                     'info'      => $fitting['info'],
                     'remark'    => $fitting['remark']
                 ];
@@ -136,19 +180,75 @@ class ReportController extends AdminController
 
     public function truckTyreCost(Request $request)
     {
-        $data = array();
-        $data['data'] = json_decode($this->getGuzzleClient($request->all(), 'reports/'.$this->user->id.'/truck_tyre_cost')->getBody()->getContents(), true);
-        // \Log::info('data... '.print_r($data, true));
+        return view('reports.truck-tyre-cost', $request->all());
+    }
 
-        return view('reports.truck-tyre-cost', $data);
+    public function truckTyreCostLoad(Request $request)
+    {
+        $data = json_decode($this->getGuzzleClient($request->all(), 'reports/'.$this->user->id.'/truck_tyre_cost')->getBody()->getContents(), true);
+        
+        $return = array();
+        $lastCustomer       = '';
+        $lastVehicleType    = '';
+        foreach($data as $customer => $customerData) {
+            foreach($customerData['costs'] as $vehicleType => $costs) {
+                foreach($costs as $index => $cost) {
+                    $return[] = [
+                        'customer'      => $customer,
+                        'customer2'     => '<b>'.($customer != $lastCustomer ? $customer : '').'</b>',
+                        'date'          => ($customer != $lastCustomer ? $customerData['from'].' till '.$customerData['to'] : ''),
+                        'vehicleType'   => '<b>'.($vehicleType != $lastVehicleType ? strtoupper($vehicleType) : '').'</b>',
+                        'rank'          => $index + 1,
+                        'vehicleNo'     => $cost['vehicleNo'],
+                        'cost'          => $cost['cost'],
+                    ];
+                    $lastCustomer       = $customer;
+                    $lastVehicleType    = $vehicleType;
+                }
+            }
+        }
+
+        return json_encode(['data' => $return]);
     }
 
     public function truckServiceRecord()
     {
-        $data = array();
-        $data['data'] = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/truck_service_record')->getBody()->getContents(), true);
-        // \Log::info('data... '.print_r($data, true));
+        return view('reports.truck-service-record');
+    }
 
-        return view('reports.truck-service-record', $data);
+    public function truckServiceRecordLoad()
+    {
+        $data = json_decode($this->getGuzzleClient(array(), 'reports/'.$this->user->id.'/truck_service_record')->getBody()->getContents(), true);
+        
+        $return = array();
+        $lastCustomer       = '';
+        $lastVehicleType    = '';
+        $lastVehicleNo      = '';
+        foreach($data as $customer => $customerData) {
+            foreach($customerData as $vehicleType => $vehicleData) {
+                foreach($vehicleData as $vehicleNo => $positionData) {
+                    foreach($positionData as $position => $jobs) {
+                        foreach($jobs as $index => $job) {
+                            $return[] = [
+                                'customer'      => $customer,
+                                'vehicleNo'     => $vehicleNo,
+                                'customer2'     => '<b>'.($customer != $lastCustomer ? $customer : '').'</b>',
+                                'vehicleType'   => '<b>'.($vehicleType != $lastVehicleType ? strtoupper($vehicleType) : '').'</b>',
+                                'vehicleNo2'    => '<b>'.($vehicleNo != $lastVehicleNo ? $vehicleNo : '').'</b>',
+                                'position'      => $position,
+                                'info'          => $job['info'],
+                                'in'            => $job['in'],
+                                'out'           => $job['out']
+                            ];
+                            $lastCustomer       = $customer;
+                            $lastVehicleType    = $vehicleType;
+                            $lastVehicleNo      = $vehicleNo;
+                        }
+                    }
+                }
+            }
+        }
+
+        return json_encode(['data' => $return]);
     }
 }

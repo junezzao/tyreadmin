@@ -71,14 +71,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/odometer_analysis/load/less', 'ReportController@odometerAnalysisLoadLess')->name('reports.odometerAnalysis.load.less');
 
         Route::get('/tyre_removal_mileage', 'ReportController@tyreRemovalMileage')->name('reports.tyreRemovalMileage');
+        Route::get('/tyre_removal_mileage/load', 'ReportController@tyreRemovalMileageLoad')->name('reports.tyreRemovalMileage.load');
 
         Route::get('/tyre_removal_record', 'ReportController@tyreRemovalRecord')->name('reports.tyreRemovalRecord');
         Route::get('/tyre_removal_record/load/only_in', 'ReportController@tyreRemovalRecordLoadOnlyIn')->name('reports.tyreRemovalRecord.load.onlyIn');
         Route::get('/tyre_removal_record/load/only_out', 'ReportController@tyreRemovalRecordLoadOnlyOut')->name('reports.tyreRemovalRecord.load.onlyOut');
         Route::get('/tyre_removal_record/load/conflict', 'ReportController@tyreRemovalRecordLoadConflict')->name('reports.tyreRemovalRecord.load.conflict');
-        
+
         Route::get('/truck_tyre_cost', 'ReportController@truckTyreCost')->name('reports.truckTyreCost');
+        Route::get('/truck_tyre_cost/load', 'ReportController@truckTyreCostLoad')->name('reports.truckTyreCost.load');
+
         Route::get('/truck_service_record', 'ReportController@truckServiceRecord')->name('reports.truckServiceRecord');
+        Route::get('/truck_service_record/load', 'ReportController@truckServiceRecordLoad')->name('reports.truckServiceRecord.load');
     });
 
     Route::resource('reports', 'ReportController');

@@ -149,14 +149,14 @@ jQuery(document).ready(function(){
 		"ajax": '{{ route('reports.tyreRemovalRecord.load.conflict') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
-		"order": [],
+		"order": [[0, "asc"]],
 		"scrollX": true,
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
 		"columns": [
             { "data": "vehicle", "name": "vehicle", "targets": 0 },
-            { "data": "vehicle", "name": "vehicle", "targets": 1 },
+            { "data": "vehicle2", "name": "vehicle2", "targets": 1, "orderable": false },
             { "data": "info", "name": "info", "targets": 2, "orderable": false },
             { "data": "remark", "name": "remark", "targets": 3, "orderable": false },
         ],
@@ -178,18 +178,7 @@ jQuery(document).ready(function(){
                     columns: [ ':visible' ]
                 }
             },
-        ],
-        "drawCallback": function( settings ) {
-        	var lastVehicleNo = '';
-        	var vehicleNo = '';
-	        $('#conflict_table > tbody  > tr').each(function() {
-	        	vehicleNo = $(this).children('td:eq(0)').text();
-	        	if(vehicleNo == lastVehicleNo) {
-					$(this).children('td:eq(0)').text('');
-	        	}
-	        	lastVehicleNo = vehicleNo;
-	        });
-	    }
+        ]
     });
 });
 </script>

@@ -52,7 +52,7 @@
 jQuery(document).ready(function(){
 	var missing_table = jQuery('#missing_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
-		"ajax": '{{ route('reports.odometerAnalysis.load.missing') }}',
+		"ajax": '{{ route('reports.odometerAnalysis.load.missing') }}?check_trailer={{ $check_trailer }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [[0, "asc"]],
@@ -90,14 +90,14 @@ jQuery(document).ready(function(){
 		"ajax": '{{ route('reports.odometerAnalysis.load.less') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
-		"order": [],
+		"order": [[0, "asc"]],
 		"scrollX": true,
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
 		"columns": [
             { "data": "vehicle", "name": "vehicle", "targets": 0 },
-            { "data": "vehicle", "name": "vehicle", "targets": 1 },
+            { "data": "vehicle2", "name": "vehicle2", "targets": 1, "orderable": false },
             { "data": "reading", "name": "reading", "targets": 2, "orderable": false },
         ],
 		"columnDefs": [
@@ -118,18 +118,7 @@ jQuery(document).ready(function(){
                     columns: [ ':visible' ]
                 }
             },
-        ],
-        "drawCallback": function( settings ) {
-        	var lastVehicleNo = '';
-        	var vehicleNo = '';
-	        $('#less_table > tbody  > tr').each(function() {
-	        	vehicleNo = $(this).children('td:eq(0)').text();
-	        	if(vehicleNo == lastVehicleNo) {
-					$(this).children('td:eq(0)').text('');
-	        	}
-	        	lastVehicleNo = vehicleNo;
-	        });
-	    }
+        ]
     });
 });
 </script>
