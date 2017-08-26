@@ -131,7 +131,6 @@ jQuery(document).ready(function(){
             },
         ],
         "drawCallback": function( settings ) {
-        	console.log('drawn');
         	var lastSerialNo = '';
         	var serialNo = '';
 	        $('#repeated_table > tbody  > tr').each(function() {

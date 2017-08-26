@@ -64,11 +64,30 @@ class ReportController extends AdminController
 
     public function odometerAnalysis(Request $request)
     {
-        $data = array();
-        $data = json_decode($this->getGuzzleClient($request->all(), 'reports/'.$this->user->id.'/odometer_analysis')->getBody()->getContents(), true);
-        // \Log::info(print_r( $request->all(), true));
+        return view('reports.odometer-analysis');
+    }
 
-        return view('reports.odometer-analysis', $data);
+    public function odometerAnalysisLoadMissing(Request $request)
+    {
+        $data = json_decode($this->getGuzzleClient($request->all(), 'reports/'.$this->user->id.'/odometer_analysis/missing')->getBody()->getContents(), true);
+        return json_encode(['data' => $data]);
+    }
+
+    public function odometerAnalysisLoadLess(Request $request)
+    {
+        $data = json_decode($this->getGuzzleClient($request->all(), 'reports/'.$this->user->id.'/odometer_analysis/less')->getBody()->getContents(), true);
+
+        $return = array();
+        foreach($data as $vehicle => $readings) {
+            foreach($readings as $index => $reading) {
+                $return[] = [
+                    'vehicle'  => $vehicle,
+                    'reading'   => $reading
+                ];
+            }
+        }
+
+        return json_encode(['data' => $return]);
     }
 
     public function tyreRemovalMileage()

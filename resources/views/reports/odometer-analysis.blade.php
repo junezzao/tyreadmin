@@ -23,15 +23,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($missing as $data)
-					                <tr>
-					                    <td>{{ $data['line'] }}</td>
-					                    <td>{{ $data['date'] }}</td>
-					                    <td>{{ $data['jobsheet'] }}</td>
-					                    <td>{{ $data['vehicle'] }}</td>
-					                    <td>{{ $data['remark'] }}</td>
-					                </tr>
-					            @endforeach
 		                    </tbody>
 	                    </table>
 
@@ -45,15 +36,6 @@
 		                      	</tr>
 		                    </thead>
 		                    <tbody>
-		                    	@foreach ($less as $vehicle => $readings)
-		                    		@foreach ($readings as $index => $reading)
-						                <tr>
-						                    <td>{{ $vehicle }}</td>
-						                    <td>@if($index == 0) {{ $vehicle }} @endif</td>
-						                    <td>{{ $reading }}</td>
-						                </tr>
-						            @endforeach
-					            @endforeach
 		                    </tbody>
 	                    </table>
 	            	</div>
@@ -70,6 +52,7 @@
 jQuery(document).ready(function(){
 	var missing_table = jQuery('#missing_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('reports.odometerAnalysis.load.missing') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [[0, "asc"]],
@@ -77,6 +60,13 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "line", "name": "line", "targets": 0 },
+            { "data": "date", "name": "date", "targets": 1 },
+            { "data": "jobsheet", "name": "jobsheet", "targets": 2 },
+            { "data": "vehicle", "name": "vehicle", "targets": 3 },
+            { "data": "remark", "name": "remark", "targets": 4 },
+        ],
 		buttons: [
             {
                 extend: 'pdfHtml5',
@@ -97,6 +87,7 @@ jQuery(document).ready(function(){
 
 	var less_table = jQuery('#less_table').DataTable({
 		"dom": '<"clearfix"B><"clearfix"lf><"clearfix"ip>t<"clearfix"ip>',
+		"ajax": '{{ route('reports.odometerAnalysis.load.less') }}',
 		"lengthMenu": [[10, 30, 50], [10, 30, 50]],
 		"pageLength": 10,
 		"order": [],
@@ -104,6 +95,11 @@ jQuery(document).ready(function(){
 		"scrollY": false,
 		"autoWidth": false,
 		"orderCellsTop": true,
+		"columns": [
+            { "data": "vehicle", "name": "vehicle", "targets": 0 },
+            { "data": "vehicle", "name": "vehicle", "targets": 1 },
+            { "data": "reading", "name": "reading", "targets": 2, "orderable": false  },
+        ],
 		"columnDefs": [
 			{ "targets": 0, "visible": false }
         ],
@@ -122,7 +118,18 @@ jQuery(document).ready(function(){
                     columns: [ ':visible' ]
                 }
             },
-        ]
+        ],
+        "drawCallback": function( settings ) {
+        	var lastVehicleNo = '';
+        	var vehicleNo = '';
+	        $('#less_table > tbody  > tr').each(function() {
+	        	vehicleNo = $(this).children('td:eq(0)').text();
+	        	if(vehicleNo == lastVehicleNo) {
+					$(this).children('td:eq(0)').text('');
+	        	}
+	        	lastVehicleNo = vehicleNo;
+	        });
+	    }
     });
 });
 </script>
