@@ -8,6 +8,8 @@ return [
 	'edit_profile'				=> 'Edit Profile',
 	'edit_user'					=> 'Edit User',
 	
+	'jobsheet'					=> 'Jobsheet',
+	
 	'login' 					=> 'Login',
 
 	'data_diagnostic'			=> 'Data Diagnostic',

@@ -13,7 +13,7 @@
             </div>
 
             {!! Form::open( array('url' => 'auth/register', 'id'=>'register-form') ) !!}
-                <div class="form-group" style="text-align:center">
+                <div class="form-group align-center">
                     <label class="col-xs-12 required">{{ trans('terms.operation_type') }}</label>
                     <small class="help-text col-xs-12">{{ trans('terms.please_pick_1') }}</small>
                     <div class="error col-xs-12">{{ $errors->first('operation_type') }}</div>
@@ -27,7 +27,7 @@
 
                 <hr/>
 
-                <div class="form-group" style="text-align:center">
+                <div class="form-group align-center">
                     <label class="col-xs-12">{{ trans('terms.profile') }}</label>
                 </div>
 
@@ -111,7 +111,7 @@
                     {!! Form::submit(strtoupper(trans('terms.sign_up')), array('class' => 'signin-btn bg-primary'))!!}
                 </div>
 
-                <div style="text-align:center">
+                <div class="align-center">
                     <small class="help-text">{{ trans('sentence.00_already_have_an_account')}} {!! Html::link('/', trans('sentence.00_log_in')) !!} {{ trans('sentence.00_here') }}!</small>
                 </div>
             {!! Form::close() !!}

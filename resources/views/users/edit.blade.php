@@ -14,7 +14,7 @@
 	            	</div>
 	            	<div class="box-body">
 	            		{!! Form::open(array('url' => route('user.updateUser'), 'role'=>'form', 'method' => 'PUT')) !!}
-			                <div class="form-group" style="text-align:center">
+			                <div class="form-group align-center">
 			                    <label class="col-xs-12 required">{{ trans('terms.operation_type') }}</label>
 			                    <small class="help-text col-xs-12">{{ trans('terms.please_pick_1') }}</small>
 			                    <div class="error col-xs-12">{{ $errors->first('operation_type') }}</div>
@@ -36,7 +36,7 @@
 
 			                <hr/>
 
-			                <div class="form-group" style="text-align:center">
+			                <div class="form-group align-center">
 			                    <label class="col-xs-12">{{ trans('terms.profile') }}</label>
 			                </div>
 
@@ -117,7 +117,7 @@
 			                </div>
 
 			                <div class="form-group">
-			                    {!! Form::submit(strtoupper(trans('terms.update_profile')), array('class' => 'signin-btn bg-primary'))!!}
+			                    {!! Form::submit(strtoupper(trans('terms.update_profile')), array('class' => 'signin-btn bg-primary')) !!}
 			                </div>
 			            {!! Form::close() !!}
 	            	</div>

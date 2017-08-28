@@ -108,4 +108,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('users', 'Admin\UsersController');
     });
 
+    Route::group(['prefix' => 'jobsheet'], function () {
+        Route::post('/download/template', 'JobsheetController@downloadTemplate')->name('jobsheet.download.template');
+    });
+    Route::resource('jobsheet', 'JobsheetController');
 });

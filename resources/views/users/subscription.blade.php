@@ -14,7 +14,7 @@
 	            	</div>
 	            	<div class="box-body">
 	            		
-		                <div class="form-group" style="text-align:center">
+		                <div class="form-group align-center">
 		                    <label class="col-xs-12">Your Current Subscription Plan</label>
 		                    <div class="current-subs col-xs-12 margin-bottom" style="background-color:{{ $typeColor[$user->category] }}">{{ $user->category }}</div>
 		                    

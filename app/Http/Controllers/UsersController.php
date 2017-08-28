@@ -4,18 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\UserRepository;
-//use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GuzzleClient;
-//use Bican\Roles\Models\Role;
-//use Session;
-//use Config;
-//use DateTimeZone;
-//use DateTime;
-//use Validator;
-//use App\Services\MediaService as MediaService;
-//use App\Models\Merchant;
-//use App\Models\User;
 
 class UsersController extends Controller
 {

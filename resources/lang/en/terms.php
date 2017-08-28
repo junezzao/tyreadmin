@@ -22,7 +22,11 @@ return [
     'first_name'                      	=> 'First Name',
     'fleet_operation_team'				=> 'Fleet Operation Team',
 
+    'jobsheet'                          => 'Jobsheet',
+    
     'last_name'                      	=> 'Last Name',
+
+    'manage_users'                      => 'Manage Users',
 
     'new_password'                      => 'New Password',
 

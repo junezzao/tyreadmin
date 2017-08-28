@@ -2,17 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Bican\Roles\Models\Role;
-use Bican\Roles\Models\Permission;
-use App\Http\Requests;
 use App\Http\Traits\GuzzleClient;
-use Illuminate\Http\Request;
-use Validator;
 use App\Http\Controllers\Admin\AdminController;
-use Form;
-use Excel;
 
 class HistoryController extends AdminController
 {

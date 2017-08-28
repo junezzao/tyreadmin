@@ -27,7 +27,7 @@
 		              			<div class="row col-xs-12 align-center">
 			              			<a href="javascript:void(0)" onclick="javascript:toggleDiagnostic();" id="diagnostic-link">Hide data diagnostic</a>
 			              		</div>
-		              			<div class="diagnostic col-xs-8 col-xs-offset-2">
+		              			<div class="diagnostic col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
 				            		<table id="diagnostic_table" class="table table-bordered" style="width:100%">
 					                    <thead>
 					                      	<tr>

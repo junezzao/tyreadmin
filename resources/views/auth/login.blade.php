@@ -35,7 +35,7 @@
                 <div class="form-group">
                     {!! Form::submit(strtoupper(trans('terms.sign_in')), array('class' => 'signin-btn bg-primary'))!!}
                 </div>
-                <div style="text-align:center">
+                <div class="align-center">
                     <small class="help-text">{{ trans('sentence.01_dont_have_an_account_yet') }} {!! Html::link('auth/register', trans('sentence.01_sign_up')) !!} {{ trans('sentence.01_for_one_today') }}!</small>
                 </div>
 

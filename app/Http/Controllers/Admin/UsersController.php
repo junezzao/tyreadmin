@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Merchant;
 use App\Repositories\Contracts\UserRepository;
-use Bican\Roles\Models\Role;
-use Bican\Roles\Models\Permission;
-use App\Http\Requests;
 use App\Http\Traits\GuzzleClient;
 use Illuminate\Http\Request;
-use Validator;
 use App\Http\Controllers\Admin\AdminController;
 use Form;
-use Log;
 
 class UsersController extends AdminController
 {

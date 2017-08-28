@@ -1,55 +1,66 @@
 <section class="sidebar">
     @if(strcasecmp($user->status, 'Unverified') != 0)
-    {{--<form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-            </span>
-        </div>
-    </form>--}}
 
     <?php
         $segments = explode('.', Request::route()->getName());
-        if($segments[0] == 'byChannel') {
-            unset($segments[0]);
-            $segments = array_values($segments);
-        }
         if($segments[0] == 'admin') {
             unset($segments[0]);
             $segments = array_values($segments);
         }
-
-        $selectedChannelId = 0;
-        $byChannelFlag = false;
-        $paths = explode('/', Request::path());
-        if($paths[0] == 'byChannel') {
-            $selectedChannelId = $paths[1];
-            $byChannelFlag = true;
-        }
-
-        $isChannelMenu = false;
     ?>
     
     <ul class="sidebar-menu">
-        @if($user->hasRoleOtherThan('channelmanager'))
-            @include('partials.menus.nav-sidebar-item', ['byChannel' => null, 'channel_id' => null])
+        <li class="treeview {{ $segments[0] == 'data' ? 'active' : '' }}">
+            <a href="{{ route('data.index') }}">
+                <i class="fa fa-upload fa-lg"></i> <span>@lang('terms.upload_data')</span>
+            </a>
+        </li>
+
+        <li class="treeview {{ $segments[0] == 'history' ? 'active' : '' }}">
+            <a href="{{ route('history.index') }}">
+                <i class="fa fa-history fa-lg"></i> <span>@lang('terms.tyre_history')</span>
+            </a>
+        </li>
+
+        <li class="treeview {{ $segments[0] == 'reports' ? 'active' : '' }}">
+            <a href="{{ route('reports.index') }}">
+                <i class="fa fa-file-text-o fa-lg"></i> <span>@lang('terms.reporting')</span>
+            </a>
+        </li>
+
+        <li class="treeview {{ $segments[0] == 'jobsheet' ? 'active' : '' }}">
+            <a href="{{ route('jobsheet.index') }}">
+                <i class="fa fa-th-list fa-lg"></i> <span>@lang('terms.jobsheet')</span>
+            </a>
+        </li>
+
+        @if($user->can('view.user'))
+        <li class="treeview {{ $segments[0] == 'users' ? 'active' : '' }}">
+            <a href="{{ route('admin.users.index') }}">
+                <i class="fa fa-users fa-lg"></i> <span>@lang('terms.manage_users')</span>
+            </a>
+        </li>
         @endif
-        @if($user->is('channelmanager'))
-            @foreach($user->channels() as $channel)
-                <li class="treeview{{ $selectedChannelId==$channel->id ? ' active':'' }}">
-                    <a href="#">
-                        <i class="fa fa-archive"></i> <span>{{ $channel->name }}</span> <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <?php 
-                            $isChannelMenu = true;
-                        ?>
-                        @include('partials.menus.nav-sidebar-item', ['byChannel' => 'byChannel/'.$channel->id.'/', 'channel_id' => $channel->id])
-                    </ul>
+
+        <li class="treeview {{ $segments[0] == 'user' ? 'active' : '' }}">
+            <a href="#">
+                <i class="fa fa-user-o fa-lg"></i> <span>My Profile</span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a href="{{ route('user.editUser') }}">Edit Profile</a>
                 </li>
-            @endforeach
-        @endif
+                @if(strcasecmp( $user->category, 'Super Administrator') != 0)
+                <li>
+                    <a href="{{ route('user.subscription') }}">Manage Subscription</a>
+                </li>
+                @endif
+                <li>
+                    <a href="{{ route('user.changePassword') }}">Change Password</a>
+                </li>
+                <li><a href="{!! route('logout') !!}">Sign Out</a></li>
+            </ul>
+        </li>
     </ul>
     @endif
 </section>
