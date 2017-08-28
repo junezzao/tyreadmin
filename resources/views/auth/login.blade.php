@@ -7,7 +7,10 @@
 @section('content')
     <div class="login-box clearfix">
         <div class="login-box-body col-xs-12">
-            <p class="login-box-msg">{{ trans('sentence.login_header') }}</p>
+            <div class="login-box-logo">
+                <img src="{{ asset('images/logo-login.png',env('HTTPS',false)) }}" />
+            </div>
+            <!--<p class="login-box-msg">{{ trans('sentence.login_header') }}</p>-->
 
             {!! Form::open(array('url' => 'auth/login', 'id'=>'login-form')) !!}
                 <div class="form-group has-feedback">
