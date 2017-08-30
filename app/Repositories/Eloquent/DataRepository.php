@@ -36,6 +36,10 @@ class DataRepository extends Repository implements DataRepositoryInterface
 
     public function create(array $data)
     {
+        array_walk_recursive($data, function(&$data) {
+            $data = strip_tags($data);
+        });
+        
         $index = $data['index'];
         $chunkSize = $data['chunkSize'];
 

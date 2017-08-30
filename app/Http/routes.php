@@ -20,33 +20,35 @@ Route::get('/pwd/{password}', function ($password) {
     return bcrypt($password);
 });
 
-// Login
-Route::group(['prefix' => 'auth'], function () {
+Route::group(['middleware' => ['XSS']], function () {
+    // Login
+    Route::group(['prefix' => 'auth'], function () {
 
-    Route::get('login', array('uses' => 'Auth\AuthController@getLogin', 'as' => 'login'));
-    Route::post('login', 'Auth\AuthController@postLogin');
+        Route::get('login', array('uses' => 'Auth\AuthController@getLogin', 'as' => 'login'));
+        Route::post('login', 'Auth\AuthController@postLogin');
 
-    Route::get('logout', array('uses' => 'Auth\AuthController@getLogout', 'as' => 'logout' ));
-    Route::post('resetPassword', array('as' => 'resetPassword', 'uses' => 'Auth\AuthController@resetPassword'));
+        Route::get('logout', array('uses' => 'Auth\AuthController@getLogout', 'as' => 'logout' ));
+        Route::post('resetPassword', array('as' => 'resetPassword', 'uses' => 'Auth\AuthController@resetPassword'));
 
-    // Registration
-    Route::get('register', 'Auth\RegisterController@getRegister');
-    Route::post('register', 'Auth\RegisterController@postRegister');
+        // Registration
+        Route::get('register', 'Auth\RegisterController@getRegister');
+        Route::post('register', 'Auth\RegisterController@postRegister');
+    });
+    Route::get('captcha/refresh','Auth\AuthController@captchaRefresh');
+    Route::post('password/forgot','Auth\AuthController@forgot');
+    // Password reset link request routes...
+    Route::get('password/email', 'Auth\PasswordController@getEmail');
+    Route::post('password/email', 'Auth\PasswordController@postEmail');
+
+    // Password reset routes...
+    Route::get('password/reset/{token}', 'Auth\PasswordController@getResetPassword');
+    // Route::get('password/reset', array('uses' => 'UsersController@showVerify', 'as' => 'users.show_verify'));
+    Route::post('password/reset', 'Auth\PasswordController@postReset');
+
+    Route::get('account/activate/{token}', 'Auth\PasswordController@getActivateAccount');
 });
-Route::get('captcha/refresh','Auth\AuthController@captchaRefresh');
-Route::post('password/forgot','Auth\AuthController@forgot');
-// Password reset link request routes...
-Route::get('password/email', 'Auth\PasswordController@getEmail');
-Route::post('password/email', 'Auth\PasswordController@postEmail');
 
-// Password reset routes...
-Route::get('password/reset/{token}', 'Auth\PasswordController@getResetPassword');
-// Route::get('password/reset', array('uses' => 'UsersController@showVerify', 'as' => 'users.show_verify'));
-Route::post('password/reset', 'Auth\PasswordController@postReset');
-
-Route::get('account/activate/{token}', 'Auth\PasswordController@getActivateAccount');
-
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'XSS']], function () {
     Route::group(['prefix' => 'data'], function () {
         Route::post('/upload', 'DataController@upload')->name('data.upload');
         Route::post('/download/template', 'DataController@downloadTemplate')->name('data.download.template');
